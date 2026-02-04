@@ -1,19 +1,26 @@
 {
-  "name": "@cyntler/react-doc-viewer",
-  "version": "1.17.1",
-  "description": "File viewer for React.",
-  "author": "Matthew Mogford / Damian Cyntler",
+  "name": "@mehuljariwala/react-doc-viewer",
+  "version": "0.1.0",
+  "description": "Universal document viewer for React - supports PDF, Office docs, images, videos and more.",
+  "author": "Mehul Jariwala",
   "type": "module",
   "keywords": [
     "reactjs",
     "react-library",
     "file-viewer",
-    "doc-viewer"
+    "doc-viewer",
+    "pdf-viewer",
+    "document-viewer",
+    "office-viewer",
+    "docx",
+    "xlsx",
+    "pptx"
   ],
-  "license": "Apache License 2.0",
-  "homepage": "https://cyntler.github.io/react-doc-viewer",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/mehuljariwala/react-doc-viewer",
   "repository": {
-    "url": "https://github.com/cyntler/react-doc-viewer"
+    "type": "git",
+    "url": "https://github.com/mehuljariwala/react-doc-viewer"
   },
   "files": [
     "dist/**"
