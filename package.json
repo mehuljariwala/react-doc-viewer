@@ -1,5 +1,5 @@
 {
-  "name": "@mehuljariwala/react-doc-viewer",
+  "name": "@iamjariwala/react-doc-viewer",
   "version": "0.2.0",
   "description": "Universal document viewer for React - supports PDF, Office docs, images, videos and more.",
   "author": "Mehul Jariwala",
