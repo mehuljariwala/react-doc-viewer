@@ -3,103 +3,89 @@
 
 # @iamjariwala/react-doc-viewer
 
-Universal document viewer for **React v17+** - supports PDF, Office docs, images, videos and more.
+A powerful, feature-rich document viewer for **React v17+**. View PDFs, Office docs, images, videos, and more — with built-in drag-and-drop, thumbnail navigation, annotations, and i18n support.
 
 > Forked from [@cyntler/react-doc-viewer](https://github.com/cyntler/react-doc-viewer) with active maintenance and new features.
 
-## Important note!
+## What's New in v0.2.0
 
-> [!IMPORTANT]
-> This library uses the official MS Office online document viewing service. This means it works on an iframe basis and only supports public file URLs! Therefore, it may not be compatible with all projects. Currently, there is no way to natively render MS Office documents in the browser.
+- **Drag & Drop** — Drop files directly onto the viewer
+- **Thumbnail Sidebar** — Visual page navigation for PDFs
+- **Annotations** — Highlight text, draw, and add comments on documents
+- **Page Jump** — Navigate to any page programmatically via ref or prop
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 ## Table of Contents
 
-- [Supported file types](#supported-file-types)
-- [Storybook Demo](#storybook-demo)
+- [Supported File Types](#supported-file-types)
+- [Live Demo](#live-demo)
 - [Installation](#installation)
-- [Usage](#usage)
-  - [Required styles](#required-styles)
-  - [Basic](#basic)
+- [Quick Start](#quick-start)
+- [Documents](#documents)
+  - [Remote & Local Files](#remote--local-files)
   - [Initial Active Document](#initial-active-document)
-  - [Control over the displayed document](#control-over-the-displayed-document)
-  - [Displaying blob/uploaded documents](#displaying-blobuploaded-documents)
-  - [Included Renderers](#included-renderers)
+  - [Controlled Document](#controlled-document)
+  - [Blob / Uploaded Files](#blob--uploaded-files)
+- [Renderers](#renderers)
+  - [Built-in Renderers](#built-in-renderers)
   - [Custom Renderer](#custom-renderer)
   - [Custom File Loader](#custom-file-loader)
-- [Theme](#theme)
-- [Custom pre-fetch HTTP Verb](#custom-pre-fetch-http-verb)
-- [Custom Request Headers](#custom-request-headers)
-- [Internationalization (i18n)](#internationalization-i18n)
-- [Styling](#styling)
-  - [CSS Class](#css-class)
-  - [CSS Class Default Override](#css-class-default-override)
-  - [React Inline](#react-inline)
-  - [Styled Components](#styled-components)
-- [Using DocViewerRef](#using-docviewerref)
-- [Config](#config)
-  - [Overriding Header Component](#overriding-header-component)
+- [Features](#features)
+  - [Drag & Drop](#drag--drop)
+  - [Thumbnail Sidebar](#thumbnail-sidebar)
+  - [Annotations](#annotations)
+  - [Page Navigation](#page-navigation)
+- [Configuration](#configuration)
+  - [Full Config Reference](#full-config-reference)
+  - [Overriding Header](#overriding-header)
   - [Overriding Loading Renderer](#overriding-loading-renderer)
   - [Overriding No Renderer (Error)](#overriding-no-renderer-error)
+- [Theming](#theming)
+- [Styling](#styling)
+- [Internationalization (i18n)](#internationalization-i18n)
+- [Advanced](#advanced)
+  - [DocViewerRef](#docviewerref)
+  - [Custom HTTP Verb](#custom-http-verb)
+  - [Custom Request Headers](#custom-request-headers)
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## Supported File Types
 
-## Supported file types
+| Extension | MIME Type | Notes |
+| --------- | --------- | ----- |
+| pdf | application/pdf | |
+| png | image/png | |
+| jpg / jpeg | image/jpg, image/jpeg | |
+| gif | image/gif | |
+| bmp | image/bmp | |
+| tiff | image/tiff | |
+| webp | image/webp | |
+| csv | text/csv | |
+| txt | text/plain | |
+| htm / html | text/htm, text/html | |
+| mp4 | video/mp4 | |
+| doc | application/msword | Public URLs only |
+| docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Public URLs only |
+| xls | application/vnd.ms-excel | Public URLs only |
+| xlsx | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | Public URLs only |
+| ppt | application/vnd.ms-powerpoint | Public URLs only |
+| pptx | application/vnd.openxmlformats-officedocument.presentationml.presentation | Public URLs only |
+| odt | application/vnd.oasis.opendocument.text | |
 
-| Extension | MIME Type                                                                 | Comments |
-| --------- | ------------------------------------------------------------------------- | ------------- |
-| bmp       | image/bmp                                                                 | |
-| csv       | text/csv                                                                  | |
-| odt       | application/vnd.oasis.opendocument.text                                   | |
-| doc       | application/msword                                                        | Public URLs only! |
-| docx      | application/vnd.openxmlformats-officedocument.wordprocessingml.document   | Public URLs only! |
-| gif       | image/gif                                                                 | |
-| htm       | text/htm                                                                  | |
-| html      | text/html                                                                 | |
-| jpg       | image/jpg                                                                 | |
-| jpeg      | image/jpeg                                                                | |
-| pdf       | application/pdf                                                           | |
-| png       | image/png                                                                 | |
-| ppt       | application/vnd.ms-powerpoint                                             | Public URLs only! |
-| pptx      | application/vnd.openxmlformats-officedocument.presentationml.presentation | Public URLs only! |
-| tiff      | image/tiff                                                                | |
-| txt       | text/plain                                                                | |
-| xls       | application/vnd.ms-excel                                                  | Public URLs only! |
-| xlsx      | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet         | Public URLs only! |
-| mp4       | video/mp4                                                                 | |
-| webp      | image/webp                                                                | |
+> [!IMPORTANT]
+> MS Office documents (doc, docx, xls, xlsx, ppt, pptx) use Microsoft's online viewing service via iframe and **require publicly accessible URLs**.
 
-## Storybook Demo
+## Live Demo
 
-https://mehuljariwala.github.io/react-doc-viewer
+[Storybook](https://mehuljariwala.github.io/react-doc-viewer)
 
 ## Installation
 
-Use one of the package managers for Node.js.
-
 ```bash
- npm i @iamjariwala/react-doc-viewer
- # or
- yarn add @iamjariwala/react-doc-viewer
+npm install @iamjariwala/react-doc-viewer
+# or
+yarn add @iamjariwala/react-doc-viewer
 ```
 
-## Usage
-
-> **Warning:** _By default the component height will expand and contract to the current loaded file. The width will expand to fill the parent._
-
-### Required styles
-
-The library exports a CSS file containing classes needed for correct rendering of e.g. PDF files. It is best to include it at the beginning of the application or in the place where you use this library.
-
-```tsx
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-```
-
-### Basic
-
-DocViewer requires at least an array of document objects to function.
-Each document object must have a uri to a file, either a url that returns a file or a local file.
+## Quick Start
 
 ```tsx
 import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
@@ -107,187 +93,344 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 function App() {
   const docs = [
-    { uri: "https://url-to-my-pdf.pdf" }, // Remote file
-    { uri: require("./example-files/pdf.pdf") }, // Local File
+    { uri: "https://example.com/sample.pdf" },
+    { uri: "https://example.com/photo.png" },
   ];
 
   return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />;
 }
 ```
 
+> The CSS import is required for correct rendering of PDF and other file types.
+
+## Documents
+
+### Remote & Local Files
+
+Each document needs a `uri` pointing to a file URL or a local file path.
+
+```tsx
+const docs = [
+  { uri: "https://example.com/file.pdf" },
+  { uri: require("./files/document.pdf") },
+];
+```
+
 ### Initial Active Document
 
-By default, the first item in your `documents` array will be displayed after the component is rendered. However, there is a prop `initialActiveDocument` that you can point to the initial document that should be displayed.
+By default the first document is displayed. Use `initialActiveDocument` to change this:
 
 ```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-const App = () => {
-  const docs = [
-    { uri: "https://url-to-my-pdf.pdf" }, // Remote file
-    { uri: require("./example-files/pdf.pdf") }, // Local File
-  ];
-
-  return (
-    <DocViewer
-      documents={docs}
-      initialActiveDocument={docs[1]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  );
-};
+<DocViewer
+  documents={docs}
+  initialActiveDocument={docs[1]}
+  pluginRenderers={DocViewerRenderers}
+/>
 ```
 
-### Control over the displayed document
+### Controlled Document
 
-From version **1.11.0** you can control the displayed document through two props: `activeDocument` and `onDocumentChange`.
-
-```jsx
-const DocViewerControlOverDisplayedDocument = () => {
-  const docs = [
-    { uri: "https://url-to-my-pdf.pdf" }, // Remote file
-    { uri: require("./example-files/pdf.pdf") }, // Local File
-  ];
-  const [activeDocument, setActiveDocument] = useState(docs[0]);
-
-  const handleDocumentChange = (document) => {
-    setActiveDocument(document);
-  };
-
-  return (
-    <>
-      <DocViewer
-        documents={docs}
-        activeDocument={activeDocument}
-        onDocumentChange={handleDocumentChange}
-      />
-    </>
-  );
-};
-```
-
-### Displaying blob/uploaded documents
-
-Since **v1.6.2** you can use documents in the form of blobs, which allows you to e.g. display uploaded files.
-
-```jsx
-const DocViewerWithInputApp = () => {
-  const [selectedDocs, setSelectedDocs] = useState<File[]>([]);
-
-  return (
-    <>
-      <input
-        type="file"
-        accept=".pdf"
-        multiple
-        onChange={(el) =>
-          el.target.files?.length &&
-          setSelectedDocs(Array.from(el.target.files))
-        }
-      />
-      <DocViewer
-        documents={selectedDocs.map((file) => ({
-          uri: window.URL.createObjectURL(file),
-          fileName: file.name,
-        }))}
-        pluginRenderers={DocViewerRenderers}
-      />
-    </>
-  );
-};
-```
-
-### Included Renderers
-
-To use the included renderers.
-`DocViewerRenderers` is an Array of all the included renderers.
+Control which document is displayed with `activeDocument` and `onDocumentChange`:
 
 ```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
+const [activeDocument, setActiveDocument] = useState(docs[0]);
 
 <DocViewer
-  pluginRenderers={DocViewerRenderers}
-  {/* ... */}
-/>;
+  documents={docs}
+  activeDocument={activeDocument}
+  onDocumentChange={setActiveDocument}
+/>
 ```
 
-Or you can import individual renderers.
+### Blob / Uploaded Files
+
+Display user-uploaded files using blob URLs:
+
+```tsx
+const [files, setFiles] = useState<File[]>([]);
+
+<>
+  <input
+    type="file"
+    accept=".pdf"
+    multiple
+    onChange={(e) =>
+      e.target.files?.length && setFiles(Array.from(e.target.files))
+    }
+  />
+  <DocViewer
+    documents={files.map((file) => ({
+      uri: window.URL.createObjectURL(file),
+      fileName: file.name,
+    }))}
+    pluginRenderers={DocViewerRenderers}
+  />
+</>
+```
+
+## Renderers
+
+### Built-in Renderers
+
+Use all built-in renderers:
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+
+<DocViewer pluginRenderers={DocViewerRenderers} documents={docs} />;
+```
+
+Or import only what you need:
 
 ```tsx
 import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-<DocViewer
-  pluginRenderers={[PDFRenderer, PNGRenderer]}
-  {/* ... */}
-/>;
+<DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
 ```
 
 ### Custom Renderer
 
-To create a custom renderer, that will just exist for your project.
-
 ```tsx
-import React from "react";
-import DocViewer from "@iamjariwala/react-doc-viewer";
-
-const MyCustomPNGRenderer: DocRenderer = ({
-  mainState: { currentDocument },
-}) => {
+const MyPNGRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
   if (!currentDocument) return null;
-
-  return (
-    <div id="my-png-renderer">
-      <img id="png-img" src={currentDocument.fileData as string} />
-    </div>
-  );
+  return <img src={currentDocument.fileData as string} />;
 };
 
-MyCustomPNGRenderer.fileTypes = ["png", "image/png"];
-MyCustomPNGRenderer.weight = 1;
-```
+MyPNGRenderer.fileTypes = ["png", "image/png"];
+MyPNGRenderer.weight = 1;
 
-And supply it to `pluginRenderers` inside an `Array`.
-
-```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-<DocViewer
-  pluginRenderers={[MyCustomPNGRenderer]}
-  documents={
-    [
-      // ...
-    ]
-  }
-/>;
+<DocViewer pluginRenderers={[MyPNGRenderer]} documents={docs} />;
 ```
 
 ### Custom File Loader
 
-If you need to prevent the actual loading of the file by `@iamjariwala/react-doc-viewer`.<br>
-You can decorate your custom renderer with a callback to do as you wish. e.g. Load the file yourself in an iFrame.
+Prevent the default file loading and handle it yourself:
 
 ```tsx
-MyCustomPNGRenderer.fileLoader = ({
-  documentURI,
-  signal,
-  fileLoaderComplete,
-}) => {
-  myCustomFileLoaderCode().then(() => {
-    // Whenever you have finished you must call fileLoaderComplete() to remove the loading animation
+MyPNGRenderer.fileLoader = ({ documentURI, signal, fileLoaderComplete }) => {
+  myCustomLoader(documentURI).then(() => {
     fileLoaderComplete();
   });
 };
 ```
 
-## Theme
+## Features
 
-You can provide a theme object with one or all of the available properties.
+### Drag & Drop
 
-```xml
+Enable file drag-and-drop to add or replace documents in the viewer.
+
+```tsx
+<DocViewer
+  documents={docs}
+  config={{
+    dragDrop: {
+      enableDragDrop: true,
+      acceptedFileTypes: ["application/pdf", "image/*"],
+      maxFileSize: 50 * 1024 * 1024, // 50MB
+      dropBehavior: "append", // "append" or "replace"
+      onDrop: (files) => {
+        console.log("Files dropped:", files);
+      },
+      onDropRejected: (files, reason) => {
+        console.log("Rejected:", reason); // "file-type" | "file-size" | "unknown"
+      },
+    },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableDragDrop` | `boolean` | `false` | Enable drag-and-drop |
+| `acceptedFileTypes` | `string[]` | all | MIME types to accept (supports wildcards like `image/*`) |
+| `maxFileSize` | `number` | unlimited | Max file size in bytes |
+| `dropBehavior` | `"append" \| "replace"` | `"append"` | Add to or replace existing documents |
+| `onDrop` | `(files: File[]) => void` | — | Callback when files are accepted |
+| `onDropRejected` | `(files, reason) => void` | — | Callback when files are rejected |
+
+### Thumbnail Sidebar
+
+Display a visual sidebar with page thumbnails for quick PDF navigation.
+
+```tsx
+<DocViewer
+  documents={docs}
+  config={{
+    thumbnail: {
+      enableThumbnails: true,
+      thumbnailWidth: 120,
+      sidebarDefaultOpen: true,
+    },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableThumbnails` | `boolean` | `false` | Enable thumbnail sidebar |
+| `thumbnailWidth` | `number` | `120` | Width of each thumbnail in pixels |
+| `sidebarDefaultOpen` | `boolean` | `false` | Open sidebar by default |
+
+### Annotations
+
+Add highlights, drawings, and comments to your documents.
+
+```tsx
+<DocViewer
+  documents={docs}
+  config={{
+    annotations: {
+      enableAnnotations: true,
+      defaultColor: "#FFFF00",
+      colors: ["#FFFF00", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"],
+      tools: ["select", "highlight", "pen", "comment", "eraser"],
+      onAnnotationChange: (annotations) => {
+        console.log("Annotations:", annotations);
+      },
+      initialAnnotations: [], // pre-load saved annotations
+    },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableAnnotations` | `boolean` | `false` | Enable annotation toolbar |
+| `defaultColor` | `string` | — | Default color for new annotations |
+| `colors` | `string[]` | — | Color palette for the picker |
+| `tools` | `AnnotationTool[]` | all | Which tools to show: `"select"`, `"highlight"`, `"pen"`, `"comment"`, `"eraser"` |
+| `onAnnotationChange` | `(annotations) => void` | — | Callback when annotations change |
+| `initialAnnotations` | `IAnnotation[]` | `[]` | Pre-loaded annotations |
+
+**Exporting annotations** — Use the `useAnnotationExport` hook:
+
+```tsx
+import { useAnnotationExport } from "@iamjariwala/react-doc-viewer";
+
+const { exportAsJSON, downloadAnnotations, getAnnotationsForPage } = useAnnotationExport();
+```
+
+### Page Navigation
+
+Jump to a specific page using a ref or the `jumpToPage` prop.
+
+**Using ref:**
+
+```tsx
+const docViewerRef = useRef<DocViewerRef>(null);
+
+<DocViewer ref={docViewerRef} documents={docs} />;
+
+// Navigate
+docViewerRef.current?.goToPage(5);
+docViewerRef.current?.prev();
+docViewerRef.current?.next();
+```
+
+**Using the `jumpToPage` prop:**
+
+```tsx
+const [page, setPage] = useState(1);
+
+<DocViewer documents={docs} jumpToPage={page} />;
+```
+
+## Configuration
+
+### Full Config Reference
+
+```tsx
+<DocViewer
+  documents={docs}
+  config={{
+    header: {
+      disableHeader: false,
+      disableFileName: false,
+      retainURLParams: false,
+      overrideComponent: MyHeader, // custom header component
+    },
+    loadingRenderer: {
+      overrideComponent: MyLoader,
+      showLoadingTimeout: 500, // ms, or false to show immediately
+    },
+    noRenderer: {
+      overrideComponent: MyError,
+    },
+    csvDelimiter: ",",
+    pdfZoom: {
+      defaultZoom: 1.1,
+      zoomJump: 0.2,
+    },
+    pdfVerticalScrollByDefault: true,
+    dragDrop: { enableDragDrop: true, /* ... */ },
+    thumbnail: { enableThumbnails: true, /* ... */ },
+    annotations: { enableAnnotations: true, /* ... */ },
+  }}
+/>
+```
+
+### Overriding Header
+
+```tsx
+const MyHeader: IHeaderOverride = (state, previousDocument, nextDocument) => {
+  if (!state.currentDocument) return null;
+
+  return (
+    <div>
+      <span>{state.currentDocument.uri}</span>
+      <button onClick={previousDocument} disabled={state.currentFileNo === 0}>
+        Prev
+      </button>
+      <button
+        onClick={nextDocument}
+        disabled={state.currentFileNo >= state.documents.length - 1}
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+
+<DocViewer config={{ header: { overrideComponent: MyHeader } }} documents={docs} />;
+```
+
+### Overriding Loading Renderer
+
+```tsx
+const MyLoader = ({ document, fileName }) => {
+  return <div>Loading {fileName || document?.fileType}...</div>;
+};
+
+<DocViewer
+  config={{
+    loadingRenderer: {
+      overrideComponent: MyLoader,
+      showLoadingTimeout: 500, // false to disable delay
+    },
+  }}
+  documents={docs}
+/>;
+```
+
+### Overriding No Renderer (Error)
+
+```tsx
+const MyError = ({ document, fileName }) => {
+  return <div>Unsupported file: {fileName || document?.fileType}</div>;
+};
+
+<DocViewer
+  config={{ noRenderer: { overrideComponent: MyError } }}
+  documents={docs}
+/>;
+```
+
+## Theming
+
+Customize the viewer's appearance with a theme object:
+
+```tsx
 <DocViewer
   documents={docs}
   theme={{
@@ -302,54 +445,33 @@ You can provide a theme object with one or all of the available properties.
 />
 ```
 
-## Custom pre-fetch HTTP Verb
-
-Some services (such as AWS) provide URLs that works only for one pre-configured verb.
-By default, `@iamjariwala/react-doc-viewer` fetches document metadata through a `HEAD` request in order to guess its `Content-Type`.
-If you need to have a specific verb for the pre-fetching, use the `prefetchMethod` option on the DocViewer:
-
-```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-
-<DocViewer prefetchMethod="GET" />;
-```
-
-## Custom Request Headers
-
-Provide request headers, i.e. for authenticating with an API etc.
-
-```tsx
-const headers = {
-  "X-Access-Token": "1234567890",
-  "My-Custom-Header": "my-custom-value",
-};
-
-<DocViewer documents={docs} prefetchMethod="GET" requestHeaders={headers} />;
-```
-
-## Internationalization (i18n)
-
-From **v1.6.0** you can pass the `language` prop to the `DocViewer` component to get translated sentences and words that can be displayed by this library.
-
-```xml
-<DocViewer documents={docs} language="pl" />
-```
-
-The translations are based on the `.json` files that can be found in the `src/locales` directory.
-
 ## Styling
 
-Any styling applied to the `<DocViewer>` component, is directly applied to the main `div` container.
+**CSS class:**
 
-### CSS Class
-
-```xml
-<DocViewer documents={docs} className="my-doc-viewer-style" />
+```tsx
+<DocViewer documents={docs} className="my-viewer" />
 ```
 
-### CSS Class Default Override
+**Inline styles:**
 
-Each component / div already has a DOM id that can be used to style any part of the document viewer.
+```tsx
+<DocViewer documents={docs} style={{ width: 500, height: 500 }} />
+```
+
+**Styled Components:**
+
+```tsx
+import styled from "styled-components";
+
+const MyDocViewer = styled(DocViewer)`
+  border-radius: 10px;
+`;
+
+<MyDocViewer documents={docs} />;
+```
+
+**Override internal elements by DOM ID:**
 
 ```css
 #react-doc-viewer #header-bar {
@@ -357,212 +479,59 @@ Each component / div already has a DOM id that can be used to style any part of 
 }
 ```
 
-### React Inline
+## Internationalization (i18n)
 
-```xml
-<DocViewer documents={docs} style={{ width: 500, height: 500 }} />
-```
-
-### Styled Components
+Pass a `language` prop to translate the UI:
 
 ```tsx
-import styled from "styled-components";
-
-// ...
-
-<MyDocViewer documents={docs} />;
-
-// ...
-
-const MyDocViewer = styled(DocViewer)`
-  border-radius: 10px;
-`;
+<DocViewer documents={docs} language="pl" />
 ```
 
-## Using DocViewerRef
+**Supported languages:** `ar`, `de`, `en`, `es`, `fr`, `it`, `ja`, `pl`, `pt`, `ru`, `se`, `sr`, `sr_cyr`, `tr`
 
-Since **v1.13.0** you can control the display of the document with `reference`.
+Translation files are in `src/locales/`. PRs for new languages are welcome.
+
+## Advanced
+
+### DocViewerRef
+
+Control the viewer programmatically:
 
 ```tsx
 import DocViewer, { DocViewerRef } from "@iamjariwala/react-doc-viewer";
 
-export const UsingRef = () => {
-  const docViewerRef = useRef<DocViewerRef>(null);
+const docViewerRef = useRef<DocViewerRef>(null);
 
-  return (
-    <>
-      <div>
-        <button onClick={() => docViewerRef?.current?.prev()}>
-          Prev Document By Ref
-        </button>
-        <button onClick={() => docViewerRef?.current?.next()}>
-          Next Document By Ref
-        </button>
-      </div>
-      <DocViewer
-        ref={docViewerRef}
-        documents={docs}
-        config={{ header: { disableHeader: true } }}
-      />
-    </>
-  );
-};
+<DocViewer ref={docViewerRef} documents={docs} />;
+
+docViewerRef.current?.prev();       // previous document
+docViewerRef.current?.next();       // next document
+docViewerRef.current?.goToPage(3);  // jump to page 3
 ```
 
-## Config
+### Custom HTTP Verb
 
-You can provide a config object, which configures parts of the component as required.
+Some services (like AWS S3) require a specific HTTP verb for pre-fetching. By default, `HEAD` is used:
+
+```tsx
+<DocViewer documents={docs} prefetchMethod="GET" />
+```
+
+### Custom Request Headers
+
+Provide custom headers for authenticated requests:
 
 ```tsx
 <DocViewer
   documents={docs}
-  config={{
-    header: {
-      disableHeader: false,
-      disableFileName: false,
-      retainURLParams: false,
-    },
-    csvDelimiter: ",", // "," as default,
-    pdfZoom: {
-      defaultZoom: 1.1, // 1 as default,
-      zoomJump: 0.2, // 0.1 as default,
-    },
-    pdfVerticalScrollByDefault: true, // false as default
+  prefetchMethod="GET"
+  requestHeaders={{
+    "X-Access-Token": "1234567890",
+    "My-Custom-Header": "value",
   }}
 />
 ```
 
-### Overriding Header Component
+## License
 
-You can pass a callback function to `config.header.overrideComponent` that returns a React Element. The function's parameters will be populated and usable, this function will also be re-called whenever the mainState updates.
-Parameters include the state object from the main component, and document navigation functions for `previousDocument` and `nextDocument`.
-
-Example:
-
-```tsx
-const MyHeader: IHeaderOverride = (state, previousDocument, nextDocument) => {
-  if (!state.currentDocument || state.config?.header?.disableFileName) {
-    return null;
-  }
-
-  return (
-    <>
-      <div>{state.currentDocument.uri || ""}</div>
-      <div>
-        <button onClick={previousDocument} disabled={state.currentFileNo === 0}>
-          Previous Document
-        </button>
-        <button
-          onClick={nextDocument}
-          disabled={state.currentFileNo >= state.documents.length - 1}
-        >
-          Next Document
-        </button>
-      </div>
-    </>
-  );
-};
-
-<DocViewer
-  pluginRenderers={DocViewerRenderers}
-  documents={
-    {
-      // ...
-    }
-  }
-  config={{
-    header: {
-      overrideComponent: MyHeader,
-    },
-  }}
-/>;
-```
-
-### Overriding Loading Renderer
-
-You can pass a callback function to `config.loadingRenderer.overrideComponent` that returns a React Element.
-
-Example:
-
-```tsx
-const MyLoadingRenderer = ({ document, fileName }) => {
-  const fileText = fileName || document?.fileType || "";
-
-  if (fileText) {
-    return <div>Loading Renderer ({fileText})...</div>;
-  }
-
-  return <div>Loading Renderer...</div>;
-};
-
-<DocViewer
-  pluginRenderers={DocViewerRenderers}
-  documents={
-    {
-      // ...
-    }
-  }
-  config={{
-    loadingRenderer: {
-      overrideComponent: MyLoadingRenderer,
-    },
-  }}
-/>;
-```
-
-By default, the loading component is rendered if document loading process takes more than 500 ms.
-
-You can change this time value or disable this feature to make the component display immediately:
-
-```tsx
-const MyLoadingRenderer = ({ document, fileName }) => {
-  ...
-};
-
-<DocViewer
-  pluginRenderers={DocViewerRenderers}
-  documents={
-    {
-      // ...
-    }
-  }
-  config={{
-    loadingRenderer: {
-      overrideComponent: MyLoadingRenderer,
-      showLoadingTimeout: false, // false if you want to disable or number to provide your own value (ms)
-    },
-  }}
-/>;
-```
-
-### Overriding No Renderer (Error)
-
-You can pass a callback function to `config.noRenderer.overrideComponent` that returns a React Element.
-
-Example:
-
-```tsx
-const MyNoRenderer = ({ document, fileName }) => {
-  const fileText = fileName || document?.fileType || "";
-
-  if (fileText) {
-    return <div>No Renderer Error! ({fileText})</div>;
-  }
-
-  return <div>No Renderer Error!</div>;
-};
-
-<DocViewer
-  pluginRenderers={DocViewerRenderers}
-  documents={
-    {
-      // ...
-    }
-  }
-  config={{
-    noRenderer: {
-      overrideComponent: MyNoRenderer,
-    },
-  }}
-/>;
-```
+[Apache-2.0](./LICENSE)
