@@ -5,9 +5,15 @@ import React, {
   PropsWithChildren,
   useEffect,
   useReducer,
+  useRef,
 } from "react";
 import { IMainState } from "../../../store/mainStateReducer";
-import { PDFActions, SET_CURRENT_MAIN_STATE } from "./actions";
+import {
+  PDFActions,
+  SET_CURRENT_MAIN_STATE,
+  setCurrentPage,
+  setPDFPaginated,
+} from "./actions";
 import {
   initialPDFState,
   IPDFState,
@@ -38,12 +44,29 @@ const PDFProvider: FC<PropsWithChildren<{ mainState: IMainState }>> = ({
     mainState,
   });
 
+  const prevTargetPage = useRef<number | undefined>(undefined);
+
   useEffect(() => {
     dispatch({
       type: SET_CURRENT_MAIN_STATE,
       value: mainState,
     });
   }, [mainState]);
+
+  useEffect(() => {
+    if (
+      mainState.targetPage !== undefined &&
+      mainState.targetPage !== prevTargetPage.current &&
+      mainState.targetPage >= 1 &&
+      mainState.targetPage <= state.numPages
+    ) {
+      dispatch(setCurrentPage(mainState.targetPage));
+      if (!state.paginated) {
+        dispatch(setPDFPaginated(true));
+      }
+      prevTargetPage.current = mainState.targetPage;
+    }
+  }, [mainState.targetPage, state.numPages, state.paginated]);
 
   return (
     <PDFContext.Provider value={{ state, dispatch }}>

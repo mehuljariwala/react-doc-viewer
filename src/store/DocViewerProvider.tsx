@@ -6,8 +6,10 @@ import React, {
   PropsWithChildren,
   useImperativeHandle,
   forwardRef,
+  useCallback,
+  RefObject,
 } from "react";
-import { DocViewerRef } from "..";
+import { DocViewerRef, IDragDropConfig, IDocument } from "..";
 import { DocViewerProps } from "../DocViewer";
 import { defaultLanguage, locales } from "../i18n";
 import {
@@ -17,6 +19,8 @@ import {
   setAllDocuments,
   setMainConfig,
   updateCurrentDocument,
+  addDocumentsFromDrop,
+  goToPage,
 } from "./actions";
 import {
   IMainState,
@@ -24,15 +28,26 @@ import {
   mainStateReducer,
   MainStateReducer,
 } from "./mainStateReducer";
+import { useFileProcessor } from "../features/drag-drop";
+
+export interface DocViewerProviderRef {
+  handleFilesDropped: (files: File[]) => Promise<void>;
+}
+
+interface ExtendedDocViewerProps extends DocViewerProps {
+  dragDropConfig?: IDragDropConfig;
+  providerRef?: RefObject<DocViewerProviderRef>;
+}
 
 const DocViewerContext = createContext<{
   state: IMainState;
   dispatch: Dispatch<MainStateActions>;
+  addDroppedDocuments?: (documents: IDocument[]) => void;
 }>({ state: initialState, dispatch: () => null });
 
 const DocViewerProvider = forwardRef<
   DocViewerRef,
-  PropsWithChildren<DocViewerProps>
+  PropsWithChildren<ExtendedDocViewerProps>
 >((props, ref) => {
   const {
     children,
@@ -45,7 +60,12 @@ const DocViewerProvider = forwardRef<
     language,
     activeDocument,
     onDocumentChange,
+    dragDropConfig,
+    providerRef,
+    jumpToPage,
   } = props;
+
+  const { processFiles, validateFiles } = useFileProcessor(dragDropConfig);
 
   const [state, dispatch] = useReducer<MainStateReducer>(mainStateReducer, {
     ...initialState,
@@ -79,6 +99,44 @@ const DocViewerProvider = forwardRef<
     }
   }, [activeDocument]);
 
+  useEffect(() => {
+    if (jumpToPage !== undefined && jumpToPage > 0) {
+      dispatch(goToPage(jumpToPage));
+    }
+  }, [jumpToPage]);
+
+  const addDroppedDocuments = useCallback(
+    (newDocuments: IDocument[]) => {
+      const behavior = dragDropConfig?.dropBehavior || "append";
+      dispatch(addDocumentsFromDrop(newDocuments, behavior));
+    },
+    [dispatch, dragDropConfig]
+  );
+
+  const handleFilesDropped = useCallback(
+    async (files: File[]) => {
+      const { valid, invalidType, invalidSize } = validateFiles(files);
+
+      if (invalidType.length > 0 && dragDropConfig?.onDropRejected) {
+        dragDropConfig.onDropRejected(invalidType, "file-type");
+      }
+      if (invalidSize.length > 0 && dragDropConfig?.onDropRejected) {
+        dragDropConfig.onDropRejected(invalidSize, "file-size");
+      }
+
+      if (valid.length > 0) {
+        if (dragDropConfig?.onDrop) {
+          dragDropConfig.onDrop(valid);
+        }
+        const processedDocs = await processFiles(valid);
+        if (processedDocs.length > 0) {
+          addDroppedDocuments(processedDocs);
+        }
+      }
+    },
+    [validateFiles, processFiles, addDroppedDocuments, dragDropConfig]
+  );
+
   useImperativeHandle(
     ref,
     () => ({
@@ -88,12 +146,25 @@ const DocViewerProvider = forwardRef<
       next() {
         dispatch(nextDocument());
       },
+      goToPage(pageNumber: number) {
+        dispatch(goToPage(pageNumber));
+      },
     }),
     [dispatch],
   );
 
+  useEffect(() => {
+    if (providerRef) {
+      (providerRef as React.MutableRefObject<DocViewerProviderRef>).current = {
+        handleFilesDropped,
+      };
+    }
+  }, [providerRef, handleFilesDropped]);
+
   return (
-    <DocViewerContext.Provider value={{ state, dispatch }}>
+    <DocViewerContext.Provider
+      value={{ state, dispatch, addDroppedDocuments }}
+    >
       {children}
     </DocViewerContext.Provider>
   );

@@ -7,6 +7,9 @@ export const PREVIOUS_DOCUMENT = "PREVIOUS_DOCUMENT";
 export const UPDATE_CURRENT_DOCUMENT = "UPDATE_CURRENT_DOCUMENT";
 export const SET_RENDERER_RECT = "SET_RENDERER_RECT";
 export const SET_MAIN_CONFIG = "SET_MAIN_CONFIG";
+export const ADD_DOCUMENTS_FROM_DROP = "ADD_DOCUMENTS_FROM_DROP";
+export const SET_DRAG_STATE = "SET_DRAG_STATE";
+export const GO_TO_PAGE = "GO_TO_PAGE";
 
 export interface SetAllDocuments {
   type: typeof SET_ALL_DOCUMENTS;
@@ -76,6 +79,41 @@ export const setMainConfig = (config: IConfig): SetMainConfig => ({
   config,
 });
 
+export interface AddDocumentsFromDrop {
+  type: typeof ADD_DOCUMENTS_FROM_DROP;
+  documents: IDocument[];
+  behavior: "append" | "replace";
+}
+
+export const addDocumentsFromDrop = (
+  documents: IDocument[],
+  behavior: "append" | "replace" = "append"
+): AddDocumentsFromDrop => ({
+  type: ADD_DOCUMENTS_FROM_DROP,
+  documents,
+  behavior,
+});
+
+export interface SetDragState {
+  type: typeof SET_DRAG_STATE;
+  isDragging: boolean;
+}
+
+export const setDragState = (isDragging: boolean): SetDragState => ({
+  type: SET_DRAG_STATE,
+  isDragging,
+});
+
+export interface GoToPage {
+  type: typeof GO_TO_PAGE;
+  pageNumber: number;
+}
+
+export const goToPage = (pageNumber: number): GoToPage => ({
+  type: GO_TO_PAGE,
+  pageNumber,
+});
+
 export type MainStateActions =
   | SetAllDocuments
   | SetDocumentLoading
@@ -83,4 +121,7 @@ export type MainStateActions =
   | PreviousDocument
   | UpdateCurrentDocument
   | SetRendererRect
-  | SetMainConfig;
+  | SetMainConfig
+  | AddDocumentsFromDrop
+  | SetDragState
+  | GoToPage;

@@ -13,6 +13,12 @@ import {
   SET_RENDERER_RECT,
   UpdateCurrentDocument,
   UPDATE_CURRENT_DOCUMENT,
+  ADD_DOCUMENTS_FROM_DROP,
+  AddDocumentsFromDrop,
+  SET_DRAG_STATE,
+  SetDragState,
+  GO_TO_PAGE,
+  GoToPage,
 } from "./actions";
 import { AvailableLanguages, defaultLanguage } from "../i18n";
 
@@ -29,6 +35,8 @@ export type IMainState = {
   language: AvailableLanguages;
   activeDocument?: IDocument;
   onDocumentChange?: (document: IDocument) => void;
+  isDragging?: boolean;
+  targetPage?: number;
 };
 
 export const initialState: IMainState = {
@@ -40,6 +48,8 @@ export const initialState: IMainState = {
   config: {},
   pluginRenderers: [],
   language: defaultLanguage,
+  isDragging: false,
+  targetPage: undefined,
 };
 
 export type MainStateReducer = (
@@ -133,6 +143,46 @@ export const mainStateReducer: MainStateReducer = (
       return {
         ...state,
         config,
+      };
+    }
+
+    case ADD_DOCUMENTS_FROM_DROP: {
+      const { documents: newDocs, behavior } = action as AddDocumentsFromDrop;
+
+      if (newDocs.length === 0) return state;
+
+      const documents =
+        behavior === "replace"
+          ? newDocs
+          : [...state.documents, ...newDocs];
+
+      const newFileNo =
+        behavior === "replace" ? 0 : state.documents.length;
+
+      return {
+        ...state,
+        documents,
+        currentDocument: documents[newFileNo],
+        currentFileNo: newFileNo,
+        documentLoading: true,
+      };
+    }
+
+    case SET_DRAG_STATE: {
+      const { isDragging } = action as SetDragState;
+
+      return {
+        ...state,
+        isDragging,
+      };
+    }
+
+    case GO_TO_PAGE: {
+      const { pageNumber } = action as GoToPage;
+
+      return {
+        ...state,
+        targetPage: pageNumber,
       };
     }
 

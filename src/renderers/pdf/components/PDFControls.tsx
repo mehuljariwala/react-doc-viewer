@@ -13,6 +13,7 @@ import {
   ZoomOutPDFIcon,
 } from "./icons";
 import PDFPagination from "./PDFPagination";
+import { ThumbnailToggle } from "../../../features/thumbnail-sidebar";
 
 const PDFControls: FC = () => {
   const { t } = useTranslation();
@@ -29,9 +30,15 @@ const PDFControls: FC = () => {
   } = useContext(PDFContext);
 
   const currentDocument = mainState?.currentDocument || null;
+  const thumbnailConfig = mainState?.config?.thumbnail;
+  const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
 
   return (
     <Container id="pdf-controls">
+      {enableThumbnails && numPages > 1 && (
+        <ThumbnailToggle title="Toggle thumbnails" />
+      )}
+
       {paginated && numPages > 1 && <PDFPagination />}
 
       {currentDocument?.fileData && (

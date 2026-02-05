@@ -8,6 +8,7 @@ import { setNumPages } from "../../state/actions";
 import { initialPDFState } from "../../state/reducer";
 import { PDFAllPages } from "./PDFAllPages";
 import PDFSinglePage from "./PDFSinglePage";
+import { PDFThumbnailGenerator } from "../PDFThumbnailGenerator";
 
 const PDFPages: FC<{}> = () => {
   const {
@@ -31,6 +32,7 @@ const PDFPages: FC<{}> = () => {
       loading={<span>{t("pdfPluginLoading")}</span>}
     >
       {paginated ? <PDFSinglePage /> : <PDFAllPages />}
+      <PDFThumbnailGenerator />
     </DocumentPDF>
   );
 };

@@ -6,5 +6,18 @@
   "msgPluginRecipients": "Recipients",
   "msgPluginSender": "Sender",
   "pdfPluginLoading": "Loading...",
-  "pdfPluginPageNumber": "Page {{ currentPage }}/{{ allPagesCount }}"
+  "pdfPluginPageNumber": "Page {{ currentPage }}/{{ allPagesCount }}",
+  "dropFilesHere": "Drop files here",
+  "thumbnailSidebar": "Thumbnail sidebar",
+  "showThumbnails": "Show thumbnails",
+  "hideThumbnails": "Hide thumbnails",
+  "annotationToolbar": "Annotation toolbar",
+  "selectTool": "Select",
+  "highlightTool": "Highlight",
+  "penTool": "Pen",
+  "commentTool": "Comment",
+  "eraserTool": "Eraser",
+  "addComment": "Add comment",
+  "deleteAnnotation": "Delete annotation",
+  "saveAnnotations": "Save annotations"
 }
