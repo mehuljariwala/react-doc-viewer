@@ -1,0 +1,13 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "@iamjariwala/react-doc-viewer",
+  "description": "React document viewer and PDF viewer component for 20+ file types with annotations, drag-and-drop, thumbnails and i18n",
+  "folders": ["src", "use-cases"],
+  "excludeFolders": ["**/node_modules", "dist", "storybook-static", "**/__tests__"],
+  "excludeFiles": ["CHANGELOG.md", "LICENSE"],
+  "rules": [
+    "Always import the CSS: import '@iamjariwala/react-doc-viewer/dist/index.css'",
+    "Pass pluginRenderers={DocViewerRenderers} to enable all file types",
+    "MS Office docs (docx, xlsx, pptx) require publicly accessible URLs"
+  ]
+}
