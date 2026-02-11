@@ -61,8 +61,8 @@ Most React document viewers only handle PDFs or require expensive commercial lic
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+## Table of Contents
 
-- [Why @iamjariwala/react-doc-viewer?](#why-iamjariwalareact-doc-viewer)
 - [Supported File Types](#supported-file-types)
 - [Live Demo](#live-demo)
 - [Installation](#installation)
