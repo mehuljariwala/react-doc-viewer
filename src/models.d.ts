@@ -98,9 +98,6 @@ export interface ITheme {
     textTertiary?: string;
     disableThemeScrollbar?: boolean;
 }
-export interface IStyledProps {
-    theme: ITheme;
-}
 export interface IDocument {
     uri: string;
     fileType?: string;
