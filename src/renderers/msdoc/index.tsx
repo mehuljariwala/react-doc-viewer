@@ -1,26 +1,68 @@
+import { useState } from "react";
 import { DocRenderer } from "../..";
 
 const FILE_TYPE_LABELS: Record<string, string> = {
   doc: "Word Document (.doc)",
-  docx: "Word Document (.docx)",
   odt: "OpenDocument Text (.odt)",
   xls: "Excel Spreadsheet (.xls)",
   xlsx: "Excel Spreadsheet (.xlsx)",
   ppt: "PowerPoint Presentation (.ppt)",
   pptx: "PowerPoint Presentation (.pptx)",
+  pages: "Apple Pages (.pages)",
 };
 
+const IFRAME_SUPPORTED_TYPES = new Set([
+  "doc",
+  "application/msword",
+  "odt",
+  "application/vnd.oasis.opendocument.text",
+  "xls",
+  "application/vnd.ms-excel",
+  "xlsx",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "ppt",
+  "application/vnd.ms-powerpoint",
+  "pptx",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+]);
+
+const isRemoteUrl = (uri: string): boolean =>
+  uri.startsWith("http://") || uri.startsWith("https://");
+
 const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
+  const [iframeError, setIframeError] = useState(false);
+
   if (!currentDocument) return null;
 
   const fileName =
     currentDocument.fileName ||
     currentDocument.uri.split("/").pop() ||
     "document";
-
   const fileType = currentDocument.fileType || "";
   const label =
-    FILE_TYPE_LABELS[fileType] || `Office Document (.${fileType || "unknown"})`;
+    FILE_TYPE_LABELS[fileType] ||
+    `Office Document (.${fileType || "unknown"})`;
+
+  const canUseIframe =
+    isRemoteUrl(currentDocument.uri) &&
+    IFRAME_SUPPORTED_TYPES.has(fileType) &&
+    !iframeError;
+
+  if (canUseIframe) {
+    const encodedUrl = encodeURIComponent(currentDocument.uri);
+    const viewerUrl = `https://view.officeapps.live.com/op/embed.aspx?src=${encodedUrl}`;
+
+    return (
+      <div id="msdoc-renderer" className="rdv-msdoc-iframe-container">
+        <iframe
+          src={viewerUrl}
+          className="rdv-msdoc-iframe"
+          title="Office Document Viewer"
+          onError={() => setIframeError(true)}
+        />
+      </div>
+    );
+  }
 
   return (
     <div id="msdoc-renderer" className="rdv-msdoc-container">
@@ -82,11 +124,6 @@ export default MSDocRenderer;
 const MSDocFTMaps = {
   odt: ["odt", "application/vnd.oasis.opendocument.text"],
   doc: ["doc", "application/msword"],
-  docx: [
-    "docx",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/octet-stream",
-  ],
   xls: ["xls", "application/vnd.ms-excel"],
   xlsx: [
     "xlsx",
@@ -97,16 +134,17 @@ const MSDocFTMaps = {
     "pptx",
     "application/vnd.openxmlformats-officedocument.presentationml.presentation",
   ],
+  pages: ["pages", "application/x-iwork-pages-sffpages"],
 };
 
 MSDocRenderer.fileTypes = [
   ...MSDocFTMaps.odt,
   ...MSDocFTMaps.doc,
-  ...MSDocFTMaps.docx,
   ...MSDocFTMaps.xls,
   ...MSDocFTMaps.xlsx,
   ...MSDocFTMaps.ppt,
   ...MSDocFTMaps.pptx,
+  ...MSDocFTMaps.pages,
 ];
 MSDocRenderer.weight = 0;
 MSDocRenderer.fileLoader = ({ fileLoaderComplete }) => fileLoaderComplete();
