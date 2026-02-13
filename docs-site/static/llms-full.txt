@@ -1,6 +1,6 @@
 # @iamjariwala/react-doc-viewer — Complete Documentation
 
-> The most feature-complete open-source document viewer for React. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component.
+> The most feature-complete open-source document viewer for React. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Now with dark mode, print, fullscreen, text search, bookmarks, watermarks, password-protected PDFs, keyboard shortcuts, and split/compare view.
 
 Package: `@iamjariwala/react-doc-viewer`
 License: Apache-2.0
@@ -39,6 +39,39 @@ function App() {
 ```
 
 The CSS import is required for PDF pages, annotations, thumbnails, and all styled elements.
+
+---
+
+## What's New in v1.3.0
+
+v1.3.0 adds 11 new features, all opt-in via the `config` prop:
+
+1. **Dark Mode** — `themeMode: "light" | "dark" | "auto"` with CSS variable theming and `prefers-color-scheme` auto-detection
+2. **Print** — `print: { enablePrint: true }` adds a print button to the toolbar and enables Ctrl+P shortcut
+3. **Fullscreen** — `fullscreen: { enableFullscreen: true }` adds a fullscreen toggle with F key shortcut
+4. **Loading Progress Bar** — `loadingProgress: { enableProgressBar: true }` shows an animated progress bar during PDF loading
+5. **Watermark Overlay** — `watermark: { text: "CONFIDENTIAL" }` renders repeated rotated text over every PDF page
+6. **Text Selection & Copy** — `textSelection: { enableTextSelection: true }` enables the react-pdf text layer for selecting and copying text
+7. **Keyboard Shortcuts** — `keyboard: { enableKeyboardShortcuts: true }` enables ArrowLeft/Right, Home/End, +/- zoom, 0 reset, Ctrl+F search, Ctrl+P print, F fullscreen, Escape
+8. **Password-Protected PDFs** — `password: { enablePasswordPrompt: true }` shows a modal password prompt for encrypted PDF files
+9. **Text Search** — `search: { enableSearch: true }` enables full-text search across all PDF pages with match count and prev/next navigation
+10. **PDF Bookmarks / TOC** — `bookmarks: { enableBookmarks: true }` shows a sidebar with the auto-extracted PDF outline, nested items, and click-to-navigate
+11. **Split View / Compare** — New `<SplitDocViewer>` component for side-by-side document comparison with a draggable divider and optional synchronized scrolling
+
+New TypeScript config interfaces:
+
+```ts
+interface IPrintConfig { enablePrint?: boolean }
+interface IFullscreenConfig { enableFullscreen?: boolean }
+interface ILoadingProgressConfig { enableProgressBar?: boolean }
+interface IWatermarkConfig { text: string; opacity?: number; fontSize?: number; color?: string; rotation?: number }
+interface ITextSelectionConfig { enableTextSelection?: boolean }
+interface IKeyboardConfig { enableKeyboardShortcuts?: boolean }
+interface IPasswordConfig { enablePasswordPrompt?: boolean }
+interface ISearchConfig { enableSearch?: boolean }
+interface IBookmarksConfig { enableBookmarks?: boolean }
+interface ISplitViewConfig { enableSplitView?: boolean; syncScroll?: boolean }
+```
 
 ---
 
@@ -166,6 +199,7 @@ export default function DocumentRoute() {
 | onDocumentChange | (doc: IDocument) => void | No | Callback when active document changes |
 | language | AvailableLanguages | No | UI language code |
 | jumpToPage | number | No | Declarative page jump for PDFs |
+| themeMode | "light" \| "dark" \| "auto" | No | Color scheme mode (auto uses prefers-color-scheme) |
 | ref | DocViewerRef | No | Ref for programmatic control |
 
 ---
@@ -388,6 +422,270 @@ const [page, setPage] = useState(1);
 
 ---
 
+## Dark Mode
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  themeMode="dark"
+/>
+```
+
+Options for `themeMode`:
+- `"light"` — Light color scheme (default)
+- `"dark"` — Dark color scheme
+- `"auto"` — Follows the user's OS preference via `prefers-color-scheme`
+
+Dark mode applies CSS variable overrides across the entire viewer. Combine with the `theme` prop for further color customization.
+
+---
+
+## Print
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    print: {
+      enablePrint: true,
+    },
+  }}
+/>
+```
+
+Adds a print button to the toolbar. Clicking it opens the native browser print dialog via a hidden iframe. Also enables the Ctrl+P keyboard shortcut when keyboard shortcuts are active.
+
+---
+
+## Fullscreen
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    fullscreen: {
+      enableFullscreen: true,
+    },
+  }}
+/>
+```
+
+Adds a fullscreen toggle button to the toolbar. Uses the Fullscreen API to expand the viewer to fill the screen. Press the F key to toggle when keyboard shortcuts are enabled. Press Escape to exit.
+
+---
+
+## Loading Progress Bar
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    loadingProgress: {
+      enableProgressBar: true,
+    },
+  }}
+/>
+```
+
+Shows an animated progress bar at the top of the viewer while a PDF is loading. The bar reflects actual loading progress from pdfjs.
+
+CSS classes: `.rdv-pdf-progress-bar`, `.rdv-pdf-progress-fill`
+
+---
+
+## Watermark Overlay
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    watermark: {
+      text: "CONFIDENTIAL",
+      opacity: 0.1,
+      fontSize: 48,
+      color: "#000",
+      rotation: -30,
+    },
+  }}
+/>
+```
+
+Options:
+- `text` (string, required): The watermark text to display
+- `opacity` (number, default 0.1): Opacity of the watermark text
+- `fontSize` (number, default 48): Font size in pixels
+- `color` (string, default "#000"): Text color
+- `rotation` (number, default -30): Rotation angle in degrees
+
+Renders repeated rotated text overlaid on every PDF page. Useful for marking documents as confidential, draft, or internal.
+
+CSS classes: `.rdv-watermark-overlay`, `.rdv-watermark-text`
+
+---
+
+## Text Selection & Copy
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    textSelection: {
+      enableTextSelection: true,
+    },
+  }}
+/>
+```
+
+Enables the react-pdf text layer, allowing users to select and copy text from PDF pages. When disabled (default), PDF pages render as canvas-only without a selectable text layer.
+
+---
+
+## Keyboard Shortcuts
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    keyboard: {
+      enableKeyboardShortcuts: true,
+    },
+  }}
+/>
+```
+
+Available shortcuts:
+| Key | Action |
+|-----|--------|
+| ArrowLeft | Previous page |
+| ArrowRight | Next page |
+| Home | First page |
+| End | Last page |
+| + / = | Zoom in |
+| - | Zoom out |
+| 0 | Reset zoom |
+| Ctrl+F | Open text search |
+| Ctrl+P | Print |
+| F | Toggle fullscreen |
+| Escape | Close search / exit fullscreen |
+
+Shortcuts require the viewer or its container to have focus.
+
+---
+
+## Password-Protected PDFs
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    password: {
+      enablePasswordPrompt: true,
+    },
+  }}
+/>
+```
+
+When a PDF is encrypted, a modal dialog prompts the user for the password. On successful entry, the PDF renders normally. On incorrect password, an error message is displayed and the user can retry.
+
+CSS classes: `.rdv-password-overlay`, `.rdv-password-modal`
+
+---
+
+## Text Search
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    search: {
+      enableSearch: true,
+    },
+  }}
+/>
+```
+
+Enables full-text search across all pages of a PDF using pdfjs text extraction. Features:
+- Search bar with input field and match count display
+- Previous / Next match navigation buttons
+- Matches highlighted on the page
+- Ctrl+F shortcut to open (when keyboard shortcuts are enabled)
+- Escape to close
+
+CSS classes: `.rdv-search-bar`, `.rdv-search-input`, `.rdv-search-count`
+
+---
+
+## PDF Bookmarks / TOC
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    bookmarks: {
+      enableBookmarks: true,
+    },
+  }}
+/>
+```
+
+Displays a sidebar with the PDF's built-in outline (table of contents). Features:
+- Auto-extracted from the PDF's outline metadata
+- Nested bookmark items with expand/collapse
+- Click a bookmark to navigate to its destination page
+- Toggle sidebar visibility via a toolbar button
+
+CSS classes: `.rdv-bookmarks-sidebar`, `.rdv-bookmark-item`
+
+---
+
+## Split View / Compare (SplitDocViewer)
+
+```tsx
+import { SplitDocViewer, DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+<SplitDocViewer
+  left={{
+    documents: [{ uri: "/document-v1.pdf" }],
+    config: { pdfZoom: { defaultZoom: 1 } },
+  }}
+  right={{
+    documents: [{ uri: "/document-v2.pdf" }],
+    config: { pdfZoom: { defaultZoom: 1 } },
+  }}
+  syncScroll={true}
+/>
+```
+
+SplitDocViewer Props:
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| left | { documents: IDocument[]; config?: IConfig } | Yes | Left panel documents and config |
+| right | { documents: IDocument[]; config?: IConfig } | Yes | Right panel documents and config |
+| syncScroll | boolean | No | Synchronize scroll position between panels |
+
+Features:
+- Side-by-side document comparison
+- Draggable divider to resize panels
+- Independent config per panel (zoom, annotations, etc.)
+- Optional synchronized scrolling between panels
+
+Both panels accept the same `pluginRenderers` as DocViewer. Each panel is a full DocViewer instance.
+
+CSS classes: `.rdv-split-container`, `.rdv-split-panel`, `.rdv-split-divider`
+
+---
+
 ## Full Config Reference
 
 ```tsx
@@ -417,7 +715,23 @@ const [page, setPage] = useState(1);
     dragDrop: { enableDragDrop: true },
     thumbnail: { enableThumbnails: true },
     annotations: { enableAnnotations: true },
+    print: { enablePrint: true },
+    fullscreen: { enableFullscreen: true },
+    loadingProgress: { enableProgressBar: true },
+    watermark: {
+      text: "CONFIDENTIAL",
+      opacity: 0.1,
+      fontSize: 48,
+      color: "#000",
+      rotation: -30,
+    },
+    textSelection: { enableTextSelection: true },
+    keyboard: { enableKeyboardShortcuts: true },
+    password: { enablePasswordPrompt: true },
+    search: { enableSearch: true },
+    bookmarks: { enableBookmarks: true },
   }}
+  themeMode="auto"
 />
 ```
 
@@ -490,6 +804,20 @@ CSS class reference:
 - .rdv-video-container — Video player container
 - .rdv-msdoc-container — Office document download card
 - .rdv-loading-container — Loading spinner container
+- .rdv-pdf-progress-bar — Loading progress bar container
+- .rdv-pdf-progress-fill — Loading progress bar fill element
+- .rdv-watermark-overlay — Watermark overlay container
+- .rdv-watermark-text — Individual watermark text element
+- .rdv-password-overlay — Password prompt overlay backdrop
+- .rdv-password-modal — Password prompt modal dialog
+- .rdv-search-bar — Text search bar container
+- .rdv-search-input — Text search input field
+- .rdv-search-count — Text search match count display
+- .rdv-bookmarks-sidebar — Bookmarks/TOC sidebar container
+- .rdv-bookmark-item — Individual bookmark item
+- .rdv-split-container — Split view root container
+- .rdv-split-panel — Individual split view panel
+- .rdv-split-divider — Draggable divider between split panels
 
 ---
 
@@ -500,6 +828,8 @@ CSS class reference:
 ```
 
 Supported languages: en (English), ar (Arabic), de (German), es (Spanish), fr (French), it (Italian), ja (Japanese), pl (Polish), pt (Portuguese), ru (Russian), se (Swedish), sr (Serbian Latin), sr_cyr (Serbian Cyrillic), tr (Turkish)
+
+i18n keys added in v1.3.0: printButtonLabel, fullscreenButtonLabel, exitFullscreenButtonLabel, passwordRequired, passwordPlaceholder, passwordSubmit, passwordError, searchPlaceholder, searchNoResults, searchMatchCount, bookmarksSidebar, showBookmarks, hideBookmarks, noBookmarks, splitView, syncScroll
 
 ---
 
@@ -605,6 +935,33 @@ A: React 17, 18, and 19 via peerDependencies.
 
 Q: Does it support TypeScript?
 A: Yes. Written in TypeScript with complete type definitions.
+
+Q: How do I enable dark mode?
+A: Pass `themeMode="dark"` to DocViewer. Use `"auto"` to follow the user's OS preference via `prefers-color-scheme`. Combine with the `theme` prop for custom dark colors.
+
+Q: How do I enable text search in PDFs?
+A: Set `config={{ search: { enableSearch: true } }}`. This enables full-text search across all pages with match count and navigation. Use Ctrl+F to open when keyboard shortcuts are active.
+
+Q: How do I enable keyboard shortcuts?
+A: Set `config={{ keyboard: { enableKeyboardShortcuts: true } }}`. This enables arrow keys for page navigation, +/- for zoom, Ctrl+F for search, Ctrl+P for print, F for fullscreen, and Escape to close overlays.
+
+Q: How do I add a watermark to PDF pages?
+A: Set `config={{ watermark: { text: "CONFIDENTIAL" } }}`. Customize with optional `opacity`, `fontSize`, `color`, and `rotation` properties.
+
+Q: How do I open password-protected PDFs?
+A: Set `config={{ password: { enablePasswordPrompt: true } }}`. The viewer will display a modal prompting for the password when it encounters an encrypted PDF.
+
+Q: How do I show PDF bookmarks or a table of contents?
+A: Set `config={{ bookmarks: { enableBookmarks: true } }}`. The viewer extracts the PDF's outline metadata and displays it in a collapsible sidebar. Click any bookmark to jump to that page.
+
+Q: How do I compare two documents side by side?
+A: Use the `<SplitDocViewer>` component with `left` and `right` props, each containing documents and optional config. Set `syncScroll={true}` to synchronize scrolling between panels.
+
+Q: How do I enable printing?
+A: Set `config={{ print: { enablePrint: true } }}`. A print button appears in the toolbar. Clicking it opens the native browser print dialog.
+
+Q: How do I enable fullscreen mode?
+A: Set `config={{ fullscreen: { enableFullscreen: true } }}`. A fullscreen toggle button appears in the toolbar. Press F to toggle when keyboard shortcuts are enabled.
 
 ---
 

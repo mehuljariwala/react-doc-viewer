@@ -11,6 +11,12 @@ import {
   SET_ZOOM_LEVEL,
   SET_CURRENT_MAIN_STATE,
   SetCurrentMainState,
+  SET_LOADING_PROGRESS,
+  SetLoadingProgress,
+  SET_PASSWORD_REQUIRED,
+  SetPasswordRequired,
+  SET_PASSWORD_CALLBACK,
+  SetPasswordCallback,
 } from "./actions";
 
 export type IPDFState = {
@@ -21,6 +27,9 @@ export type IPDFState = {
   numPages: number;
   currentPage: number;
   mainState?: IMainState;
+  loadingProgress: number;
+  passwordRequired: boolean;
+  passwordCallback: ((password: string) => void) | null;
 };
 
 export const initialPDFState: IPDFState = {
@@ -30,6 +39,9 @@ export const initialPDFState: IPDFState = {
   paginated: true,
   numPages: 0,
   currentPage: 1,
+  loadingProgress: 0,
+  passwordRequired: false,
+  passwordCallback: null,
 };
 
 export type PDFStateReducer = (
@@ -66,6 +78,21 @@ export const reducer: PDFStateReducer = (
     case SET_CURRENT_MAIN_STATE: {
       const { value } = action as SetCurrentMainState;
       return { ...state, mainState: value };
+    }
+
+    case SET_LOADING_PROGRESS: {
+      const { value } = action as SetLoadingProgress;
+      return { ...state, loadingProgress: value };
+    }
+
+    case SET_PASSWORD_REQUIRED: {
+      const { value } = action as SetPasswordRequired;
+      return { ...state, passwordRequired: value };
+    }
+
+    case SET_PASSWORD_CALLBACK: {
+      const { value } = action as SetPasswordCallback;
+      return { ...state, passwordCallback: value };
     }
 
     default:

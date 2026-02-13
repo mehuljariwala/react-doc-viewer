@@ -3,6 +3,7 @@ import { Page } from "react-pdf";
 import { useTranslation } from "../../../../hooks/useTranslation";
 import { PDFContext } from "../../state";
 import { AnnotationLayer, AnnotationContext } from "../../../../features/annotations";
+import { WatermarkOverlay } from "../../../../features/watermark";
 
 interface Props {
   pageNum?: number;
@@ -20,6 +21,8 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
   const rendererRect = mainState?.rendererRect || null;
   const annotationConfig = mainState?.config?.annotations;
   const enableAnnotations = annotationConfig?.enableAnnotations ?? false;
+  const watermarkConfig = mainState?.config?.watermark;
+  const enableTextSelection = mainState?.config?.textSelection?.enableTextSelection ?? false;
 
   const _pageNum = pageNum ?? currentPage;
 
@@ -71,6 +74,7 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
           width={(rendererRect?.width ?? 100) - 100}
           loading={t("pdfPluginLoading")}
           onRenderSuccess={handleRenderSuccess}
+          renderTextLayer={enableTextSelection}
         />
         {enableAnnotations && pageSize.width > 0 && (
           <AnnotationLayer
@@ -80,6 +84,7 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
             height={pageSize.height}
           />
         )}
+        {watermarkConfig && <WatermarkOverlay config={watermarkConfig} />}
       </div>
     </div>
   );

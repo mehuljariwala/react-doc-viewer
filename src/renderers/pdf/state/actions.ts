@@ -54,9 +54,51 @@ export const setCurrentPage = (value: number): SetCurrentPage => ({
   value,
 });
 
+export const SET_LOADING_PROGRESS: string = "SET_LOADING_PROGRESS";
+
+export interface SetLoadingProgress {
+  type: typeof SET_LOADING_PROGRESS;
+  value: number;
+}
+
+export const setLoadingProgress = (value: number): SetLoadingProgress => ({
+  type: SET_LOADING_PROGRESS,
+  value,
+});
+
+export const SET_PASSWORD_REQUIRED: string = "SET_PASSWORD_REQUIRED";
+
+export interface SetPasswordRequired {
+  type: typeof SET_PASSWORD_REQUIRED;
+  value: boolean;
+}
+
+export const setPasswordRequired = (value: boolean): SetPasswordRequired => ({
+  type: SET_PASSWORD_REQUIRED,
+  value,
+});
+
+export const SET_PASSWORD_CALLBACK: string = "SET_PASSWORD_CALLBACK";
+
+export interface SetPasswordCallback {
+  type: typeof SET_PASSWORD_CALLBACK;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  value: ((password: string) => void) | null;
+}
+
+export const setPasswordCallback = (
+  value: ((password: string) => void) | null,
+): SetPasswordCallback => ({
+  type: SET_PASSWORD_CALLBACK,
+  value,
+});
+
 export type PDFActions =
   | SetZoomLevel
   | SetPDFPaginated
   | SetNumPages
   | SetCurrentPage
-  | SetCurrentMainState;
+  | SetCurrentMainState
+  | SetLoadingProgress
+  | SetPasswordRequired
+  | SetPasswordCallback;

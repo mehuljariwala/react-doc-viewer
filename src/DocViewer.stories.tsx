@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import DocViewer from "./DocViewer";
 import { DocViewerRenderers } from "./renderers";
+import { SplitDocViewer } from "./features/split-view";
 
 import pdfFile from "./exampleFiles/pdf-file.pdf";
 import pdfMultiplePagesFile from "./exampleFiles/pdf-multiple-pages-file.pdf";
@@ -365,6 +366,342 @@ export const AllFeaturesCombined = () => {
               colors: ["#FFFF00", "#FF6B6B", "#4ECDC4", "#45B7D1"],
               tools: ["select", "highlight", "pen", "comment", "eraser"],
               onAnnotationChange: setAnnotations,
+            },
+            pdfVerticalScrollByDefault: false,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ===================== Feature 1: Dark Mode =====================
+
+export const DarkMode = () => {
+  const [mode, setMode] = useState<"light" | "dark" | "auto">("dark");
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "10px", background: "#f0f0f0", display: "flex", gap: "10px", alignItems: "center" }}>
+        <strong>Dark Mode Demo</strong>
+        <button
+          onClick={() => setMode("light")}
+          style={{ padding: "4px 12px", fontWeight: mode === "light" ? "bold" : "normal" }}
+        >
+          Light
+        </button>
+        <button
+          onClick={() => setMode("dark")}
+          style={{ padding: "4px 12px", fontWeight: mode === "dark" ? "bold" : "normal" }}
+        >
+          Dark
+        </button>
+        <button
+          onClick={() => setMode("auto")}
+          style={{ padding: "4px 12px", fontWeight: mode === "auto" ? "bold" : "normal" }}
+        >
+          Auto (System)
+        </button>
+        <span style={{ fontSize: "12px", color: "#666" }}>Current: {mode}</span>
+      </div>
+      <div style={{ flex: 1 }}>
+        <DocViewer
+          documents={[{ uri: pdfMultiplePagesFile }]}
+          config={{
+            themeMode: mode,
+            pdfVerticalScrollByDefault: false,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ===================== Feature 2: Print Button =====================
+
+export const WithPrintButton = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        print: { enablePrint: true },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+// ===================== Feature 3: Fullscreen Mode =====================
+
+export const WithFullscreen = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        fullscreen: { enableFullscreen: true },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+// ===================== Feature 4: Loading Progress Bar =====================
+
+export const WithLoadingProgress = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        loadingProgress: { enableProgressBar: true },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+// ===================== Feature 5: Watermark Overlay =====================
+
+export const WithWatermark = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        watermark: {
+          text: "CONFIDENTIAL",
+          opacity: 0.08,
+          fontSize: 52,
+          color: "#ff0000",
+          rotation: -35,
+        },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+// ===================== Feature 6: Text Selection + Copy =====================
+
+export const WithTextSelection = () => (
+  <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ padding: "10px", background: "#f0f0f0" }}>
+      <strong>Text Selection Demo</strong>
+      <span style={{ fontSize: "12px", color: "#666", marginLeft: "10px" }}>
+        Select text on the PDF and copy with Ctrl+C
+      </span>
+    </div>
+    <div style={{ flex: 1 }}>
+      <DocViewer
+        documents={[{ uri: pdfMultiplePagesFile }]}
+        config={{
+          textSelection: { enableTextSelection: true },
+          pdfVerticalScrollByDefault: false,
+        }}
+      />
+    </div>
+  </div>
+);
+
+// ===================== Feature 7: Keyboard Shortcuts =====================
+
+export const WithKeyboardShortcuts = () => (
+  <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ padding: "10px", background: "#f0f0f0" }}>
+      <strong>Keyboard Shortcuts Demo</strong>
+      <div style={{ fontSize: "12px", color: "#666", marginTop: "4px", display: "flex", gap: "16px", flexWrap: "wrap" }}>
+        <span>Arrow Left/Right: prev/next page</span>
+        <span>Home/End: first/last page</span>
+        <span>+/-: zoom in/out</span>
+        <span>0: reset zoom</span>
+        <span>Esc: exit fullscreen/search</span>
+      </div>
+    </div>
+    <div style={{ flex: 1 }}>
+      <DocViewer
+        documents={[{ uri: pdfMultiplePagesFile }]}
+        config={{
+          keyboard: { enableKeyboardShortcuts: true },
+          fullscreen: { enableFullscreen: true },
+          search: { enableSearch: true },
+          print: { enablePrint: true },
+          pdfVerticalScrollByDefault: false,
+        }}
+      />
+    </div>
+  </div>
+);
+
+// ===================== Feature 8: Password-Protected PDFs =====================
+
+export const WithPasswordProtection = () => {
+  const [selectedDocs, setSelectedDocs] = useState<File[]>([]);
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "10px", background: "#f0f0f0" }}>
+        <strong>Password-Protected PDF Demo</strong>
+        <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
+          Upload a password-protected PDF to test the password prompt
+        </div>
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={(el) =>
+            el.target.files?.length &&
+            setSelectedDocs(Array.from(el.target.files))
+          }
+          style={{ marginTop: "8px" }}
+        />
+      </div>
+      <div style={{ flex: 1 }}>
+        <DocViewer
+          documents={
+            selectedDocs.length > 0
+              ? selectedDocs.map((file) => ({
+                  uri: window.URL.createObjectURL(file),
+                  fileName: file.name,
+                }))
+              : [{ uri: pdfMultiplePagesFile }]
+          }
+          config={{
+            password: { enablePasswordPrompt: true },
+            pdfVerticalScrollByDefault: false,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ===================== Feature 9: Text Search =====================
+
+export const WithTextSearch = () => (
+  <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ padding: "10px", background: "#f0f0f0" }}>
+      <strong>Text Search Demo</strong>
+      <span style={{ fontSize: "12px", color: "#666", marginLeft: "10px" }}>
+        Click the search icon in the toolbar or press Ctrl+F
+      </span>
+    </div>
+    <div style={{ flex: 1 }}>
+      <DocViewer
+        documents={[{ uri: pdfMultiplePagesFile }]}
+        config={{
+          search: { enableSearch: true },
+          keyboard: { enableKeyboardShortcuts: true },
+          textSelection: { enableTextSelection: true },
+          pdfVerticalScrollByDefault: false,
+        }}
+      />
+    </div>
+  </div>
+);
+
+// ===================== Feature 10: Bookmarks / TOC Sidebar =====================
+
+export const WithBookmarks = () => (
+  <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+    <div style={{ padding: "10px", background: "#f0f0f0" }}>
+      <strong>Bookmarks / TOC Demo</strong>
+      <span style={{ fontSize: "12px", color: "#666", marginLeft: "10px" }}>
+        Click the bookmark icon in the toolbar to show the table of contents sidebar
+      </span>
+    </div>
+    <div style={{ flex: 1 }}>
+      <DocViewer
+        documents={[{ uri: pdfMultiplePagesFile }]}
+        config={{
+          bookmarks: { enableBookmarks: true },
+          pdfVerticalScrollByDefault: false,
+        }}
+      />
+    </div>
+  </div>
+);
+
+// ===================== Feature 11: Split View / Compare =====================
+
+export const WithSplitView = () => (
+  <div style={{ height: "100vh" }}>
+    <SplitDocViewer
+      left={{
+        documents: [{ uri: pdfMultiplePagesFile }],
+        config: { pdfVerticalScrollByDefault: false },
+      }}
+      right={{
+        documents: [{ uri: pdfFile }],
+        config: { pdfVerticalScrollByDefault: false },
+      }}
+      syncScroll={false}
+    />
+  </div>
+);
+
+export const WithSplitViewSyncScroll = () => (
+  <div style={{ height: "100vh" }}>
+    <SplitDocViewer
+      left={{
+        documents: [{ uri: pdfMultiplePagesFile }],
+        config: { pdfVerticalScrollByDefault: true },
+      }}
+      right={{
+        documents: [{ uri: pdfMultiplePagesFile }],
+        config: { pdfVerticalScrollByDefault: true },
+      }}
+      syncScroll={true}
+    />
+  </div>
+);
+
+// ===================== All 11 Features Combined =====================
+
+export const EveryFeatureEnabled = () => {
+  const docViewerRef = useRef<DocViewerRef>(null);
+  const [annotations, setAnnotations] = useState<unknown[]>([]);
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "10px", background: "#1f2937", color: "#f9fafb", display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+        <strong>Every Feature Enabled</strong>
+        <span style={{ fontSize: "11px", opacity: 0.7 }}>
+          Dark Mode + Print + Fullscreen + Progress + Watermark + Text Selection + Keyboard + Search + Bookmarks + Thumbnails + Annotations
+        </span>
+        <span style={{ fontSize: "11px", opacity: 0.5 }}>Annotations: {annotations.length}</span>
+      </div>
+      <div style={{ flex: 1 }}>
+        <DocViewer
+          ref={docViewerRef}
+          documents={[{ uri: pdfMultiplePagesFile }]}
+          config={{
+            themeMode: "dark",
+            print: { enablePrint: true },
+            fullscreen: { enableFullscreen: true },
+            loadingProgress: { enableProgressBar: true },
+            watermark: {
+              text: "DRAFT",
+              opacity: 0.06,
+              fontSize: 56,
+              color: "#ffffff",
+              rotation: -30,
+            },
+            textSelection: { enableTextSelection: true },
+            keyboard: { enableKeyboardShortcuts: true },
+            password: { enablePasswordPrompt: true },
+            search: { enableSearch: true },
+            bookmarks: { enableBookmarks: true },
+            thumbnail: {
+              enableThumbnails: true,
+              thumbnailWidth: 100,
+              sidebarDefaultOpen: false,
+            },
+            annotations: {
+              enableAnnotations: true,
+              colors: ["#FFFF00", "#FF6B6B", "#4ECDC4", "#45B7D1"],
+              tools: ["select", "highlight", "pen", "comment", "eraser"],
+              onAnnotationChange: setAnnotations,
+            },
+            dragDrop: {
+              enableDragDrop: true,
+              dropBehavior: "append",
             },
             pdfVerticalScrollByDefault: false,
           }}

@@ -10,7 +10,7 @@
 
 # @iamjariwala/react-doc-viewer
 
-**The most feature-complete open-source document viewer for React.** Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop file upload, thumbnail sidebar, zoom controls, page navigation, theming, and i18n (14 languages) -- all with full TypeScript support.
+**The most feature-complete open-source document viewer for React.** Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks/TOC, password-protected PDFs, fullscreen, print, split view, drag-and-drop, thumbnails, zoom, i18n (14 languages) -- all with full TypeScript support.
 
 > **One component. 20+ file types. Zero hassle.**
 
@@ -37,7 +37,18 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 Most React document viewers only handle PDFs or require expensive commercial licenses. This library gives you **everything in one package**:
 
 - **20+ file types** in a single `<DocViewer />` component -- no need to install separate libraries for PDF, images, CSV, video, etc.
+- **Dark Mode** -- built-in light/dark/auto theme switching with full CSS variable support
+- **Text Search** -- full-text search across all PDF pages with match highlighting and navigation
 - **Annotations** -- highlight text, freehand draw, add comments, and export as JSON
+- **Keyboard Shortcuts** -- navigate pages, zoom, search, print, and fullscreen via keyboard
+- **Watermark Overlay** -- configurable text watermark with custom opacity, color, size, and rotation
+- **Bookmarks / TOC** -- auto-extracted PDF outline with nested sidebar navigation
+- **Password-Protected PDFs** -- built-in password prompt modal for encrypted documents
+- **Fullscreen Mode** -- one-click fullscreen with keyboard shortcut (F key)
+- **Print** -- print PDFs directly from the toolbar or via Ctrl+P
+- **Split View** -- side-by-side document comparison with optional synchronized scrolling
+- **Loading Progress** -- animated progress bar during PDF loading
+- **Text Selection** -- select and copy text from PDF pages
 - **Drag & Drop** -- drop files directly onto the viewer to add or replace documents
 - **Thumbnail Sidebar** -- visual page navigation with click-to-jump for PDFs
 - **Programmatic Control** -- jump to any page via ref or prop, navigate documents programmatically
@@ -54,13 +65,13 @@ Most React document viewers only handle PDFs or require expensive commercial lic
 | Use Case | Why this library |
 | -------- | ---------------- |
 | **Document Management Systems (DMS)** | Preview any uploaded file without leaving the app |
-| **Legal & Compliance Platforms** | Annotate, highlight, and comment on contracts and filings |
+| **Legal & Compliance Platforms** | Annotate, highlight, watermark, and search contracts and filings |
 | **Education & LMS** | Display course materials in PDF, DOCX, video, and image formats |
-| **Healthcare & Medical Records** | View lab reports, imaging files, and clinical documents |
-| **Real Estate & Insurance** | Preview property documents, claims, and inspection photos |
-| **File Browsers & Cloud Storage** | Inline file preview for any storage UI |
-| **Internal Tools & Admin Panels** | Quick document preview without downloading |
-| **Content Platforms & CMS** | Embedded viewer for user-uploaded content |
+| **Healthcare & Medical Records** | View lab reports, imaging files, and clinical documents with password protection |
+| **Real Estate & Insurance** | Preview property documents, claims, and inspection photos with split view compare |
+| **File Browsers & Cloud Storage** | Inline file preview for any storage UI with dark mode support |
+| **Internal Tools & Admin Panels** | Quick document preview with fullscreen, print, and keyboard shortcuts |
+| **Content Platforms & CMS** | Embedded viewer for user-uploaded content with watermark overlay |
 
 ---
 
@@ -75,8 +86,19 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | Images (PNG, JPG, GIF, WebP, TIFF, BMP) | Yes | -- | Yes | Partial |
 | Video (MP4) | Yes | -- | Yes | Yes |
 | CSV / TXT / HTML | Yes | -- | Yes | Partial |
-| Drag & Drop file upload | Yes | -- | -- | -- |
+| Dark Mode (light / dark / auto) | Yes | -- | -- | -- |
+| Text Search across pages | Yes | -- | -- | -- |
 | Annotations (highlight, draw, comment) | Yes | -- | -- | -- |
+| Keyboard Shortcuts | Yes | -- | -- | -- |
+| Watermark Overlay | Yes | -- | -- | -- |
+| PDF Bookmarks / TOC sidebar | Yes | -- | -- | -- |
+| Password-Protected PDFs | Yes | Yes | -- | -- |
+| Fullscreen Mode | Yes | -- | -- | -- |
+| Print from toolbar | Yes | -- | -- | -- |
+| Split View / Compare | Yes | -- | -- | -- |
+| Loading Progress Bar | Yes | -- | -- | -- |
+| Text Selection & Copy | Yes | Yes | -- | -- |
+| Drag & Drop file upload | Yes | -- | -- | -- |
 | Thumbnail sidebar navigation | Yes | -- | -- | -- |
 | Programmatic page jump | Yes | Yes | -- | -- |
 | i18n (14 languages) | Yes | -- | -- | -- |
@@ -89,7 +111,7 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | Actively maintained (2025) | Yes | Yes | -- | -- |
 | License | Apache-2.0 | MIT | MIT | MIT |
 
-> **TL;DR** -- If you only render PDFs, `react-pdf` is lighter. If you need multi-format support, annotations, drag-and-drop, or thumbnails, this library covers more ground in a single package.
+> **TL;DR** -- If you only render PDFs, `react-pdf` is lighter. If you need multi-format support with a professional-grade feature set (search, annotations, dark mode, keyboard shortcuts, watermarks, bookmarks, split view, and more), this library covers all of it in a single package.
 
 ---
 
@@ -97,19 +119,29 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 
 | | | |
 |:--|:--|:--|
-| **Multi-Format Support** -- PDF, DOCX, images, video, CSV & more | **Drag & Drop** -- Drop files directly onto the viewer | **Annotations** -- Highlight, draw, and comment on documents |
-| **Thumbnail Sidebar** -- Visual page navigation for PDFs | **14 Languages** -- Built-in i18n with community translations | **Theming** -- Full color control via CSS variables |
-| **Custom Renderers** -- Extend or replace any file type | **Page Navigation** -- Programmatic page jump via ref or prop | **Security** -- DOMPurify sanitization, no external iframes |
+| **Dark Mode** -- Light, dark, and auto theme with CSS variables | **Text Search** -- Full-text search across all PDF pages | **Annotations** -- Highlight, draw, and comment on documents |
+| **Keyboard Shortcuts** -- Navigate, zoom, search, print via keyboard | **Watermark** -- Configurable text overlay for confidential docs | **Bookmarks / TOC** -- Auto-extracted PDF outline sidebar |
+| **Password PDFs** -- Built-in password prompt for encrypted files | **Fullscreen** -- One-click or F-key fullscreen mode | **Print** -- Print directly from toolbar or Ctrl+P |
+| **Split View** -- Side-by-side compare with sync scroll | **Thumbnail Sidebar** -- Visual page navigation for PDFs | **20+ File Types** -- PDF, DOCX, images, video, CSV & more |
+| **Drag & Drop** -- Drop files directly onto the viewer | **14 Languages** -- Built-in i18n with community translations | **Custom Renderers** -- Extend or replace any file type |
 
 ---
 
-### What's New in v1.1.0
+### What's New in v1.3.0
 
-- **Security: HTML XSS fix** -- HTML renderer now sanitizes content with DOMPurify before rendering
-- **Security: MS Office docs** -- Removed external iframe dependency; Office files now render as download cards with file info
-- **Removed styled-components** -- All styling migrated to plain CSS with CSS custom properties, reducing bundle size
-- **Smaller bundle** -- Removed `styled-components`, `core-js`, and `ajv` dependencies (~300-400KB savings)
-- **CSS custom properties** -- Theming now uses `--rdv-*` CSS variables for full customizability
+**11 new features** that bring the viewer to professional-grade quality:
+
+- **Dark Mode** -- `themeMode: "light" | "dark" | "auto"` with full CSS variable theming and `prefers-color-scheme` auto-detection
+- **Print** -- Print button in toolbar, opens PDF in hidden iframe for native print dialog
+- **Fullscreen** -- Toggle fullscreen from toolbar or keyboard (F key), with proper Escape exit
+- **Loading Progress Bar** -- Animated progress bar during PDF loading with smooth transitions
+- **Watermark Overlay** -- Repeated rotated text overlay with configurable opacity, color, size, and rotation
+- **Text Selection & Copy** -- Enable react-pdf text layer for selecting and copying text from PDF pages
+- **Keyboard Shortcuts** -- Arrow keys for pages, +/- for zoom, Home/End, Ctrl+F for search, Ctrl+P for print, F for fullscreen
+- **Password-Protected PDFs** -- Modal password prompt with error feedback for encrypted PDF files
+- **Text Search** -- Full-text search across all pages using pdfjs, with match count, prev/next navigation, and Ctrl+F shortcut
+- **PDF Bookmarks / TOC** -- Sidebar with auto-extracted PDF outline (table of contents), nested items, click-to-navigate
+- **Split View / Compare** -- `<SplitDocViewer>` component with two viewers side-by-side, draggable divider, and optional scroll sync
 
 ---
 
@@ -138,6 +170,17 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
   - [Custom Renderer](#custom-renderer)
   - [Custom File Loader](#custom-file-loader)
 - [Features](#features)
+  - [Dark Mode](#dark-mode)
+  - [Text Search in PDF](#text-search-in-pdf)
+  - [Keyboard Shortcuts](#keyboard-shortcuts)
+  - [Watermark Overlay](#watermark-overlay)
+  - [PDF Bookmarks / TOC Sidebar](#pdf-bookmarks--toc-sidebar)
+  - [Password-Protected PDFs](#password-protected-pdfs)
+  - [Fullscreen Mode](#fullscreen-mode)
+  - [Print](#print)
+  - [Split View / Compare](#split-view--compare)
+  - [Loading Progress Bar](#loading-progress-bar)
+  - [Text Selection & Copy](#text-selection--copy)
   - [Drag & Drop File Upload](#drag--drop-file-upload)
   - [Thumbnail Sidebar](#thumbnail-sidebar)
   - [Annotations (Highlight, Draw, Comment)](#annotations-highlight-draw-comment)
@@ -169,7 +212,7 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 
 | Extension | MIME Type | Renderer |
 | --------- | --------- | -------- |
-| pdf | `application/pdf` | Full viewer with zoom, pagination, thumbnails |
+| pdf | `application/pdf` | Full viewer with zoom, pagination, thumbnails, search, bookmarks |
 | png | `image/png` | Image with checkerboard background |
 | jpg / jpeg | `image/jpg`, `image/jpeg` | Image viewer |
 | gif | `image/gif` | Image viewer (animated GIF support) |
@@ -431,6 +474,269 @@ MyPNGRenderer.fileLoader = ({ documentURI, signal, fileLoaderComplete }) => {
 
 ## Features
 
+### Dark Mode
+
+Switch between light, dark, and auto (system preference) themes. Dark mode applies to the entire viewer including the toolbar, header, sidebars, and modals.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    themeMode: "dark",
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `themeMode` | `"light" \| "dark" \| "auto"` | `"light"` | `"auto"` uses `prefers-color-scheme` media query |
+
+The `"auto"` mode listens for system theme changes in real-time. All dark mode styles use `[data-theme="dark"]` CSS selectors, so you can override any element:
+
+```css
+#react-doc-viewer[data-theme="dark"] .rdv-pdf-controls {
+  background: #1a1a2e;
+}
+```
+
+### Text Search in PDF
+
+Full-text search across all pages using the pdfjs text extraction API. Displays match count with prev/next navigation.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    search: { enableSearch: true },
+    keyboard: { enableKeyboardShortcuts: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableSearch` | `boolean` | `false` | Show search icon in toolbar and enable Ctrl+F shortcut |
+
+When enabled, a search icon appears in the toolbar. Click it or press **Ctrl+F** to open the search bar. Press **Enter** to go to the next match, **Shift+Enter** for the previous match, and **Escape** to close.
+
+### Keyboard Shortcuts
+
+Navigate pages, zoom, search, print, and toggle fullscreen entirely from the keyboard.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    keyboard: { enableKeyboardShortcuts: true },
+    search: { enableSearch: true },
+    fullscreen: { enableFullscreen: true },
+    print: { enablePrint: true },
+  }}
+/>
+```
+
+| Shortcut | Action |
+| -------- | ------ |
+| `Arrow Left` / `Arrow Right` | Previous / next page |
+| `Home` / `End` | First / last page |
+| `+` or `=` | Zoom in |
+| `-` | Zoom out |
+| `0` | Reset zoom |
+| `Ctrl+F` | Open text search (requires `search.enableSearch`) |
+| `Ctrl+P` | Print (requires `print.enablePrint`) |
+| `F` | Toggle fullscreen (requires `fullscreen.enableFullscreen`) |
+| `Escape` | Close search / exit fullscreen |
+
+Shortcuts are automatically disabled when focus is inside an input, textarea, or select element.
+
+### Watermark Overlay
+
+Add a configurable text watermark overlay to every PDF page. The watermark is rendered as a non-interactive CSS grid of repeated rotated text.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    watermark: {
+      text: "CONFIDENTIAL",
+      opacity: 0.08,
+      fontSize: 52,
+      color: "#ff0000",
+      rotation: -35,
+    },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `text` | `string` | (required) | Watermark text to display |
+| `opacity` | `number` | `0.1` | Opacity (0 to 1) |
+| `fontSize` | `number` | `48` | Font size in pixels |
+| `color` | `string` | `"#000"` | Text color |
+| `rotation` | `number` | `-30` | Rotation angle in degrees |
+
+The watermark has `pointer-events: none` so it never blocks interaction with the document.
+
+### PDF Bookmarks / TOC Sidebar
+
+Automatically extract and display the PDF's table of contents (outline) in a collapsible sidebar. Nested bookmark items are supported with indentation.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    bookmarks: { enableBookmarks: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableBookmarks` | `boolean` | `false` | Show bookmarks icon in toolbar |
+
+When enabled, a bookmarks icon appears in the toolbar. Click to toggle the sidebar. Each bookmark navigates to its target page. If the PDF has no outline, an empty state message is shown.
+
+### Password-Protected PDFs
+
+Display a password prompt modal when a PDF file is encrypted. The user enters their password to decrypt and view the document.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    password: { enablePasswordPrompt: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enablePasswordPrompt` | `boolean` | `false` | Show password modal for encrypted PDFs |
+
+When disabled, encrypted PDFs will fail to load silently. When enabled, a styled modal with a lock icon, password input, and error feedback appears.
+
+### Fullscreen Mode
+
+Toggle fullscreen viewing from the toolbar or keyboard. The entire PDF container (including toolbar and sidebars) enters fullscreen.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    fullscreen: { enableFullscreen: true },
+    keyboard: { enableKeyboardShortcuts: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableFullscreen` | `boolean` | `false` | Show fullscreen icon in toolbar and enable F shortcut |
+
+Press **F** to toggle fullscreen, **Escape** to exit. The fullscreen icon in the toolbar dynamically switches between enter/exit icons.
+
+### Print
+
+Print the current PDF document directly from the toolbar. Opens the browser's native print dialog.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    print: { enablePrint: true },
+    keyboard: { enableKeyboardShortcuts: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enablePrint` | `boolean` | `false` | Show print icon in toolbar and enable Ctrl+P shortcut |
+
+The print feature creates a hidden iframe with the PDF, loads it, and triggers `window.print()` for the native print dialog. Print media CSS automatically hides the toolbar and sidebars.
+
+### Split View / Compare
+
+Compare two documents side-by-side with an independent `<SplitDocViewer>` component. Each side has its own DocViewer instance with independent navigation, zoom, and controls.
+
+```tsx
+import { SplitDocViewer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+<SplitDocViewer
+  left={{
+    documents: [{ uri: "/document-v1.pdf" }],
+    config: { pdfVerticalScrollByDefault: true },
+  }}
+  right={{
+    documents: [{ uri: "/document-v2.pdf" }],
+    config: { pdfVerticalScrollByDefault: true },
+  }}
+  syncScroll={true}
+/>
+```
+
+| Prop | Type | Description |
+| ---- | ---- | ----------- |
+| `left` | `{ documents, config?, pluginRenderers?, ... }` | Props for the left DocViewer instance |
+| `right` | `{ documents, config?, pluginRenderers?, ... }` | Props for the right DocViewer instance |
+| `syncScroll` | `boolean` | When `true`, scrolling one side scrolls the other |
+
+The divider between panels is draggable to resize. `SplitDocViewer` is exported directly from the package:
+
+```tsx
+import { SplitDocViewer } from "@iamjariwala/react-doc-viewer";
+```
+
+### Loading Progress Bar
+
+Display an animated progress bar while PDF documents are loading. Shows actual load progress from the PDF.js library.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    loadingProgress: { enableProgressBar: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableProgressBar` | `boolean` | `false` | Show progress bar during PDF loading |
+
+The progress bar appears at the top of the PDF area and smoothly animates from 0% to 100% as the PDF loads.
+
+### Text Selection & Copy
+
+Enable the react-pdf text layer so users can select and copy text from PDF pages.
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    textSelection: { enableTextSelection: true },
+  }}
+/>
+```
+
+| Option | Type | Default | Description |
+| ------ | ---- | ------- | ----------- |
+| `enableTextSelection` | `boolean` | `false` | Render PDF text layer for selection and copying |
+
+When enabled, text on PDF pages becomes selectable. Use Ctrl+C / Cmd+C to copy selected text.
+
 ### Drag & Drop File Upload
 
 Enable file drag-and-drop to add or replace documents in the viewer. Supports file type filtering, size limits, and callbacks.
@@ -578,12 +884,14 @@ const [page, setPage] = useState(1);
   documents={docs}
   pluginRenderers={DocViewerRenderers}
   config={{
+    // Header
     header: {
       disableHeader: false,
       disableFileName: false,
       retainURLParams: false,
       overrideComponent: MyHeader,
     },
+    // Loading & error
     loadingRenderer: {
       overrideComponent: MyLoader,
       showLoadingTimeout: 500,
@@ -591,12 +899,32 @@ const [page, setPage] = useState(1);
     noRenderer: {
       overrideComponent: MyError,
     },
+    // PDF options
     csvDelimiter: ",",
     pdfZoom: {
       defaultZoom: 1.1,
       zoomJump: 0.2,
     },
     pdfVerticalScrollByDefault: true,
+    // Theme
+    themeMode: "dark",             // "light" | "dark" | "auto"
+    // PDF features
+    print: { enablePrint: true },
+    fullscreen: { enableFullscreen: true },
+    loadingProgress: { enableProgressBar: true },
+    watermark: {
+      text: "CONFIDENTIAL",
+      opacity: 0.08,
+      fontSize: 52,
+      color: "#ff0000",
+      rotation: -35,
+    },
+    textSelection: { enableTextSelection: true },
+    keyboard: { enableKeyboardShortcuts: true },
+    password: { enablePasswordPrompt: true },
+    search: { enableSearch: true },
+    bookmarks: { enableBookmarks: true },
+    // Existing features
     dragDrop: {
       enableDragDrop: true,
       acceptedFileTypes: ["application/pdf", "image/*"],
@@ -768,8 +1096,18 @@ All internal elements use `.rdv-*` class names that you can target:
 | `.rdv-doc-nav-prev` / `.rdv-doc-nav-next` | Document navigation buttons |
 | `.rdv-pdf-controls` | PDF control bar (zoom, pagination) |
 | `.rdv-pdf-page-wrapper` | Individual PDF page wrapper |
+| `.rdv-pdf-progress-bar` | Loading progress bar container |
+| `.rdv-pdf-progress-fill` | Loading progress bar fill |
 | `.rdv-thumbnail-sidebar` | Thumbnail sidebar container |
 | `.rdv-annotation-toolbar` | Annotation toolbar |
+| `.rdv-search-bar` | Text search floating bar |
+| `.rdv-bookmarks-sidebar` | Bookmarks / TOC sidebar |
+| `.rdv-password-overlay` | Password prompt overlay |
+| `.rdv-password-modal` | Password prompt modal |
+| `.rdv-watermark-overlay` | Watermark overlay container |
+| `.rdv-split-container` | Split view container |
+| `.rdv-split-panel` | Split view panel |
+| `.rdv-split-divider` | Split view draggable divider |
 | `.rdv-image-container` | Image renderer container |
 | `.rdv-csv-container` | CSV table container |
 | `.rdv-txt-container` | Text renderer container |
@@ -830,6 +1168,7 @@ const DocViewer = React.lazy(() => import("@iamjariwala/react-doc-viewer"));
 - **No external services** -- All document rendering happens client-side. No file data is sent to third-party servers.
 - **No external iframes** -- MS Office documents render as local download cards instead of being sent to Microsoft's viewing service.
 - **Sandboxed HTML** -- HTML documents render inside an iframe with sanitized content.
+- **Watermark protection** -- Add visible watermarks to discourage unauthorized distribution of confidential documents.
 
 ## Advanced
 
@@ -882,7 +1221,7 @@ Provide custom headers for authenticated requests (JWT, API keys, etc.):
 ## FAQ
 
 **What is the best React document viewer library?**
-`@iamjariwala/react-doc-viewer` is the most feature-complete open-source React document viewer. It supports 20+ file types (PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and more) in a single component with built-in annotations, drag-and-drop, thumbnail navigation, theming, and i18n -- features that most alternatives require paid licenses or multiple libraries to achieve.
+`@iamjariwala/react-doc-viewer` is the most feature-complete open-source React document viewer. It supports 20+ file types (PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and more) in a single component with dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks, password-protected PDF support, fullscreen, print, split view, drag-and-drop, thumbnails, theming, and i18n -- features that most alternatives require paid licenses or multiple libraries to achieve.
 
 **How do I display a PDF in React?**
 Install `@iamjariwala/react-doc-viewer`, import `DocViewer` and `DocViewerRenderers`, pass your PDF URL as a document, and the component handles rendering, zoom, pagination, and page navigation automatically. See [Quick Start](#quick-start).
@@ -892,6 +1231,27 @@ Add the `"use client"` directive to your component, import `DocViewer` with the 
 
 **Can I view Word, Excel, and PowerPoint files in React?**
 Yes. This library recognizes `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, and `.pptx` files and renders them as download cards showing file name, type, and a download link. No external service or public URL is required. For inline rendering, you can create a [Custom Renderer](#custom-renderer).
+
+**Does it support dark mode?**
+Yes. Set `config.themeMode` to `"dark"` for dark mode, `"light"` for light mode, or `"auto"` to follow the system's `prefers-color-scheme` preference. Dark mode applies to the toolbar, header, sidebars, modals, and all UI elements.
+
+**Does it support text search in PDFs?**
+Yes. Enable `config.search.enableSearch` to add a search icon to the toolbar. Press Ctrl+F to open the search bar, which searches across all pages with match count and prev/next navigation.
+
+**Does it support keyboard shortcuts?**
+Yes. Enable `config.keyboard.enableKeyboardShortcuts` for arrow key page navigation, +/- zoom, Home/End, Ctrl+F search, Ctrl+P print, F for fullscreen, and Escape to exit.
+
+**Can I add a watermark to PDFs?**
+Yes. Set `config.watermark` with your desired text, opacity, color, font size, and rotation. The watermark appears on every page as a non-interactive overlay.
+
+**Does it support password-protected PDFs?**
+Yes. Enable `config.password.enablePasswordPrompt` to show a password prompt modal when an encrypted PDF is loaded. The user enters their password to decrypt and view the document.
+
+**Can I view bookmarks or table of contents in a PDF?**
+Yes. Enable `config.bookmarks.enableBookmarks` to show a bookmarks sidebar that auto-extracts the PDF's outline with nested items and click-to-navigate.
+
+**Can I compare two documents side by side?**
+Yes. Use the `<SplitDocViewer>` component with `left` and `right` props. Each side gets its own DocViewer instance. Optional `syncScroll` keeps both sides in sync.
 
 **Does it support annotations and highlighting?**
 Yes. Enable annotations via config to get text highlighting, freehand drawing, comments, and an eraser tool. Annotations can be exported as JSON and pre-loaded from saved data. See [Annotations](#annotations-highlight-draw-comment).
@@ -915,7 +1275,7 @@ Use the `theme` prop for color customization, the `className` or `style` props f
 No data leaves the browser. All rendering is client-side. HTML content is sanitized with DOMPurify to prevent XSS. MS Office files render locally as download cards -- no Microsoft iframe. See [Security](#security).
 
 **How does this compare to react-pdf?**
-react-pdf only handles PDF files. `@iamjariwala/react-doc-viewer` handles 20+ file types including PDF, and adds drag-and-drop, annotations, thumbnails, theming, and i18n on top. If you only need PDF rendering, react-pdf is lighter. If you need multi-format support or advanced features, this library covers more ground.
+react-pdf only handles PDF files. `@iamjariwala/react-doc-viewer` handles 20+ file types including PDF, and adds dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks, password support, fullscreen, print, split view, drag-and-drop, thumbnails, theming, and i18n on top. If you only need PDF rendering, react-pdf is lighter. If you need multi-format support or advanced features, this library covers more ground.
 
 **How do I reduce bundle size?**
 Import only the renderers you need (`PDFRenderer`, `PNGRenderer`, etc.) instead of `DocViewerRenderers`. Use `React.lazy()` to code-split the viewer. See [Performance](#performance--bundle-size).
@@ -928,6 +1288,12 @@ Yes. Enable `config.thumbnail.enableThumbnails` to show a sidebar with page thum
 
 **Can I jump to a specific page in a PDF?**
 Yes. Use `docViewerRef.current?.goToPage(5)` for programmatic navigation, or the `jumpToPage` prop for declarative control. See [Page Navigation](#page-navigation--page-jump).
+
+**Can I print a PDF from the viewer?**
+Yes. Enable `config.print.enablePrint` to add a print button to the toolbar. Press Ctrl+P with keyboard shortcuts enabled.
+
+**Does it support fullscreen mode?**
+Yes. Enable `config.fullscreen.enableFullscreen` to add a fullscreen button. Press F with keyboard shortcuts enabled.
 
 **Does it support TypeScript?**
 Yes. The library is written in TypeScript and ships with complete type definitions. All props, config options, and hooks are fully typed with IntelliSense support.

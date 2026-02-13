@@ -936,6 +936,541 @@
   opacity: 0.6;
 }
 
+/* ===================== Loading Progress Bar ===================== */
+.rdv-pdf-progress-bar {
+  height: 3px;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.rdv-pdf-progress-fill {
+  height: 100%;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ===================== Watermark Overlay ===================== */
+.rdv-watermark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-rows: repeat(auto-fill, minmax(120px, 1fr));
+  align-items: center;
+  justify-items: center;
+  z-index: 5;
+}
+
+.rdv-watermark-text {
+  white-space: nowrap;
+  user-select: none;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* ===================== Text Selection Layer ===================== */
+.react-pdf__Page__textContent {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.react-pdf__Page__textContent span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  transform-origin: 0% 0%;
+}
+
+.react-pdf__Page__textContent span::selection {
+  background: rgba(0, 100, 200, 0.3);
+}
+
+/* ===================== Password Modal ===================== */
+.rdv-password-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.rdv-password-modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 360px;
+  width: 90%;
+}
+
+.rdv-password-icon {
+  color: #6b7280;
+}
+
+.rdv-password-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  text-align: center;
+  margin: 0;
+}
+
+.rdv-password-error {
+  font-size: 13px;
+  color: #ef4444;
+  margin: 0;
+  text-align: center;
+}
+
+.rdv-password-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rdv-password-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.rdv-password-submit {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  background: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.rdv-password-submit:hover {
+  background: #2563eb;
+}
+
+/* ===================== Search Bar ===================== */
+.rdv-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.rdv-search-input {
+  flex: 1;
+  min-width: 120px;
+  max-width: 280px;
+  height: 30px;
+  padding: 0 10px;
+  font-size: 13px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  outline: none;
+  background: rgba(0, 0, 0, 0.03);
+  color: #1f2937;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.rdv-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  background: #fff;
+}
+
+.rdv-search-count {
+  font-size: 12px;
+  color: #6b7280;
+  white-space: nowrap;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ===================== Bookmarks Sidebar ===================== */
+.rdv-bookmarks-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  flex-shrink: 0;
+  background: #f9fafb;
+  border-right: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.rdv-bookmarks-header {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+
+.rdv-bookmarks-title {
+  user-select: none;
+}
+
+.rdv-bookmarks-list {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.rdv-bookmarks-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.rdv-bookmarks-list::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 3px;
+}
+
+.rdv-bookmarks-empty {
+  padding: 24px 16px;
+  text-align: center;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.rdv-bookmark-item-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.rdv-bookmark-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+  color: #374151;
+  width: 100%;
+  box-sizing: border-box;
+  transition: background 0.12s ease;
+}
+
+.rdv-bookmark-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.rdv-bookmark-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rdv-bookmark-page {
+  font-size: 11px;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.rdv-bookmark-children {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================== Split View ===================== */
+.rdv-split-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.rdv-split-panel {
+  overflow: hidden;
+  min-width: 200px;
+}
+
+.rdv-split-panel > .rdv-container {
+  width: 100%;
+  height: 100%;
+}
+
+.rdv-split-divider {
+  width: 6px;
+  cursor: col-resize;
+  background: #e5e7eb;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+  position: relative;
+}
+
+.rdv-split-divider:hover {
+  background: #3b82f6;
+}
+
+.rdv-split-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 2px;
+  height: 24px;
+  background: #9ca3af;
+  border-radius: 1px;
+}
+
+.rdv-split-divider:hover::after {
+  background: white;
+}
+
+/* ===================== Fullscreen ===================== */
+.rdv-pdf-container:fullscreen {
+  background: #fff;
+}
+
+.rdv-pdf-container:fullscreen .rdv-pdf-main-content {
+  height: 100vh;
+}
+
+/* ===================== Print Media ===================== */
+@media print {
+  .rdv-pdf-controls,
+  .rdv-header-bar,
+  .rdv-thumbnail-sidebar,
+  .rdv-annotation-toolbar,
+  .rdv-bookmarks-sidebar,
+  .rdv-search-bar,
+  .rdv-dropzone-overlay {
+    display: none !important;
+  }
+
+  .rdv-pdf-main-content {
+    overflow: visible !important;
+  }
+}
+
+/* ===================== Dark Mode ===================== */
+#react-doc-viewer[data-theme="dark"] {
+  --rdv-primary: #1f2937;
+  --rdv-secondary: #f9fafb;
+  --rdv-tertiary: #37415199;
+  --rdv-text-primary: #f9fafb;
+  --rdv-text-secondary: #1f2937;
+  --rdv-text-tertiary: #ffffff44;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-container {
+  background: #111827;
+  color: #f9fafb;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-pdf-controls {
+  background: rgba(31, 41, 55, 0.92);
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-btn {
+  color: #d1d5db;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-btn:active {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-divider {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-page-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-page-input:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-page-total {
+  color: #6b7280;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-toolbar-zoom-label {
+  color: #9ca3af;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-thumbnail-sidebar {
+  background: #1f2937;
+  border-right-color: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-thumbnail-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-thumbnail-page-number {
+  color: #9ca3af;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-annotation-toolbar {
+  background: rgba(31, 41, 55, 0.9);
+  border-bottom-color: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-annotation-tool-btn {
+  background: #374151;
+  color: #d1d5db;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-annotation-tool-btn:hover {
+  background: #4b5563;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-bookmarks-sidebar {
+  background: #1f2937;
+  border-right-color: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-bookmarks-header {
+  color: #e5e7eb;
+  border-bottom-color: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-bookmark-item {
+  color: #d1d5db;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-bookmark-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-bookmark-page {
+  color: #6b7280;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-search-bar {
+  background: rgba(31, 41, 55, 0.95);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-search-input {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f3f4f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-search-input:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-search-count {
+  color: #9ca3af;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-password-modal {
+  background: #1f2937;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-password-title {
+  color: #f3f4f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-password-input {
+  background: #374151;
+  border-color: #4b5563;
+  color: #f3f4f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-password-input:focus {
+  border-color: #3b82f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-pdf-page-tag-info {
+  color: #6b7280;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover {
+  background: #1f2937;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover-header {
+  background: #374151;
+  border-bottom-color: #4b5563;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover-title {
+  color: #e5e7eb;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover-textarea {
+  background: #1f2937;
+  color: #f3f4f6;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover-text {
+  color: #d1d5db;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-comment-popover-footer {
+  border-top-color: #4b5563;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-color-picker {
+  background: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-split-divider {
+  background: #374151;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-split-divider::after {
+  background: #6b7280;
+}
+
+#react-doc-viewer[data-theme="dark"] .rdv-pdf-container:fullscreen {
+  background: #111827;
+}
+
 /* ===================== Responsive ===================== */
 @media (max-width: 768px) {
   .rdv-btn,

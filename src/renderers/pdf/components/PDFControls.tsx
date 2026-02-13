@@ -1,4 +1,4 @@
-import { FC, useContext, useCallback } from "react";
+import { FC, useContext, useCallback, useRef } from "react";
 import { PDFContext } from "../state";
 import { setPDFPaginated, setZoomLevel } from "../state/actions";
 import { useTranslation } from "../../../hooks/useTranslation";
@@ -8,11 +8,22 @@ import {
   TogglePaginationPDFIcon,
   ZoomInPDFIcon,
   ZoomOutPDFIcon,
+  PrintPDFIcon,
+  FullscreenPDFIcon,
+  ExitFullscreenPDFIcon,
+  SearchPDFIcon,
 } from "./icons";
 import PDFPagination from "./PDFPagination";
 import { ThumbnailToggle } from "../../../features/thumbnail-sidebar";
+import { BookmarksToggle } from "../../../features/bookmarks";
+import { setSearchOpen, SearchContext } from "../../../features/text-search";
+import { useFullscreen } from "../../../hooks/useFullscreen";
 
-const PDFControls: FC = () => {
+interface Props {
+  containerRef?: React.RefObject<HTMLDivElement | null>;
+}
+
+const PDFControls: FC<Props> = ({ containerRef }) => {
   const { t } = useTranslation();
   const {
     state: {
@@ -26,9 +37,19 @@ const PDFControls: FC = () => {
     dispatch,
   } = useContext(PDFContext);
 
+  const fallbackRef = useRef<HTMLDivElement>(null);
+  const fullscreenRef = containerRef || fallbackRef;
+  const { isFullscreen, toggleFullscreen } = useFullscreen(fullscreenRef);
+
+  const searchCtx = useContext(SearchContext);
+
   const currentDocument = mainState?.currentDocument || null;
   const thumbnailConfig = mainState?.config?.thumbnail;
   const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
+  const enablePrint = mainState?.config?.print?.enablePrint ?? false;
+  const enableFullscreen = mainState?.config?.fullscreen?.enableFullscreen ?? false;
+  const enableSearch = mainState?.config?.search?.enableSearch ?? false;
+  const enableBookmarks = mainState?.config?.bookmarks?.enableBookmarks ?? false;
   const zoomPercent = Math.round(zoomLevel * 100);
 
   const handleDownload = useCallback(() => {
@@ -53,6 +74,23 @@ const PDFControls: FC = () => {
       });
   }, [currentDocument]);
 
+  const handlePrint = useCallback(() => {
+    const url = currentDocument?.fileData as string;
+    if (!url) return;
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = url;
+    document.body.appendChild(iframe);
+    iframe.onload = () => {
+      iframe.contentWindow?.print();
+      setTimeout(() => document.body.removeChild(iframe), 1000);
+    };
+  }, [currentDocument]);
+
+  const handleSearchToggle = useCallback(() => {
+    searchCtx.dispatch(setSearchOpen(!searchCtx.state.isOpen));
+  }, [searchCtx]);
+
   return (
     <div id="pdf-controls" className="rdv-pdf-controls">
       <div className="rdv-toolbar-inner">
@@ -76,6 +114,17 @@ const PDFControls: FC = () => {
               >
                 <DownloadPDFIcon size="16" />
               </button>
+
+              {enablePrint && (
+                <button
+                  id="pdf-print"
+                  className="rdv-toolbar-btn"
+                  title={t("printButtonLabel")}
+                  onMouseDown={handlePrint}
+                >
+                  <PrintPDFIcon size="16" />
+                </button>
+              )}
             </div>
             <div className="rdv-toolbar-divider" />
           </>
@@ -113,24 +162,56 @@ const PDFControls: FC = () => {
           </button>
         </div>
 
-        {numPages > 1 && (
-          <>
-            <div className="rdv-toolbar-divider" />
-            <div className="rdv-toolbar-group">
-              {enableThumbnails && (
-                <ThumbnailToggle title="Toggle thumbnails" />
+        <div className="rdv-toolbar-divider" />
+
+        <div className="rdv-toolbar-group">
+          {enableSearch && (
+            <button
+              id="pdf-search"
+              className="rdv-toolbar-btn"
+              onMouseDown={handleSearchToggle}
+              title="Search"
+            >
+              <SearchPDFIcon size="16" />
+            </button>
+          )}
+
+          {enableFullscreen && (
+            <button
+              id="pdf-fullscreen"
+              className="rdv-toolbar-btn"
+              onMouseDown={toggleFullscreen}
+              title={
+                isFullscreen
+                  ? t("exitFullscreenButtonLabel")
+                  : t("fullscreenButtonLabel")
+              }
+            >
+              {isFullscreen ? (
+                <ExitFullscreenPDFIcon size="16" />
+              ) : (
+                <FullscreenPDFIcon size="16" />
               )}
-              <button
-                id="pdf-toggle-pagination"
-                className="rdv-toolbar-btn"
-                onMouseDown={() => dispatch(setPDFPaginated(!paginated))}
-                title={paginated ? "Scroll mode" : "Page mode"}
-              >
-                <TogglePaginationPDFIcon size="16" reverse={paginated} />
-              </button>
-            </div>
-          </>
-        )}
+            </button>
+          )}
+
+          {enableBookmarks && <BookmarksToggle />}
+
+          {enableThumbnails && (
+            <ThumbnailToggle title="Toggle thumbnails" />
+          )}
+
+          {numPages > 1 && (
+            <button
+              id="pdf-toggle-pagination"
+              className="rdv-toolbar-btn"
+              onMouseDown={() => dispatch(setPDFPaginated(!paginated))}
+              title={paginated ? "Scroll mode" : "Page mode"}
+            >
+              <TogglePaginationPDFIcon size="16" reverse={paginated} />
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

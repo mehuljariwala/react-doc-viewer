@@ -53,6 +53,51 @@ export interface ICommentData {
   timestamp?: number;
 }
 
+export interface IPrintConfig {
+  enablePrint?: boolean;
+}
+
+export interface IFullscreenConfig {
+  enableFullscreen?: boolean;
+}
+
+export interface ILoadingProgressConfig {
+  enableProgressBar?: boolean;
+}
+
+export interface IWatermarkConfig {
+  text: string;
+  opacity?: number;
+  fontSize?: number;
+  color?: string;
+  rotation?: number;
+}
+
+export interface ITextSelectionConfig {
+  enableTextSelection?: boolean;
+}
+
+export interface IKeyboardConfig {
+  enableKeyboardShortcuts?: boolean;
+}
+
+export interface IPasswordConfig {
+  enablePasswordPrompt?: boolean;
+}
+
+export interface ISearchConfig {
+  enableSearch?: boolean;
+}
+
+export interface IBookmarksConfig {
+  enableBookmarks?: boolean;
+}
+
+export interface ISplitViewConfig {
+  enableSplitView?: boolean;
+  syncScroll?: boolean;
+}
+
 export interface IConfig {
   header?: IHeaderConfig;
   loadingRenderer?: ILoadingRendererConfig;
@@ -63,6 +108,17 @@ export interface IConfig {
   dragDrop?: IDragDropConfig;
   thumbnail?: IThumbnailConfig;
   annotations?: IAnnotationConfig;
+  themeMode?: "light" | "dark" | "auto";
+  print?: IPrintConfig;
+  fullscreen?: IFullscreenConfig;
+  loadingProgress?: ILoadingProgressConfig;
+  watermark?: IWatermarkConfig;
+  textSelection?: ITextSelectionConfig;
+  keyboard?: IKeyboardConfig;
+  password?: IPasswordConfig;
+  search?: ISearchConfig;
+  bookmarks?: IBookmarksConfig;
+  splitView?: ISplitViewConfig;
 }
 
 export interface ILoadingRendererConfig {

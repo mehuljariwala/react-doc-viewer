@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useMemo, useState } from "react";
 import { DocRenderer } from "../..";
 import PDFPages from "./components/pages/PDFPages";
 import PDFControls from "./components/PDFControls";
@@ -12,7 +12,17 @@ import {
   AnnotationProvider,
   AnnotationToolbar,
 } from "../../features/annotations";
-import { setCurrentPage, setPDFPaginated } from "./state/actions";
+import { setCurrentPage, setPDFPaginated, setZoomLevel } from "./state/actions";
+import {
+  useKeyboardShortcuts,
+  KeyboardShortcut,
+} from "../../features/keyboard-shortcuts";
+import { SearchProvider, SearchBar, SearchContext, setSearchOpen } from "../../features/text-search";
+import {
+  BookmarksProvider,
+  BookmarksSidebar,
+  useBookmarks,
+} from "../../features/bookmarks";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   "pdfjs-dist/build/pdf.worker.min.mjs",
@@ -21,10 +31,21 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 const PDFRendererContent: React.FC = () => {
   const { state: pdfState, dispatch: pdfDispatch } = useContext(PDFContext);
+  const searchCtx = useContext(SearchContext);
   const thumbnailConfig = pdfState.mainState?.config?.thumbnail;
   const annotationConfig = pdfState.mainState?.config?.annotations;
   const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
   const enableAnnotations = annotationConfig?.enableAnnotations ?? false;
+  const enableKeyboard = pdfState.mainState?.config?.keyboard?.enableKeyboardShortcuts ?? false;
+  const enableSearch = pdfState.mainState?.config?.search?.enableSearch ?? false;
+  const enableBookmarks = pdfState.mainState?.config?.bookmarks?.enableBookmarks ?? false;
+  const enableFullscreen = pdfState.mainState?.config?.fullscreen?.enableFullscreen ?? false;
+  const enablePrint = pdfState.mainState?.config?.print?.enablePrint ?? false;
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [pdfDocument] = useState<pdfjs.PDFDocumentProxy | null>(null);
+
+  useBookmarks(pdfDocument);
 
   const handlePageSelect = (pageNumber: number) => {
     pdfDispatch(setCurrentPage(pageNumber));
@@ -33,17 +54,149 @@ const PDFRendererContent: React.FC = () => {
     }
   };
 
+  const shortcuts: KeyboardShortcut[] = useMemo(() => {
+    const s: KeyboardShortcut[] = [
+      {
+        key: "ArrowLeft",
+        action: () => {
+          if (pdfState.currentPage > 1) {
+            pdfDispatch(setCurrentPage(pdfState.currentPage - 1));
+          }
+        },
+        description: "Previous page",
+      },
+      {
+        key: "ArrowRight",
+        action: () => {
+          if (pdfState.currentPage < pdfState.numPages) {
+            pdfDispatch(setCurrentPage(pdfState.currentPage + 1));
+          }
+        },
+        description: "Next page",
+      },
+      {
+        key: "Home",
+        action: () => pdfDispatch(setCurrentPage(1)),
+        description: "First page",
+      },
+      {
+        key: "End",
+        action: () => pdfDispatch(setCurrentPage(pdfState.numPages)),
+        description: "Last page",
+      },
+      {
+        key: "+",
+        action: () =>
+          pdfDispatch(setZoomLevel(pdfState.zoomLevel + pdfState.zoomJump)),
+        description: "Zoom in",
+      },
+      {
+        key: "=",
+        action: () =>
+          pdfDispatch(setZoomLevel(pdfState.zoomLevel + pdfState.zoomJump)),
+        description: "Zoom in",
+      },
+      {
+        key: "-",
+        action: () =>
+          pdfDispatch(setZoomLevel(pdfState.zoomLevel - pdfState.zoomJump)),
+        description: "Zoom out",
+      },
+      {
+        key: "0",
+        action: () => pdfDispatch(setZoomLevel(pdfState.defaultZoomLevel)),
+        description: "Reset zoom",
+      },
+      {
+        key: "Escape",
+        action: () => {
+          if (searchCtx.state.isOpen) {
+            searchCtx.dispatch(setSearchOpen(false));
+          }
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          }
+        },
+        description: "Exit",
+      },
+    ];
+
+    if (enableSearch) {
+      s.push({
+        key: "f",
+        ctrlKey: true,
+        action: () => searchCtx.dispatch(setSearchOpen(true)),
+        description: "Open search",
+      });
+    }
+
+    if (enablePrint) {
+      s.push({
+        key: "p",
+        ctrlKey: true,
+        action: () => {
+          const url = pdfState.mainState?.currentDocument?.fileData as string;
+          if (!url) return;
+          const iframe = document.createElement("iframe");
+          iframe.style.display = "none";
+          iframe.src = url;
+          document.body.appendChild(iframe);
+          iframe.onload = () => {
+            iframe.contentWindow?.print();
+            setTimeout(() => document.body.removeChild(iframe), 1000);
+          };
+        },
+        description: "Print",
+      });
+    }
+
+    if (enableFullscreen) {
+      s.push({
+        key: "f",
+        action: () => {
+          if (!containerRef.current) return;
+          if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+          } else {
+            containerRef.current.requestFullscreen().catch(() => {});
+          }
+        },
+        description: "Toggle fullscreen",
+      });
+    }
+
+    return s;
+  }, [
+    pdfState.currentPage,
+    pdfState.numPages,
+    pdfState.zoomLevel,
+    pdfState.zoomJump,
+    pdfState.defaultZoomLevel,
+    pdfState.mainState?.currentDocument?.fileData,
+    pdfDispatch,
+    searchCtx,
+    enableSearch,
+    enablePrint,
+    enableFullscreen,
+  ]);
+
+  useKeyboardShortcuts(shortcuts, enableKeyboard);
+
   return (
-    <div className="rdv-pdf-content-wrapper">
+    <div className="rdv-pdf-content-wrapper" ref={containerRef}>
       {enableThumbnails && (
         <ThumbnailSidebar
           onPageSelect={handlePageSelect}
           currentPage={pdfState.currentPage}
         />
       )}
+      {enableBookmarks && (
+        <BookmarksSidebar onNavigate={handlePageSelect} />
+      )}
       <div className="rdv-pdf-main-content">
         {enableAnnotations && <AnnotationToolbar />}
-        <PDFControls />
+        <PDFControls containerRef={containerRef} />
+        {enableSearch && <SearchBar pdfDocument={pdfDocument} />}
         <PDFPages />
       </div>
     </div>
@@ -62,14 +215,18 @@ const PDFRenderer: DocRenderer = ({ mainState }) => {
           config={annotationConfig}
           documentUri={mainState.currentDocument?.uri}
         >
-          <div
-            id="pdf-renderer"
-            data-testid="pdf-renderer"
-            className="rdv-pdf-container"
-            {...(disableScrollbar ? { "data-disable-scrollbar": "" } : {})}
-          >
-            <PDFRendererContent />
-          </div>
+          <SearchProvider>
+            <BookmarksProvider>
+              <div
+                id="pdf-renderer"
+                data-testid="pdf-renderer"
+                className="rdv-pdf-container"
+                {...(disableScrollbar ? { "data-disable-scrollbar": "" } : {})}
+              >
+                <PDFRendererContent />
+              </div>
+            </BookmarksProvider>
+          </SearchProvider>
         </AnnotationProvider>
       </ThumbnailProvider>
     </PDFProvider>

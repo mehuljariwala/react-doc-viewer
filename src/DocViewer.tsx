@@ -1,4 +1,4 @@
-import React, { CSSProperties, forwardRef, memo, useRef, useCallback, useMemo } from "react";
+import React, { CSSProperties, forwardRef, memo, useRef, useCallback, useMemo, useEffect, useState } from "react";
 import "./cssStyles";
 import { HeaderBar } from "./components/HeaderBar";
 import { ProxyRenderer } from "./components/ProxyRenderer";
@@ -36,6 +36,23 @@ const DocViewer = forwardRef<DocViewerRef, DocViewerProps>((props, ref) => {
   const dragDropConfig = config?.dragDrop;
   const enableDragDrop = dragDropConfig?.enableDragDrop ?? false;
   const providerRef = useRef<DocViewerProviderRef>(null);
+  const themeMode = config?.themeMode ?? "light";
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">(
+    themeMode === "auto" ? "light" : themeMode,
+  );
+
+  useEffect(() => {
+    if (themeMode !== "auto") {
+      setResolvedTheme(themeMode);
+      return;
+    }
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    setResolvedTheme(mq.matches ? "dark" : "light");
+    const handler = (e: MediaQueryListEvent) =>
+      setResolvedTheme(e.matches ? "dark" : "light");
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, [themeMode]);
 
   const {
     dragState,
@@ -82,6 +99,7 @@ const DocViewer = forwardRef<DocViewerRef, DocViewerProps>((props, ref) => {
       <div
         id="react-doc-viewer"
         data-testid="react-doc-viewer"
+        data-theme={resolvedTheme}
         className={`rdv-container ${props.className || ""}`}
         style={cssVarStyle}
         onDragEnter={enableDragDrop ? handleDragEnter : undefined}
