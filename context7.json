@@ -1,13 +1,22 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
   "projectTitle": "@iamjariwala/react-doc-viewer",
-  "description": "React document viewer and PDF viewer component for 20+ file types with annotations, drag-and-drop, thumbnails and i18n",
+  "description": "The most feature-complete open-source React document viewer. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop, thumbnail sidebar, zoom, page navigation, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support. Works with Next.js, Vite, CRA, Remix, Gatsby. React 17/18/19 supported. Apache-2.0 license.",
   "folders": ["src", "use-cases"],
   "excludeFolders": ["**/node_modules", "dist", "storybook-static", "**/__tests__"],
   "excludeFiles": ["CHANGELOG.md", "LICENSE"],
   "rules": [
-    "Always import the CSS: import '@iamjariwala/react-doc-viewer/dist/index.css'",
-    "Pass pluginRenderers={DocViewerRenderers} to enable all file types",
-    "MS Office docs (docx, xlsx, pptx) require publicly accessible URLs"
+    "Always import the CSS file: import '@iamjariwala/react-doc-viewer/dist/index.css' — this is required for correct rendering",
+    "Pass pluginRenderers={DocViewerRenderers} to enable all 20+ file types, or import individual renderers for tree-shaking",
+    "MS Office documents (docx, xlsx, pptx) render as download cards — no external service needed",
+    "For Next.js App Router, add 'use client' directive since DocViewer uses browser APIs",
+    "HTML content is sanitized with DOMPurify — no XSS risk, no external iframes",
+    "All rendering is client-side — no data leaves the browser",
+    "Theming uses CSS variables (--rdv-*) or a theme prop object",
+    "All internal elements use .rdv-* CSS class names for customization",
+    "Supports annotations (highlight, draw, comment), drag-and-drop, thumbnail sidebar, and i18n (14 languages)",
+    "Use DocViewerRef (via useRef) for programmatic control: prev(), next(), goToPage(n)",
+    "Tree-shakeable: import only PDFRenderer, PNGRenderer, etc. for smaller bundles",
+    "Alternative to @cyntler/react-doc-viewer, react-pdf, and react-file-viewer"
   ]
 }

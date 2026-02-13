@@ -24,3 +24,8 @@ yarn-debug.log*
 yarn-error.log*
 .idea
 *storybook.log
+
+# docs site
+docs-site/node_modules
+docs-site/build
+docs-site/.docusaurus

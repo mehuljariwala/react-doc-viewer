@@ -1,0 +1,66 @@
+# @iamjariwala/react-doc-viewer
+
+> The most feature-complete open-source document viewer for React.
+
+Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop file upload, thumbnail sidebar, zoom controls, page navigation, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support.
+
+## Quick Links
+
+- Documentation: https://github.com/mehuljariwala/react-doc-viewer#readme
+- Full AI Documentation: https://raw.githubusercontent.com/mehuljariwala/react-doc-viewer/main/llms-full.txt
+- npm: https://www.npmjs.com/package/@iamjariwala/react-doc-viewer
+- Live Demo: https://mehuljariwala.github.io/react-doc-viewer
+- GitHub: https://github.com/mehuljariwala/react-doc-viewer
+
+## Install
+
+```bash
+npm install @iamjariwala/react-doc-viewer
+```
+
+## Basic Usage
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+<DocViewer
+  documents={[{ uri: "https://example.com/sample.pdf" }]}
+  pluginRenderers={DocViewerRenderers}
+/>;
+```
+
+## Key Features
+
+- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, MP4, ODT
+- Annotations: highlight, freehand draw, comments, export as JSON
+- Drag & Drop file upload with type/size validation
+- Thumbnail sidebar with click-to-jump for PDFs
+- Programmatic page navigation via ref or jumpToPage prop
+- 14 built-in languages (en, ar, de, es, fr, it, ja, pl, pt, ru, se, sr, sr_cyr, tr)
+- Theming via CSS variables (--rdv-*) or theme prop
+- Custom renderers for any file type
+- Works with Next.js, Vite, CRA, Remix, Gatsby
+- React 17, 18, and 19 supported
+- No external services — all rendering is client-side
+- HTML sanitized with DOMPurify
+- Tree-shakeable — import only renderers you need
+- Apache-2.0 license
+
+## Sections
+
+- Supported File Types
+- Installation & Quick Start
+- Framework Guides (Next.js, Vite, CRA, Remix)
+- Documents (remote, local, blob, controlled)
+- Renderers (built-in, custom, file loader)
+- Features (drag-drop, thumbnails, annotations, page navigation)
+- Configuration (header, loading, error overrides)
+- Theming & CSS Variables
+- Styling & CSS Customization
+- Internationalization (i18n)
+- Performance & Bundle Size
+- Security
+- Advanced (DocViewerRef API, S3/cloud, auth headers)
+- FAQ
+- Migration guides (from @cyntler, react-pdf, react-file-viewer)
