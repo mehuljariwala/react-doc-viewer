@@ -1,6 +1,4 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
-import { IStyledProps } from "../../../models";
 import { ThumbnailContext } from "../state";
 import { setSidebarOpen } from "../state/actions";
 
@@ -18,14 +16,15 @@ export const ThumbnailToggle: FC<ThumbnailToggleProps> = ({
   };
 
   return (
-    <ToggleButton
+    <button
+      className="rdv-thumbnail-toggle"
       onClick={handleToggle}
       title={title}
       aria-label={title}
       aria-pressed={state.isOpen}
     >
       <ThumbnailIcon isOpen={state.isOpen} />
-    </ToggleButton>
+    </button>
   );
 };
 
@@ -47,30 +46,3 @@ const ThumbnailIcon: FC<{ isOpen: boolean }> = ({ isOpen }) => (
     <rect x="14" y="14" width="7" height="7" rx="1" />
   </svg>
 );
-
-const ToggleButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-  padding: 0;
-  margin: 0 0 0 5px;
-  border: 0;
-  outline: none;
-  cursor: pointer;
-  border-radius: 30px;
-  background-color: ${(props: IStyledProps) => props.theme.primary};
-  color: ${(props: IStyledProps) => props.theme.textPrimary};
-  box-shadow: 2px 2px 3px #00000033;
-  transition: transform 0.2s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 768px) {
-    width: 25px;
-    height: 25px;
-  }
-`;

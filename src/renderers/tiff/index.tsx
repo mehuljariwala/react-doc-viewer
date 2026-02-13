@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import { DocRenderer } from "../..";
 import { useTranslation } from "../../hooks/useTranslation";
 import { arrayBufferFileLoader } from "../../utils/fileLoaders";
@@ -37,7 +36,7 @@ const TIFFRenderer: DocRenderer = (props) => {
 
   return (
     <ImageProxyRenderer {...props}>
-      <Canvas id="tiff-img" />
+      <canvas id="tiff-img" className="rdv-tiff-canvas" />
     </ImageProxyRenderer>
   );
 };
@@ -46,8 +45,3 @@ TIFFRenderer.weight = 0;
 TIFFRenderer.fileLoader = arrayBufferFileLoader;
 
 export default TIFFRenderer;
-
-const Canvas = styled.canvas`
-  max-width: 95%;
-  max-height: 95%;
-`;

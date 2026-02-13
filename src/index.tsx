@@ -1,6 +1,5 @@
 "use client";
 
-import "./cssStyles";
 import DocViewer from "./DocViewer";
 
 export default DocViewer;

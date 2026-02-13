@@ -1,6 +1,5 @@
-import "core-js/proposals/promise-with-resolvers";
-import React, { CSSProperties, forwardRef, memo, useRef, useCallback } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import React, { CSSProperties, forwardRef, memo, useRef, useCallback, useMemo } from "react";
+import "./cssStyles";
 import { HeaderBar } from "./components/HeaderBar";
 import { ProxyRenderer } from "./components/ProxyRenderer";
 import { defaultTheme } from "./defaultTheme";
@@ -53,6 +52,21 @@ const DocViewer = forwardRef<DocViewerRef, DocViewerProps>((props, ref) => {
     []
   );
 
+  const mergedTheme = useMemo(
+    () => (theme ? { ...defaultTheme, ...theme } : defaultTheme),
+    [theme]
+  );
+
+  const cssVarStyle = useMemo((): CSSProperties => ({
+    "--rdv-primary": mergedTheme.primary,
+    "--rdv-secondary": mergedTheme.secondary,
+    "--rdv-tertiary": mergedTheme.tertiary,
+    "--rdv-text-primary": mergedTheme.textPrimary,
+    "--rdv-text-secondary": mergedTheme.textSecondary,
+    "--rdv-text-tertiary": mergedTheme.textTertiary,
+    ...props.style,
+  } as CSSProperties), [mergedTheme, props.style]);
+
   if (!documents) {
     throw new Error("Please provide an array of documents to DocViewer!");
   }
@@ -65,39 +79,26 @@ const DocViewer = forwardRef<DocViewerRef, DocViewerProps>((props, ref) => {
       {...props}
       dragDropConfig={enableDragDrop ? dragDropConfig : undefined}
     >
-      <ThemeProvider
-        theme={theme ? { ...defaultTheme, ...theme } : defaultTheme}
+      <div
+        id="react-doc-viewer"
+        data-testid="react-doc-viewer"
+        className={`rdv-container ${props.className || ""}`}
+        style={cssVarStyle}
+        onDragEnter={enableDragDrop ? handleDragEnter : undefined}
+        onDragLeave={enableDragDrop ? handleDragLeave : undefined}
+        onDragOver={enableDragDrop ? handleDragOver : undefined}
+        onDrop={
+          enableDragDrop
+            ? (e) => handleDrop(e, onFilesDropped)
+            : undefined
+        }
       >
-        <Container
-          id="react-doc-viewer"
-          data-testid="react-doc-viewer"
-          className={props.className}
-          style={props.style}
-          onDragEnter={enableDragDrop ? handleDragEnter : undefined}
-          onDragLeave={enableDragDrop ? handleDragLeave : undefined}
-          onDragOver={enableDragDrop ? handleDragOver : undefined}
-          onDrop={
-            enableDragDrop
-              ? (e) => handleDrop(e, onFilesDropped)
-              : undefined
-          }
-        >
-          <HeaderBar />
-          <ProxyRenderer />
-          {enableDragDrop && <DropZoneOverlay dragState={dragState} />}
-        </Container>
-      </ThemeProvider>
+        <HeaderBar />
+        <ProxyRenderer />
+        {enableDragDrop && <DropZoneOverlay dragState={dragState} />}
+      </div>
     </DocViewerProvider>
   );
 });
 
 export default memo(DocViewer);
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
-  width: 100%;
-  height: 100%;
-  position: relative;
-`;

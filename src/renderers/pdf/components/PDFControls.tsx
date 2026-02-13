@@ -1,7 +1,5 @@
 import React, { FC, useContext } from "react";
-import styled from "styled-components";
 import { Button, LinkButton } from "../../../components/common";
-import { IStyledProps } from "../../..";
 import { PDFContext } from "../state";
 import { setPDFPaginated, setZoomLevel } from "../state/actions";
 import { useTranslation } from "../../../hooks/useTranslation";
@@ -34,7 +32,7 @@ const PDFControls: FC = () => {
   const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
 
   return (
-    <Container id="pdf-controls">
+    <div id="pdf-controls" className="rdv-pdf-controls">
       {enableThumbnails && numPages > 1 && (
         <ThumbnailToggle title="Toggle thumbnails" />
       )}
@@ -42,41 +40,46 @@ const PDFControls: FC = () => {
       {paginated && numPages > 1 && <PDFPagination />}
 
       {currentDocument?.fileData && (
-        <DownloadButton
+        <LinkButton
           id="pdf-download"
+          className="rdv-pdf-download-btn"
           href={currentDocument?.fileData as string}
           download={currentDocument?.fileName || currentDocument?.uri}
           title={t("downloadButtonLabel")}
         >
           <DownloadPDFIcon color="#000" size="75%" />
-        </DownloadButton>
+        </LinkButton>
       )}
 
-      <ControlButton
+      <Button
         id="pdf-zoom-out"
+        className="rdv-pdf-control-btn"
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel - zoomJump))}
       >
         <ZoomOutPDFIcon color="#000" size="80%" />
-      </ControlButton>
+      </Button>
 
-      <ControlButton
+      <Button
         id="pdf-zoom-in"
+        className="rdv-pdf-control-btn"
         onMouseDown={() => dispatch(setZoomLevel(zoomLevel + zoomJump))}
       >
         <ZoomInPDFIcon color="#000" size="80%" />
-      </ControlButton>
+      </Button>
 
-      <ControlButton
+      <Button
         id="pdf-zoom-reset"
+        className="rdv-pdf-control-btn"
         onMouseDown={() => dispatch(setZoomLevel(defaultZoomLevel))}
         disabled={zoomLevel === defaultZoomLevel}
       >
         <ResetZoomPDFIcon color="#000" size="70%" />
-      </ControlButton>
+      </Button>
 
       {numPages > 1 && (
-        <ControlButton
+        <Button
           id="pdf-toggle-pagination"
+          className="rdv-pdf-control-btn"
           onMouseDown={() => dispatch(setPDFPaginated(!paginated))}
         >
           <TogglePaginationPDFIcon
@@ -84,44 +87,10 @@ const PDFControls: FC = () => {
             size="70%"
             reverse={paginated}
           />
-        </ControlButton>
+        </Button>
       )}
-    </Container>
+    </div>
   );
 };
 
 export default PDFControls;
-
-const Container = styled.div`
-  display: flex;
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  justify-content: flex-end;
-  padding: 8px;
-  background-color: ${(props: IStyledProps) => props.theme.tertiary};
-  box-shadow: 0px 2px 3px #00000033;
-
-  @media (max-width: 768px) {
-    padding: 6px;
-  }
-`;
-
-const ControlButton = styled(Button)`
-  width: 30px;
-  height: 30px;
-  @media (max-width: 768px) {
-    width: 25px;
-    height: 25px;
-  }
-`;
-
-const DownloadButton = styled(LinkButton)`
-  width: 30px;
-  height: 30px;
-  @media (max-width: 768px) {
-    width: 25px;
-    height: 25px;
-  }
-`;

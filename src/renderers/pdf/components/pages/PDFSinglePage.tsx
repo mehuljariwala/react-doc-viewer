@@ -1,7 +1,5 @@
 import React, { FC, useContext, useRef, useState, useEffect } from "react";
 import { Page } from "react-pdf";
-import styled from "styled-components";
-import { IStyledProps } from "../../../..";
 import { useTranslation } from "../../../../hooks/useTranslation";
 import { PDFContext } from "../../state";
 import { AnnotationLayer, AnnotationContext } from "../../../../features/annotations";
@@ -14,7 +12,7 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
   const {
     state: { mainState, paginated, zoomLevel, numPages, currentPage },
   } = useContext(PDFContext);
-  const { state: annotationState } = useContext(AnnotationContext);
+  useContext(AnnotationContext);
   const { t } = useTranslation();
   const pageRef = useRef<HTMLDivElement>(null);
   const [pageSize, setPageSize] = useState({ width: 0, height: 0 });
@@ -49,17 +47,23 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
     }
   };
 
+  const isLastPage = _pageNum >= numPages;
+
   return (
-    <PageWrapper id="pdf-page-wrapper" $lastPage={_pageNum >= numPages}>
+    <div
+      id="pdf-page-wrapper"
+      className="rdv-pdf-page-wrapper"
+      {...(isLastPage ? { "data-last-page": "" } : {})}
+    >
       {!paginated && (
-        <PageTag id="pdf-page-info">
+        <div id="pdf-page-info" className="rdv-pdf-page-tag-info">
           {t("pdfPluginPageNumber", {
             currentPage: _pageNum,
             allPagesCount: numPages,
           })}
-        </PageTag>
+        </div>
       )}
-      <PageContainer ref={pageRef}>
+      <div className="rdv-pdf-page-container" ref={pageRef}>
         <Page
           pageNumber={_pageNum || currentPage}
           scale={zoomLevel}
@@ -76,33 +80,9 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
             height={pageSize.height}
           />
         )}
-      </PageContainer>
-    </PageWrapper>
+      </div>
+    </div>
   );
 };
 
 export default PDFSinglePage;
-
-interface PageWrapperProps {
-  $lastPage: boolean;
-}
-
-const PageWrapper = styled.div<PageWrapperProps>`
-  margin: ${(props) => (props.$lastPage ? "20px 0" : undefined)};
-`;
-
-const PageTag = styled.div`
-  padding: 0 0 10px 10px;
-  color: ${(props: IStyledProps) => props.theme.textTertiary};
-  font-size: 14px;
-  text-align: left;
-
-  @media (max-width: 768px) {
-    font-size: 10px;
-  }
-`;
-
-const PageContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;

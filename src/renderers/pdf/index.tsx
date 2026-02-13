@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
-import { DocRenderer, IStyledProps } from "../..";
+import { DocRenderer } from "../..";
 import PDFPages from "./components/pages/PDFPages";
 import PDFControls from "./components/PDFControls";
 import { PDFContext, PDFProvider } from "./state";
@@ -8,7 +7,6 @@ import { pdfjs } from "react-pdf";
 import {
   ThumbnailProvider,
   ThumbnailSidebar,
-  ThumbnailContext,
 } from "../../features/thumbnail-sidebar";
 import {
   AnnotationProvider,
@@ -17,7 +15,8 @@ import {
 import { setCurrentPage, setPDFPaginated } from "./state/actions";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`,
+  "pdfjs-dist/build/pdf.worker.min.mjs",
+  import.meta.url,
 ).toString();
 
 const PDFRendererContent: React.FC = () => {
@@ -35,25 +34,26 @@ const PDFRendererContent: React.FC = () => {
   };
 
   return (
-    <ContentWrapper>
+    <div className="rdv-pdf-content-wrapper">
       {enableThumbnails && (
         <ThumbnailSidebar
           onPageSelect={handlePageSelect}
           currentPage={pdfState.currentPage}
         />
       )}
-      <MainContent>
+      <div className="rdv-pdf-main-content">
         {enableAnnotations && <AnnotationToolbar />}
         <PDFControls />
         <PDFPages />
-      </MainContent>
-    </ContentWrapper>
+      </div>
+    </div>
   );
 };
 
 const PDFRenderer: DocRenderer = ({ mainState }) => {
   const thumbnailConfig = mainState.config?.thumbnail;
   const annotationConfig = mainState.config?.annotations;
+  const disableScrollbar = mainState.config?.pdfVerticalScrollByDefault;
 
   return (
     <PDFProvider mainState={mainState}>
@@ -62,9 +62,14 @@ const PDFRenderer: DocRenderer = ({ mainState }) => {
           config={annotationConfig}
           documentUri={mainState.currentDocument?.uri}
         >
-          <Container id="pdf-renderer" data-testid="pdf-renderer">
+          <div
+            id="pdf-renderer"
+            data-testid="pdf-renderer"
+            className="rdv-pdf-container"
+            {...(disableScrollbar ? { "data-disable-scrollbar": "" } : {})}
+          >
             <PDFRendererContent />
-          </Container>
+          </div>
         </AnnotationProvider>
       </ThumbnailProvider>
     </PDFProvider>
@@ -75,42 +80,3 @@ export default PDFRenderer;
 
 PDFRenderer.fileTypes = ["pdf", "application/pdf"];
 PDFRenderer.weight = 0;
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: hidden;
-
-  /* width */
-  &::-webkit-scrollbar {
-    ${(props: IStyledProps) => {
-      return props.theme.disableThemeScrollbar ? "" : "width: 10px";
-    }};
-  }
-  /* Track */
-  &::-webkit-scrollbar-track {
-    /* background: ${(props: IStyledProps) => props.theme.secondary}; */
-  }
-  /* Handle */
-  &::-webkit-scrollbar-thumb {
-    background: ${(props: IStyledProps) => props.theme.tertiary};
-  }
-  /* Handle on hover */
-  &::-webkit-scrollbar-thumb:hover {
-    background: ${(props: IStyledProps) => props.theme.primary};
-  }
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-`;
-
-const MainContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  overflow: auto;
-`;

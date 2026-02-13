@@ -1,7 +1,6 @@
 /* eslint-disable */
 import React, { FC, useContext, useEffect } from "react";
 import { Document } from "react-pdf";
-import styled from "styled-components";
 import { useTranslation } from "../../../../hooks/useTranslation";
 import { PDFContext } from "../../state";
 import { setNumPages } from "../../state/actions";
@@ -26,21 +25,16 @@ const PDFPages: FC<{}> = () => {
   if (!currentDocument || currentDocument.fileData === undefined) return null;
 
   return (
-    <DocumentPDF
+    <Document
+      className="rdv-pdf-document"
       file={currentDocument.fileData}
       onLoadSuccess={({ numPages }) => dispatch(setNumPages(numPages))}
       loading={<span>{t("pdfPluginLoading")}</span>}
     >
       {paginated ? <PDFSinglePage /> : <PDFAllPages />}
       <PDFThumbnailGenerator />
-    </DocumentPDF>
+    </Document>
   );
 };
-
-const DocumentPDF = styled(Document)`
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-`;
 
 export default PDFPages;

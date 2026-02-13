@@ -1,6 +1,4 @@
 import React, { FC, useContext, useEffect, useRef } from "react";
-import styled from "styled-components";
-import { IStyledProps } from "../../../models";
 import { ThumbnailContext } from "../state";
 import { ThumbnailItem } from "./ThumbnailItem";
 import { setSelectedPage } from "../state/actions";
@@ -46,8 +44,8 @@ export const ThumbnailSidebar: FC<ThumbnailSidebarProps> = ({
   };
 
   return (
-    <SidebarContainer>
-      <ScrollArea ref={scrollContainerRef}>
+    <div className="rdv-thumbnail-sidebar">
+      <div className="rdv-thumbnail-scroll-area" ref={scrollContainerRef}>
         {state.thumbnails.map((thumbnail) => (
           <div
             key={thumbnail.pageNumber}
@@ -61,49 +59,7 @@ export const ThumbnailSidebar: FC<ThumbnailSidebarProps> = ({
             />
           </div>
         ))}
-      </ScrollArea>
-    </SidebarContainer>
+      </div>
+    </div>
   );
 };
-
-const SidebarContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props: IStyledProps) => props.theme.primary};
-  border-right: 1px solid #e0e0e0;
-  flex-shrink: 0;
-  width: fit-content;
-  height: 100%;
-  overflow: hidden;
-`;
-
-const ScrollArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 12px;
-  overflow-y: auto;
-  flex: 1;
-  min-height: 0;
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: #ccc;
-    border-radius: 3px;
-
-    &:hover {
-      background-color: #aaa;
-    }
-  }
-
-  @media (max-width: 768px) {
-    padding: 8px;
-  }
-`;

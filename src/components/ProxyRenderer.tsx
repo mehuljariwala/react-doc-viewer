@@ -1,9 +1,8 @@
 "use client";
 
 import { FC, useCallback } from "react";
-import styled, { keyframes } from "styled-components";
 import { setRendererRect } from "../store/actions";
-import { DocRenderer, IConfig, IDocument, IStyledProps } from "../models";
+import { DocRenderer, IConfig, IDocument } from "../models";
 import { getFileName } from "../utils/getFileName";
 import { useDocumentLoader } from "../hooks/useDocumentLoader";
 import { useWindowSize } from "../hooks/useWindowSize";
@@ -59,11 +58,11 @@ const Contents: React.FC<ContentsProps> = ({
 
     return (
       <LoadingTimeout>
-        <LoadingContainer id="loading-renderer" data-testid="loading-renderer">
-          <LoadingIconContainer>
+        <div id="loading-renderer" data-testid="loading-renderer" className="rdv-loading-container">
+          <div className="rdv-loading-icon">
             <LoadingIcon color="#444" size={40} />
-          </LoadingIconContainer>
-        </LoadingContainer>
+          </div>
+        </div>
       </LoadingTimeout>
     );
   } else {
@@ -84,13 +83,14 @@ const Contents: React.FC<ContentsProps> = ({
           {t("noRendererMessage", {
             fileType: currentDocument?.fileType ?? "",
           })}
-          <DownloadButton
+          <LinkButton
             id="no-renderer-download"
+            className="rdv-download-btn"
             href={currentDocument?.uri}
             download={currentDocument?.uri}
           >
             {t("downloadButtonLabel")}
-          </DownloadButton>
+          </LinkButton>
         </div>
       );
     }
@@ -133,37 +133,3 @@ export const ProxyRenderer: FC = () => {
     </div>
   );
 };
-
-const LoadingContainer = styled.div`
-  display: flex;
-  flex: 1;
-  height: 75px;
-  align-items: center;
-  justify-content: center;
-`;
-
-const spinAnim = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const LoadingIconContainer = styled.div`
-  animation-name: ${spinAnim};
-  animation-duration: 4s;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-`;
-
-const DownloadButton = styled(LinkButton)`
-  width: 130px;
-  height: 30px;
-  background-color: ${(props: IStyledProps) => props.theme.primary};
-  @media (max-width: 768px) {
-    width: 125px;
-    height: 25px;
-  }
-`;

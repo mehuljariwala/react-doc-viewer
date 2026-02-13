@@ -1,6 +1,5 @@
-import React, { FC, useContext, useEffect, useCallback, useRef } from "react";
+import React, { FC, useContext, useCallback, useRef } from "react";
 import { Page } from "react-pdf";
-import styled from "styled-components";
 import { PDFContext } from "../state";
 import {
   ThumbnailContext,
@@ -35,16 +34,12 @@ export const PDFThumbnailGenerator: FC = () => {
     }, 100);
   }, [generateThumbnailFromCanvas]);
 
-  useEffect(() => {
-    renderedPages.current.clear();
-  }, [mainState?.currentDocument?.uri]);
-
   if (!enableThumbnails || !thumbnailState.isOpen || numPages === 0) {
     return null;
   }
 
   return (
-    <HiddenContainer aria-hidden="true">
+    <div className="rdv-pdf-thumbnail-hidden" aria-hidden="true">
       {Array.from({ length: numPages }, (_, i) => i + 1).map((pageNum) => {
         const existingThumbnail = thumbnailState.thumbnails.find(
           (t) => t.pageNumber === pageNum
@@ -53,8 +48,9 @@ export const PDFThumbnailGenerator: FC = () => {
           return null;
         }
         return (
-          <ThumbnailPage
+          <div
             key={pageNum}
+            className="rdv-pdf-thumbnail-page"
             data-thumbnail-page={pageNum}
           >
             <Page
@@ -64,21 +60,9 @@ export const PDFThumbnailGenerator: FC = () => {
               renderTextLayer={false}
               renderAnnotationLayer={false}
             />
-          </ThumbnailPage>
+          </div>
         );
       })}
-    </HiddenContainer>
+    </div>
   );
 };
-
-const HiddenContainer = styled.div`
-  position: absolute;
-  left: -9999px;
-  top: -9999px;
-  visibility: hidden;
-  pointer-events: none;
-`;
-
-const ThumbnailPage = styled.div`
-  display: inline-block;
-`;

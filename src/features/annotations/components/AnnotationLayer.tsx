@@ -1,5 +1,4 @@
 import React, { FC, useContext, useEffect, useRef } from "react";
-import styled from "styled-components";
 import { AnnotationContext } from "../state";
 import { addAnnotation, setSelectedAnnotation } from "../state/actions";
 import { IAnnotation, ICommentData } from "../types";
@@ -105,11 +104,10 @@ export const AnnotationLayer: FC<AnnotationLayerProps> = ({
   };
 
   return (
-    <Container
+    <div
       ref={containerRef}
-      $width={width}
-      $height={height}
-      $cursor={getCursor()}
+      className="rdv-annotation-layer"
+      style={{ width, height, cursor: getCursor() }}
       onClick={handleContainerClick}
       onMouseUp={handleTextSelection}
     >
@@ -121,47 +119,17 @@ export const AnnotationLayer: FC<AnnotationLayerProps> = ({
         <CommentMarker key={annotation.id} annotation={annotation} />
       ))}
 
-      <DrawingCanvas
+      <canvas
         ref={canvasRef}
+        className="rdv-annotation-drawing-canvas"
         width={width}
         height={height}
         onMouseDown={startDrawing}
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
-        $isPenActive={state.activeTool === "pen"}
+        {...(state.activeTool === "pen" ? { "data-pen-active": "" } : {})}
       />
-    </Container>
+    </div>
   );
 };
-
-interface ContainerProps {
-  $width: number;
-  $height: number;
-  $cursor: string;
-}
-
-const Container = styled.div<ContainerProps>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: ${(props) => props.$width}px;
-  height: ${(props) => props.$height}px;
-  pointer-events: none;
-  cursor: ${(props) => props.$cursor};
-
-  & > * {
-    pointer-events: auto;
-  }
-`;
-
-interface DrawingCanvasProps {
-  $isPenActive: boolean;
-}
-
-const DrawingCanvas = styled.canvas<DrawingCanvasProps>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  pointer-events: ${(props) => (props.$isPenActive ? "auto" : "none")};
-`;

@@ -109,9 +109,6 @@ export interface ITheme {
   disableThemeScrollbar?: boolean;
 }
 
-export interface IStyledProps {
-  theme: ITheme;
-}
 
 export interface IDocument {
   uri: string;
