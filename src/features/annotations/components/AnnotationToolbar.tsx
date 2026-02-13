@@ -47,7 +47,7 @@ export const AnnotationToolbar: FC = () => {
               aria-label={TOOL_LABELS[tool]}
               aria-pressed={isActive}
             >
-              <Icon color={isActive ? "#0064c8" : "#333"} size="60%" />
+              <Icon color={isActive ? "#0064c8" : "#333"} size="22" />
             </button>
           );
         })}

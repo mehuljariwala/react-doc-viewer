@@ -37,7 +37,7 @@ export const DocumentNav: FC = () => {
         onClick={() => dispatch(previousDocument())}
         disabled={currentFileNo === 0}
       >
-        <PrevDocIcon color="#fff" size="60%" />
+        <PrevDocIcon color="#fff" size="18" />
       </ButtonSecondary>
 
       <ButtonSecondary
@@ -46,7 +46,7 @@ export const DocumentNav: FC = () => {
         onClick={() => dispatch(nextDocument())}
         disabled={currentFileNo >= documents.length - 1}
       >
-        <NextDocIcon color="#fff" size="60%" />
+        <NextDocIcon color="#fff" size="18" />
       </ButtonSecondary>
     </div>
   );

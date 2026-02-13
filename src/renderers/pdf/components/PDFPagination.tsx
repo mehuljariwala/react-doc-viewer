@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import { FC, useContext } from "react";
 import { Button } from "../../../components/common";
 import { PDFContext } from "../state";
 import { setCurrentPage } from "../state/actions";
@@ -20,7 +20,7 @@ const PDFPagination: FC = () => {
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
       >
-        <PrevPDFNavIcon color="#000" size="50%" />
+        <PrevPDFNavIcon color="#000" size="15" />
       </Button>
 
       <div id="pdf-pagination-info" className="rdv-pdf-page-tag">
@@ -36,7 +36,7 @@ const PDFPagination: FC = () => {
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
       >
-        <NextPDFNavIcon color="#000" size="50%" />
+        <NextPDFNavIcon color="#000" size="15" />
       </Button>
     </div>
   );
