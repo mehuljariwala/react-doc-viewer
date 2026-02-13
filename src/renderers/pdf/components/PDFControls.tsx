@@ -74,17 +74,42 @@ const PDFControls: FC<Props> = ({ containerRef }) => {
       });
   }, [currentDocument]);
 
-  const handlePrint = useCallback(() => {
-    const url = currentDocument?.fileData as string;
-    if (!url) return;
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = url;
-    document.body.appendChild(iframe);
-    iframe.onload = () => {
-      iframe.contentWindow?.print();
-      setTimeout(() => document.body.removeChild(iframe), 1000);
-    };
+  const handlePrint = useCallback(async () => {
+    const fileData = currentDocument?.fileData as string | undefined;
+    if (!fileData) return;
+
+    let blobUrl: string | undefined;
+    try {
+      let blob: Blob;
+
+      if (fileData.startsWith("data:")) {
+        const res = await fetch(fileData);
+        blob = await res.blob();
+      } else {
+        const res = await fetch(fileData);
+        blob = await res.blob();
+      }
+
+      blobUrl = URL.createObjectURL(
+        new Blob([blob], { type: "application/pdf" }),
+      );
+
+      const iframe = document.createElement("iframe");
+      iframe.style.display = "none";
+      iframe.src = blobUrl;
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        iframe.contentWindow?.focus();
+        iframe.contentWindow?.print();
+        setTimeout(() => {
+          document.body.removeChild(iframe);
+          if (blobUrl) URL.revokeObjectURL(blobUrl);
+        }, 1000);
+      };
+    } catch {
+      window.print();
+    }
   }, [currentDocument]);
 
   const handleSearchToggle = useCallback(() => {
