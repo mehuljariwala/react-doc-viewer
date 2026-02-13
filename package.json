@@ -1,6 +1,6 @@
 {
   "name": "@iamjariwala/react-doc-viewer",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "React document viewer and PDF viewer component — render PDF, Word, Excel, PowerPoint, images, video, CSV and 20+ file types with drag-and-drop, annotations, thumbnails and i18n.",
   "author": "Mehul Jariwala",
   "type": "module",
