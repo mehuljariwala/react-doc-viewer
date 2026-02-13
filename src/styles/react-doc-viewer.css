@@ -333,50 +333,141 @@
   overflow: auto;
 }
 
+/* ---- Toolbar: floating bar ---- */
 .rdv-pdf-controls {
   display: flex;
   position: sticky;
   top: 0;
   left: 0;
   z-index: 1;
-  justify-content: flex-end;
-  padding: 8px;
-  background-color: var(--rdv-tertiary);
-  box-shadow: 0px 2px 3px #00000033;
+  justify-content: center;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.rdv-pdf-control-btn {
-  width: 30px;
-  height: 30px;
-}
-
-.rdv-pdf-download-btn {
-  width: 30px;
-  height: 30px;
-}
-
-.rdv-pdf-pagination {
+.rdv-toolbar-inner {
   display: flex;
   align-items: center;
+  gap: 2px;
 }
 
-.rdv-pdf-page-nav-btn-left {
-  width: 30px;
-  height: 30px;
-  margin: 0 5px;
+/* ---- Toolbar: groups & dividers ---- */
+.rdv-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
-.rdv-pdf-page-nav-btn-right {
-  width: 30px;
-  height: 30px;
-  margin: 0 20px 0 5px;
+.rdv-toolbar-divider {
+  width: 1px;
+  height: 20px;
+  margin: 0 6px;
+  background: rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
 }
 
-.rdv-pdf-page-tag {
-  color: var(--rdv-text-primary);
-  font-size: 14px;
-  text-align: left;
+/* ---- Toolbar: buttons ---- */
+.rdv-toolbar-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  border-radius: 6px;
+  background: transparent;
+  color: #4b5563;
+  transition: background 0.15s ease, opacity 0.15s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
+
+.rdv-toolbar-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.rdv-toolbar-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.rdv-toolbar-btn:disabled {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.rdv-toolbar-btn:focus-visible {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* ---- Toolbar: page input ---- */
+.rdv-toolbar-page-info {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 2px;
+}
+
+.rdv-toolbar-page-input {
+  width: 44px;
+  height: 28px;
+  text-align: center;
+  font-size: 13px;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 6px;
+  outline: none;
+  padding: 0 4px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.03);
+  color: #1f2937;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.rdv-toolbar-page-input:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.rdv-toolbar-page-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  background: #fff;
+}
+
+.rdv-toolbar-page-total {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: #9ca3af;
+  white-space: nowrap;
+  user-select: none;
+}
+
+/* ---- Toolbar: zoom label ---- */
+.rdv-toolbar-zoom-label {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #6b7280;
+  white-space: nowrap;
+  user-select: none;
+  min-width: 38px;
+  text-align: center;
+}
+
+/* ---- Legacy compat (kept for custom CSS) ---- */
+.rdv-pdf-control-btn { width: 32px; height: 32px; }
+.rdv-pdf-download-btn { width: 32px; height: 32px; }
+.rdv-pdf-pagination { display: flex; align-items: center; }
+.rdv-pdf-page-nav-btn-left { width: 32px; height: 32px; }
+.rdv-pdf-page-nav-btn-right { width: 32px; height: 32px; }
+.rdv-pdf-page-tag { color: var(--rdv-text-primary); font-size: 13px; }
 
 .rdv-pdf-document {
   display: flex;
@@ -872,19 +963,45 @@
   }
 
   .rdv-pdf-controls {
-    padding: 6px;
+    padding: 4px 6px;
+  }
+
+  .rdv-toolbar-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 5px;
+  }
+
+  .rdv-toolbar-divider {
+    height: 16px;
+    margin: 0 4px;
+  }
+
+  .rdv-toolbar-page-input {
+    width: 36px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .rdv-toolbar-page-total {
+    font-size: 11px;
+  }
+
+  .rdv-toolbar-zoom-label {
+    font-size: 11px;
+    min-width: 32px;
   }
 
   .rdv-pdf-control-btn,
   .rdv-pdf-download-btn {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
   }
 
   .rdv-pdf-page-nav-btn-left,
   .rdv-pdf-page-nav-btn-right {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
   }
 
   .rdv-pdf-page-tag {
@@ -904,8 +1021,8 @@
   }
 
   .rdv-thumbnail-toggle {
-    width: 25px;
-    height: 25px;
+    width: 28px;
+    height: 28px;
   }
 
   .rdv-annotation-toolbar {

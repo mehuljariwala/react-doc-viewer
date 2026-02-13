@@ -1,44 +1,74 @@
-import { FC, useContext } from "react";
-import { Button } from "../../../components/common";
+import { FC, useContext, useState, useEffect, useCallback, KeyboardEvent } from "react";
 import { PDFContext } from "../state";
 import { setCurrentPage } from "../state/actions";
 import { NextPDFNavIcon, PrevPDFNavIcon } from "./icons";
-import { useTranslation } from "../../../hooks/useTranslation";
 
 const PDFPagination: FC = () => {
   const {
     state: { currentPage, numPages },
     dispatch,
   } = useContext(PDFContext);
-  const { t } = useTranslation();
+
+  const [inputValue, setInputValue] = useState(String(currentPage));
+
+  useEffect(() => {
+    setInputValue(String(currentPage));
+  }, [currentPage]);
+
+  const goToPage = useCallback(
+    (val: string) => {
+      const page = parseInt(val, 10);
+      if (!isNaN(page) && page >= 1 && page <= numPages) {
+        dispatch(setCurrentPage(page));
+      } else {
+        setInputValue(String(currentPage));
+      }
+    },
+    [numPages, currentPage, dispatch],
+  );
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") goToPage(inputValue);
+  };
 
   return (
-    <div id="pdf-pagination" className="rdv-pdf-pagination">
-      <Button
+    <>
+      <button
         id="pdf-pagination-prev"
-        className="rdv-pdf-page-nav-btn-left"
+        className="rdv-toolbar-btn"
         onClick={() => dispatch(setCurrentPage(currentPage - 1))}
         disabled={currentPage === 1}
+        title="Previous page"
       >
-        <PrevPDFNavIcon color="#000" size="15" />
-      </Button>
+        <PrevPDFNavIcon size="16" />
+      </button>
 
-      <div id="pdf-pagination-info" className="rdv-pdf-page-tag">
-        {t("pdfPluginPageNumber", {
-          currentPage,
-          allPagesCount: numPages,
-        })}
+      <div className="rdv-toolbar-page-info">
+        <input
+          id="pdf-pagination-input"
+          className="rdv-toolbar-page-input"
+          type="text"
+          inputMode="numeric"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onBlur={() => goToPage(inputValue)}
+          onKeyDown={handleKeyDown}
+          onFocus={(e) => e.target.select()}
+          aria-label="Go to page"
+        />
+        <span className="rdv-toolbar-page-total">of {numPages}</span>
       </div>
 
-      <Button
+      <button
         id="pdf-pagination-next"
-        className="rdv-pdf-page-nav-btn-right"
+        className="rdv-toolbar-btn"
         onClick={() => dispatch(setCurrentPage(currentPage + 1))}
         disabled={currentPage >= numPages}
+        title="Next page"
       >
-        <NextPDFNavIcon color="#000" size="15" />
-      </Button>
-    </div>
+        <NextPDFNavIcon size="16" />
+      </button>
+    </>
   );
 };
 

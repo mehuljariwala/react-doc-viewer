@@ -1,4 +1,3 @@
-import React from "react";
 import { DocRenderer } from "../..";
 
 const FILE_TYPE_LABELS: Record<string, string> = {
