@@ -9,6 +9,13 @@ import pngFile from "./exampleFiles/png-image.png?url";
 import csvFile from "./exampleFiles/csv-file.csv?url";
 import epsFile from "./exampleFiles/eps-file.eps?url";
 import webpFile from "./exampleFiles/webp-file.webp?url";
+import jpgFile from "./exampleFiles/jpg-image.jpg?url";
+import gifFile from "./exampleFiles/gif-image.gif?url";
+import bmpFile from "./exampleFiles/bmp-image.bmp?url";
+import txtFile from "./exampleFiles/txt-file.txt?url";
+import mdFile from "./exampleFiles/md-file.md?url";
+import rtfFile from "./exampleFiles/rtf-file.rtf";
+import docxFile from "./exampleFiles/docx-file.docx";
 
 import { DocViewerRef, IDocument } from ".";
 
@@ -704,6 +711,188 @@ export const EveryFeatureEnabled = () => {
               dropBehavior: "append",
             },
             pdfVerticalScrollByDefault: false,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+// ===================== File Type Renderers =====================
+
+export const PDFFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfFile, fileName: "sample.pdf" }]}
+      pluginRenderers={DocViewerRenderers}
+      config={{ pdfVerticalScrollByDefault: true }}
+    />
+  </div>
+);
+
+export const DOCXFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: docxFile, fileName: "sample.docx", fileType: "docx" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const TXTFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: txtFile, fileName: "sample.txt", fileType: "text/plain" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const MarkdownFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: mdFile, fileName: "README.md", fileType: "text/markdown" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const RTFFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: rtfFile, fileName: "sample.rtf", fileType: "application/rtf" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const CSVFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: csvFile, fileName: "data.csv" }]}
+      pluginRenderers={DocViewerRenderers}
+      config={{ csvDelimiter: "," }}
+    />
+  </div>
+);
+
+export const JPGFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: jpgFile, fileName: "photo.jpg" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const PNGFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pngFile, fileName: "image.png" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const GIFFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: gifFile, fileName: "animation.gif" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const BMPFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: bmpFile, fileName: "image.bmp" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const WebPFile = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: webpFile, fileName: "image.webp" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const AllFileTypes = () => {
+  const allDocs: IDocument[] = [
+    { uri: pdfFile, fileName: "document.pdf" },
+    { uri: docxFile, fileName: "document.docx", fileType: "docx" },
+    { uri: txtFile, fileName: "readme.txt", fileType: "text/plain" },
+    { uri: mdFile, fileName: "README.md", fileType: "text/markdown" },
+    { uri: rtfFile, fileName: "document.rtf", fileType: "application/rtf" },
+    { uri: csvFile, fileName: "data.csv" },
+    { uri: jpgFile, fileName: "photo.jpg" },
+    { uri: pngFile, fileName: "image.png" },
+    { uri: gifFile, fileName: "animation.gif" },
+    { uri: bmpFile, fileName: "image.bmp" },
+    { uri: webpFile, fileName: "image.webp" },
+  ];
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "10px", background: "#f0f0f0" }}>
+        <strong>All File Types</strong>
+        <span style={{ fontSize: "12px", color: "#666", marginLeft: "10px" }}>
+          Navigate between PDF, DOCX, TXT, MD, RTF, CSV, JPG, PNG, GIF, BMP, WebP
+        </span>
+      </div>
+      <div style={{ flex: 1 }}>
+        <DocViewer
+          documents={allDocs}
+          pluginRenderers={DocViewerRenderers}
+          config={{
+            pdfVerticalScrollByDefault: true,
+            csvDelimiter: ",",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const FileUploadAllTypes = () => {
+  const [selectedDocs, setSelectedDocs] = useState<File[]>([]);
+
+  return (
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <div style={{ padding: "10px", background: "#f0f0f0" }}>
+        <strong>Upload Any File</strong>
+        <div style={{ fontSize: "12px", color: "#666", marginTop: "4px" }}>
+          Supports: PDF, DOCX, DOC, TXT, MD, RTF, CSV, JPG, PNG, GIF, BMP, WebP, TIFF, HTML
+        </div>
+        <input
+          type="file"
+          accept=".pdf,.docx,.doc,.txt,.md,.rtf,.csv,.jpg,.jpeg,.png,.gif,.bmp,.webp,.tiff,.tif,.html,.htm,.xlsx,.xls,.pptx,.ppt"
+          multiple
+          onChange={(el) =>
+            el.target.files?.length &&
+            setSelectedDocs(Array.from(el.target.files))
+          }
+          style={{ marginTop: "8px" }}
+        />
+      </div>
+      <div style={{ flex: 1 }}>
+        <DocViewer
+          documents={
+            selectedDocs.length > 0
+              ? selectedDocs.map((file) => ({
+                  uri: window.URL.createObjectURL(file),
+                  fileName: file.name,
+                }))
+              : [{ uri: pdfFile, fileName: "default.pdf" }]
+          }
+          pluginRenderers={DocViewerRenderers}
+          config={{
+            pdfVerticalScrollByDefault: true,
+            csvDelimiter: ",",
           }}
         />
       </div>

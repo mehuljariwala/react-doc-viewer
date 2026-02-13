@@ -4,6 +4,7 @@ import dts from "vite-plugin-dts";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
+  assetsInclude: ["**/*.docx", "**/*.rtf"],
   plugins: [
     dts({
       tsconfigPath: "./tsconfig.build.json",

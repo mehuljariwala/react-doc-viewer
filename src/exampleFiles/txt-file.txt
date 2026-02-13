@@ -1,0 +1,30 @@
+React Doc Viewer - Sample Text Document
+========================================
+
+This is a sample plain text file used to demonstrate the TXT renderer
+in @iamjariwala/react-doc-viewer.
+
+Features:
+- Lightweight document viewer component for React
+- Supports 20+ file formats
+- PDF viewing with annotations, thumbnails, and search
+- Drag and drop file loading
+- Dark mode support
+- Internationalization (i18n)
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+commodo consequat.
+
+Duis aute irure dolor in reprehenderit in voluptate velit esse cillum
+dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+Section 2: Technical Details
+----------------------------
+The viewer is built with React and TypeScript.
+It uses react-pdf for PDF rendering and docx-preview for DOCX files.
+All renderers are tree-shakeable and can be imported individually.
+
+End of document.
