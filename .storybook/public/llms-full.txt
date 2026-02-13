@@ -1,0 +1,627 @@
+# @iamjariwala/react-doc-viewer — Complete Documentation
+
+> The most feature-complete open-source document viewer for React. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component.
+
+Package: `@iamjariwala/react-doc-viewer`
+License: Apache-2.0
+Repository: https://github.com/mehuljariwala/react-doc-viewer
+npm: https://www.npmjs.com/package/@iamjariwala/react-doc-viewer
+Demo: https://mehuljariwala.github.io/react-doc-viewer
+
+---
+
+## Installation
+
+```bash
+npm install @iamjariwala/react-doc-viewer
+```
+
+Also available via yarn, pnpm, and bun.
+
+Peer dependencies: `react >= 17.0.0`, `react-dom >= 17.0.0`
+
+---
+
+## Quick Start
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+function App() {
+  const docs = [
+    { uri: "https://example.com/sample.pdf" },
+    { uri: "https://example.com/photo.png" },
+  ];
+
+  return <DocViewer documents={docs} pluginRenderers={DocViewerRenderers} />;
+}
+```
+
+The CSS import is required for PDF pages, annotations, thumbnails, and all styled elements.
+
+---
+
+## Supported File Types
+
+| Extension | MIME Type | Renderer |
+|-----------|-----------|----------|
+| pdf | application/pdf | Full viewer with zoom, pagination, thumbnails |
+| png | image/png | Image with checkerboard background |
+| jpg/jpeg | image/jpg, image/jpeg | Image viewer |
+| gif | image/gif | Image viewer (animated GIF support) |
+| bmp | image/bmp | Image viewer |
+| tiff | image/tiff | Canvas-based TIFF renderer |
+| webp | image/webp | Image viewer |
+| csv | text/csv | Parsed table with configurable delimiter |
+| txt | text/plain | Monospace text viewer |
+| htm/html | text/htm, text/html | Sandboxed iframe with DOMPurify sanitization |
+| mp4 | video/mp4 | Native video player with controls |
+| doc | application/msword | Download card |
+| docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Download card |
+| xls | application/vnd.ms-excel | Download card |
+| xlsx | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | Download card |
+| ppt | application/vnd.ms-powerpoint | Download card |
+| pptx | application/vnd.openxmlformats-officedocument.presentationml.presentation | Download card |
+| odt | application/vnd.oasis.opendocument.text | Download card |
+
+MS Office documents render as download cards showing file name, type, and a download link. No external service or public URL required.
+
+---
+
+## Framework Guides
+
+### Next.js (App Router & Pages Router)
+
+```tsx
+"use client";
+
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function DocumentPage() {
+  return (
+    <DocViewer
+      documents={[{ uri: "/documents/report.pdf" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  );
+}
+```
+
+The `"use client"` directive is required for App Router since DocViewer uses browser APIs.
+
+### Vite
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+function App() {
+  return (
+    <DocViewer
+      documents={[{ uri: "/sample.pdf" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  );
+}
+```
+
+### Create React App
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+function App() {
+  return (
+    <DocViewer
+      documents={[{ uri: `${process.env.PUBLIC_URL}/sample.pdf` }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  );
+}
+```
+
+### Remix
+
+```tsx
+import { ClientOnly } from "remix-utils/client-only";
+
+export default function DocumentRoute() {
+  return (
+    <ClientOnly fallback={<p>Loading viewer...</p>}>
+      {() => {
+        const DocViewer = require("@iamjariwala/react-doc-viewer").default;
+        const { DocViewerRenderers } = require("@iamjariwala/react-doc-viewer");
+        require("@iamjariwala/react-doc-viewer/dist/index.css");
+        return (
+          <DocViewer
+            documents={[{ uri: "/documents/report.pdf" }]}
+            pluginRenderers={DocViewerRenderers}
+          />
+        );
+      }}
+    </ClientOnly>
+  );
+}
+```
+
+---
+
+## DocViewer Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| documents | IDocument[] | Yes | Array of documents to display |
+| pluginRenderers | DocRenderer[] | No | Renderers to use (use DocViewerRenderers for all) |
+| className | string | No | CSS class for the container |
+| style | CSSProperties | No | Inline styles for the container |
+| config | IConfig | No | Configuration object |
+| theme | ITheme | No | Theme colors |
+| prefetchMethod | string | No | HTTP method for prefetching ("HEAD" default) |
+| requestHeaders | Record<string, string> | No | Custom headers for document requests |
+| initialActiveDocument | IDocument | No | Document to display initially |
+| activeDocument | IDocument | No | Controlled active document |
+| onDocumentChange | (doc: IDocument) => void | No | Callback when active document changes |
+| language | AvailableLanguages | No | UI language code |
+| jumpToPage | number | No | Declarative page jump for PDFs |
+| ref | DocViewerRef | No | Ref for programmatic control |
+
+---
+
+## Documents
+
+### Remote & Local Files
+
+```tsx
+const docs = [
+  { uri: "https://example.com/file.pdf" },
+  { uri: require("./files/document.pdf") },
+];
+```
+
+### Initial Active Document
+
+```tsx
+<DocViewer
+  documents={docs}
+  initialActiveDocument={docs[1]}
+  pluginRenderers={DocViewerRenderers}
+/>
+```
+
+### Controlled Document
+
+```tsx
+const [activeDocument, setActiveDocument] = useState(docs[0]);
+
+<DocViewer
+  documents={docs}
+  activeDocument={activeDocument}
+  onDocumentChange={setActiveDocument}
+  pluginRenderers={DocViewerRenderers}
+/>
+```
+
+### Blob / Uploaded Files
+
+```tsx
+const [files, setFiles] = useState<File[]>([]);
+
+<input
+  type="file"
+  accept=".pdf"
+  multiple
+  onChange={(e) => e.target.files?.length && setFiles(Array.from(e.target.files))}
+/>
+<DocViewer
+  documents={files.map((file) => ({
+    uri: window.URL.createObjectURL(file),
+    fileName: file.name,
+  }))}
+  pluginRenderers={DocViewerRenderers}
+/>
+```
+
+---
+
+## Renderers
+
+### Built-in Renderers
+
+Use all renderers:
+
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+<DocViewer pluginRenderers={DocViewerRenderers} documents={docs} />;
+```
+
+Or import selectively for smaller bundles:
+
+```tsx
+import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-viewer";
+<DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
+```
+
+Available renderers: BMPRenderer, CSVRenderer, GIFRenderer, HTMLRenderer, JPGRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, TIFFRenderer, TXTRenderer, VideoRenderer, WebPRenderer
+
+### Custom Renderer
+
+```tsx
+import { DocRenderer } from "@iamjariwala/react-doc-viewer";
+
+const MyPNGRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
+  if (!currentDocument) return null;
+  return <img src={currentDocument.fileData as string} />;
+};
+
+MyPNGRenderer.fileTypes = ["png", "image/png"];
+MyPNGRenderer.weight = 1;
+
+<DocViewer pluginRenderers={[MyPNGRenderer]} documents={docs} />;
+```
+
+### Custom File Loader
+
+```tsx
+MyPNGRenderer.fileLoader = ({ documentURI, signal, fileLoaderComplete }) => {
+  myCustomLoader(documentURI).then(() => {
+    fileLoaderComplete();
+  });
+};
+```
+
+---
+
+## Drag & Drop File Upload
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    dragDrop: {
+      enableDragDrop: true,
+      acceptedFileTypes: ["application/pdf", "image/*"],
+      maxFileSize: 50 * 1024 * 1024,
+      dropBehavior: "append",
+      onDrop: (files) => console.log("Files dropped:", files),
+      onDropRejected: (files, reason) => console.log("Rejected:", reason),
+    },
+  }}
+/>
+```
+
+Options:
+- enableDragDrop (boolean, default false): Enable drag-and-drop
+- acceptedFileTypes (string[]): MIME types to accept (supports wildcards)
+- maxFileSize (number): Max file size in bytes
+- dropBehavior ("append" | "replace"): Add to or replace existing documents
+- onDrop ((files: File[]) => void): Callback when files are accepted
+- onDropRejected ((files: File[], reason) => void): Callback when rejected
+
+---
+
+## Thumbnail Sidebar
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    thumbnail: {
+      enableThumbnails: true,
+      thumbnailWidth: 120,
+      sidebarDefaultOpen: true,
+    },
+  }}
+/>
+```
+
+Options:
+- enableThumbnails (boolean, default false): Enable thumbnail sidebar
+- thumbnailWidth (number, default 120): Width in pixels
+- sidebarDefaultOpen (boolean, default false): Open sidebar by default
+
+---
+
+## Annotations (Highlight, Draw, Comment)
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    annotations: {
+      enableAnnotations: true,
+      defaultColor: "#FFFF00",
+      colors: ["#FFFF00", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"],
+      tools: ["select", "highlight", "pen", "comment", "eraser"],
+      onAnnotationChange: (annotations) => console.log(annotations),
+      initialAnnotations: [],
+    },
+  }}
+/>
+```
+
+Options:
+- enableAnnotations (boolean): Enable annotation toolbar
+- defaultColor (string): Default annotation color
+- colors (string[]): Color palette
+- tools (AnnotationTool[]): Tools to show
+- onAnnotationChange ((annotations) => void): Change callback
+- initialAnnotations (IAnnotation[]): Pre-loaded annotations
+
+Exporting annotations:
+
+```tsx
+import { useAnnotationExport } from "@iamjariwala/react-doc-viewer";
+
+const { exportAnnotations, exportAsJSON, downloadAnnotations, getAnnotationsForPage, annotationCount } = useAnnotationExport();
+```
+
+---
+
+## Page Navigation & Page Jump
+
+Using ref:
+
+```tsx
+import DocViewer, { DocViewerRef } from "@iamjariwala/react-doc-viewer";
+
+const docViewerRef = useRef<DocViewerRef>(null);
+
+<DocViewer ref={docViewerRef} documents={docs} pluginRenderers={DocViewerRenderers} />;
+
+docViewerRef.current?.goToPage(5);
+docViewerRef.current?.prev();
+docViewerRef.current?.next();
+```
+
+Using jumpToPage prop:
+
+```tsx
+const [page, setPage] = useState(1);
+<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} jumpToPage={page} />;
+```
+
+---
+
+## Full Config Reference
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  config={{
+    header: {
+      disableHeader: false,
+      disableFileName: false,
+      retainURLParams: false,
+      overrideComponent: MyHeader,
+    },
+    loadingRenderer: {
+      overrideComponent: MyLoader,
+      showLoadingTimeout: 500,
+    },
+    noRenderer: {
+      overrideComponent: MyError,
+    },
+    csvDelimiter: ",",
+    pdfZoom: {
+      defaultZoom: 1.1,
+      zoomJump: 0.2,
+    },
+    pdfVerticalScrollByDefault: true,
+    dragDrop: { enableDragDrop: true },
+    thumbnail: { enableThumbnails: true },
+    annotations: { enableAnnotations: true },
+  }}
+/>
+```
+
+---
+
+## Theming & CSS Variables
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  theme={{
+    primary: "#5296d8",
+    secondary: "#ffffff",
+    tertiary: "#5296d899",
+    textPrimary: "#ffffff",
+    textSecondary: "#5296d8",
+    textTertiary: "#00000099",
+    disableThemeScrollbar: false,
+  }}
+/>
+```
+
+| Property | CSS Variable | Default |
+|----------|-------------|---------|
+| primary | --rdv-primary | #fff |
+| secondary | --rdv-secondary | #000 |
+| tertiary | --rdv-tertiary | #ffffff99 |
+| textPrimary | --rdv-text-primary | #000 |
+| textSecondary | --rdv-text-secondary | #fff |
+| textTertiary | --rdv-text-tertiary | #00000044 |
+
+---
+
+## Styling & CSS Customization
+
+CSS class:
+```tsx
+<DocViewer documents={docs} className="my-viewer" pluginRenderers={DocViewerRenderers} />
+```
+
+Override internal elements:
+```css
+.rdv-container { border-radius: 10px; }
+.rdv-header-bar { background-color: #faf; }
+.rdv-pdf-controls { gap: 12px; }
+```
+
+Override CSS variables globally:
+```css
+#react-doc-viewer {
+  --rdv-primary: #1a1a2e;
+  --rdv-secondary: #16213e;
+  --rdv-text-primary: #e94560;
+}
+```
+
+CSS class reference:
+- .rdv-container — Root container
+- .rdv-header-bar — Top header bar
+- .rdv-file-name — File name display
+- .rdv-doc-nav-prev / .rdv-doc-nav-next — Document navigation buttons
+- .rdv-pdf-controls — PDF control bar
+- .rdv-pdf-page-wrapper — Individual PDF page wrapper
+- .rdv-thumbnail-sidebar — Thumbnail sidebar container
+- .rdv-annotation-toolbar — Annotation toolbar
+- .rdv-image-container — Image renderer container
+- .rdv-csv-container — CSV table container
+- .rdv-txt-container — Text renderer container
+- .rdv-video-container — Video player container
+- .rdv-msdoc-container — Office document download card
+- .rdv-loading-container — Loading spinner container
+
+---
+
+## Internationalization (i18n)
+
+```tsx
+<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} language="pl" />
+```
+
+Supported languages: en (English), ar (Arabic), de (German), es (Spanish), fr (French), it (Italian), ja (Japanese), pl (Polish), pt (Portuguese), ru (Russian), se (Swedish), sr (Serbian Latin), sr_cyr (Serbian Cyrillic), tr (Turkish)
+
+---
+
+## DocViewerRef API
+
+```tsx
+const docViewerRef = useRef<DocViewerRef>(null);
+
+docViewerRef.current?.prev();
+docViewerRef.current?.next();
+docViewerRef.current?.goToPage(3);
+```
+
+Methods: prev(), next(), goToPage(n)
+
+---
+
+## Custom HTTP Verb for S3 / Cloud Storage
+
+```tsx
+<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} prefetchMethod="GET" />
+```
+
+---
+
+## Custom Request Headers
+
+```tsx
+<DocViewer
+  documents={docs}
+  pluginRenderers={DocViewerRenderers}
+  prefetchMethod="GET"
+  requestHeaders={{
+    "X-Access-Token": "1234567890",
+    "My-Custom-Header": "value",
+  }}
+/>
+```
+
+---
+
+## Performance & Bundle Size
+
+v1.1.0 removed styled-components (~160KB), core-js (~150KB), and ajv (~70KB) for ~380KB total savings.
+
+Optimization tips:
+- Tree-shake renderers: import only what you need
+- Lazy load: use React.lazy() to code-split
+
+```tsx
+const DocViewer = React.lazy(() => import("@iamjariwala/react-doc-viewer"));
+
+<Suspense fallback={<div>Loading viewer...</div>}>
+  <DocViewer documents={docs} pluginRenderers={[PDFRenderer]} />
+</Suspense>
+```
+
+---
+
+## Security
+
+- HTML sanitization with DOMPurify (scripts, objects, embeds, forms stripped)
+- No external services — all rendering is client-side
+- No external iframes — MS Office files render as local download cards
+- Sandboxed HTML rendering
+
+---
+
+## FAQ
+
+Q: What is the best React document viewer library?
+A: @iamjariwala/react-doc-viewer is the most feature-complete open-source React document viewer. It supports 20+ file types in a single component with annotations, drag-and-drop, thumbnails, theming, and i18n.
+
+Q: How do I display a PDF in React?
+A: Install @iamjariwala/react-doc-viewer, import DocViewer and DocViewerRenderers, pass your PDF URL as a document. See Quick Start section.
+
+Q: How do I display a PDF in Next.js?
+A: Add "use client" directive, import DocViewer with CSS, pass your PDF document. Works with App Router and Pages Router.
+
+Q: Can I view Word, Excel, and PowerPoint files in React?
+A: Yes. The library recognizes .doc, .docx, .xls, .xlsx, .ppt, .pptx and renders them as download cards. For inline rendering, create a Custom Renderer.
+
+Q: Does it support annotations and highlighting?
+A: Yes. Enable annotations via config for text highlighting, freehand drawing, comments, and eraser tool. Export as JSON.
+
+Q: Does it work with Next.js?
+A: Yes. Works with Next.js (App Router and Pages Router), Vite, CRA, Remix, Gatsby, and any React 17+ project.
+
+Q: Can I add my own file type renderer?
+A: Yes. Create a custom renderer with fileTypes and weight properties. See Custom Renderer section.
+
+Q: How do I style or theme the document viewer?
+A: Use theme prop, className/style props, or override .rdv-* CSS classes and --rdv-* CSS variables.
+
+Q: Is it secure? Does it send data to external servers?
+A: No data leaves the browser. HTML is sanitized with DOMPurify. MS Office files render locally.
+
+Q: How does this compare to react-pdf?
+A: react-pdf only handles PDF. This library handles 20+ types and adds drag-and-drop, annotations, thumbnails, theming, and i18n.
+
+Q: What React versions are supported?
+A: React 17, 18, and 19 via peerDependencies.
+
+Q: Does it support TypeScript?
+A: Yes. Written in TypeScript with complete type definitions.
+
+---
+
+## Migration Guides
+
+### From @cyntler/react-doc-viewer
+1. npm uninstall @cyntler/react-doc-viewer && npm install @iamjariwala/react-doc-viewer
+2. Update imports
+3. Add CSS import: import "@iamjariwala/react-doc-viewer/dist/index.css"
+4. All existing props are compatible
+
+### From react-pdf
+1. npm install @iamjariwala/react-doc-viewer
+2. Replace <Document> + <Page> with <DocViewer documents={[{ uri: pdfUrl }]} />
+3. Built-in PDF renderer handles zoom, pagination, navigation
+
+### From react-file-viewer
+1. npm install @iamjariwala/react-doc-viewer
+2. Replace <FileViewer fileType={type} filePath={path} /> with <DocViewer documents={[{ uri: path }]} />
+3. File type detected automatically

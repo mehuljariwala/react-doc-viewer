@@ -1,0 +1,31 @@
+User-agent: *
+Allow: /
+
+# AI / LLM crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# LLM documentation files
+# See https://llmstxt.org for the llms.txt standard
+Sitemap: https://mehuljariwala.github.io/react-doc-viewer/sitemap.xml
