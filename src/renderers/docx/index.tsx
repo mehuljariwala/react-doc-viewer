@@ -19,6 +19,7 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
       inWrapper: true,
       ignoreWidth: false,
       ignoreHeight: false,
+      ignoreLastRenderedPageBreak: false,
       renderHeaders: true,
       renderFooters: true,
       renderFootnotes: true,
