@@ -2,7 +2,7 @@
 
 > The most feature-complete open-source document viewer for React.
 
-Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop file upload, thumbnail sidebar, zoom controls, page navigation, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support.
+Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop file upload, thumbnail sidebar, zoom controls, page navigation, dark mode, print, fullscreen, text search, bookmarks/TOC, watermarks, password-protected PDFs, keyboard shortcuts, split/compare view, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support.
 
 ## Quick Links
 
@@ -32,11 +32,26 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 ## Key Features
 
-- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, MP4, ODT
+- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, Markdown, RTF, MP4, ODT
+- DOCX inline rendering with page navigation (via docx-preview)
+- Markdown rendering with sanitized HTML output
+- RTF rendering with formatted text display
+- Toolbar for all file types: download, print, zoom, and page navigation controls
 - Annotations: highlight, freehand draw, comments, export as JSON
 - Drag & Drop file upload with type/size validation
 - Thumbnail sidebar with click-to-jump for PDFs
 - Programmatic page navigation via ref or jumpToPage prop
+- Dark Mode: light, dark, or auto (prefers-color-scheme) with CSS variable theming
+- Print: native print dialog via toolbar button or Ctrl+P shortcut
+- Fullscreen: toggle via toolbar button or F key shortcut
+- Loading Progress Bar: animated progress indicator during PDF loading
+- Watermark Overlay: repeated rotated text overlay (e.g., "CONFIDENTIAL") on PDF pages
+- Text Selection & Copy: enable react-pdf text layer for selecting and copying text
+- Keyboard Shortcuts: page navigation, zoom, search, print, fullscreen — all via keyboard
+- Password-Protected PDFs: modal prompt for encrypted PDF files
+- Text Search: full-text search across all PDF pages with match highlighting, page navigation, and prev/next match controls
+- PDF Bookmarks / TOC: sidebar with auto-extracted PDF outline, nested items, click-to-navigate
+- Split View / Compare: side-by-side document comparison with draggable divider and sync scroll
 - 14 built-in languages (en, ar, de, es, fr, it, ja, pl, pt, ru, se, sr, sr_cyr, tr)
 - Theming via CSS variables (--rdv-*) or theme prop
 - Custom renderers for any file type
@@ -49,12 +64,24 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 ## Sections
 
+- What's New in v1.6.0
 - Supported File Types
 - Installation & Quick Start
 - Framework Guides (Next.js, Vite, CRA, Remix)
 - Documents (remote, local, blob, controlled)
 - Renderers (built-in, custom, file loader)
 - Features (drag-drop, thumbnails, annotations, page navigation)
+- Dark Mode
+- Print
+- Fullscreen
+- Loading Progress Bar
+- Watermark Overlay
+- Text Selection & Copy
+- Keyboard Shortcuts
+- Password-Protected PDFs
+- Text Search
+- PDF Bookmarks / TOC
+- Split View / Compare (SplitDocViewer)
 - Configuration (header, loading, error overrides)
 - Theming & CSS Variables
 - Styling & CSS Customization

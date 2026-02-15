@@ -1,0 +1,29 @@
+declare const _default: {
+  "documentNavInfo": "Belge {{ currentFileNo }} / {{ allFilesCount }}",
+  "noRendererMessage": "Dosya türü için görüntüleyici bulunamadı: {{{ fileType }}}",
+  "downloadButtonLabel": "Dosyayı indir",
+  "brokenFile": "Dosyanız bozuk. Lütfen kendi cihazınızda kontrol edin.",
+  "msgPluginRecipients": "Alıcılar",
+  "msgPluginSender": "Gönderen",
+  "pdfPluginLoading": "Yükleniyor...",
+  "pdfPluginPageNumber": "Sayfa {{ currentPage }}/{{ allPagesCount }}",
+  "printButtonLabel": "Print",
+  "fullscreenButtonLabel": "Enter fullscreen",
+  "exitFullscreenButtonLabel": "Exit fullscreen",
+  "passwordRequired": "This PDF is password protected",
+  "passwordPlaceholder": "Enter password",
+  "passwordSubmit": "Submit",
+  "passwordError": "Incorrect password. Please try again.",
+  "searchPlaceholder": "Search in document...",
+  "searchNoResults": "No results found",
+  "searchMatchCount": "{{ current }} of {{ total }}",
+  "bookmarksSidebar": "Bookmarks",
+  "showBookmarks": "Show bookmarks",
+  "hideBookmarks": "Hide bookmarks",
+  "noBookmarks": "No bookmarks available",
+  "splitView": "Split view",
+  "syncScroll": "Sync scroll"
+}
+;
+
+export default _default;

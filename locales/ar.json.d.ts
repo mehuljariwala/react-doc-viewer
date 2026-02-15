@@ -1,0 +1,29 @@
+declare const _default: {
+  "documentNavInfo": "مستند {{ currentFileNo }} من {{ allFilesCount }}",
+  "noRendererMessage": "{{{ fileType }}} : لا يمكننا عرض هذا النوع من الملفات",
+  "downloadButtonLabel": "تحميل الملف",
+  "brokenFile": "الملف تالف، يرجى التحقق منه على جهازك الخاص.",
+  "msgPluginRecipients": "المستلمين",
+  "msgPluginSender": "المرسل",
+  "pdfPluginLoading": "تحميل ...",
+  "pdfPluginPageNumber": " {{ allPagesCount }} \\ {{ currentPage }} صفحة ",
+  "printButtonLabel": "Print",
+  "fullscreenButtonLabel": "Enter fullscreen",
+  "exitFullscreenButtonLabel": "Exit fullscreen",
+  "passwordRequired": "This PDF is password protected",
+  "passwordPlaceholder": "Enter password",
+  "passwordSubmit": "Submit",
+  "passwordError": "Incorrect password. Please try again.",
+  "searchPlaceholder": "Search in document...",
+  "searchNoResults": "No results found",
+  "searchMatchCount": "{{ current }} of {{ total }}",
+  "bookmarksSidebar": "Bookmarks",
+  "showBookmarks": "Show bookmarks",
+  "hideBookmarks": "Hide bookmarks",
+  "noBookmarks": "No bookmarks available",
+  "splitView": "Split view",
+  "syncScroll": "Sync scroll"
+}
+;
+
+export default _default;

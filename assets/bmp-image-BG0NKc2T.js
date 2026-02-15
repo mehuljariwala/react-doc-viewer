@@ -1,0 +1,1 @@
+const e=""+new URL("jpg-image-f3zBRusf.jpg",import.meta.url).href,m=""+new URL("gif-image-DbqkD4CV.gif",import.meta.url).href,i=""+new URL("bmp-image-M1gDFLsm.bmp",import.meta.url).href;export{i as b,m as g,e as j};

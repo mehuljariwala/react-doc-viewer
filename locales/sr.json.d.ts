@@ -1,0 +1,29 @@
+declare const _default: {
+  "documentNavInfo": "Dokument {{ currentFileNo }} od {{ allFilesCount }}",
+  "noRendererMessage": "Ne postoji pregledač za tip fajla: {{ fileType }}",
+  "downloadButtonLabel": "Preuzimanje fajla",
+  "brokenFile": "Vaš fajl nije dobar. Molimo Vas da probate da ga otvorite na vašem računaru.",
+  "msgPluginRecipients": "Primaoci",
+  "msgPluginSender": "Pošiljalac",
+  "pdfPluginLoading": "Učitavanje...",
+  "pdfPluginPageNumber": "Strana {{ currentPage }}/{{ allPagesCount }}",
+  "printButtonLabel": "Print",
+  "fullscreenButtonLabel": "Enter fullscreen",
+  "exitFullscreenButtonLabel": "Exit fullscreen",
+  "passwordRequired": "This PDF is password protected",
+  "passwordPlaceholder": "Enter password",
+  "passwordSubmit": "Submit",
+  "passwordError": "Incorrect password. Please try again.",
+  "searchPlaceholder": "Search in document...",
+  "searchNoResults": "No results found",
+  "searchMatchCount": "{{ current }} of {{ total }}",
+  "bookmarksSidebar": "Bookmarks",
+  "showBookmarks": "Show bookmarks",
+  "hideBookmarks": "Hide bookmarks",
+  "noBookmarks": "No bookmarks available",
+  "splitView": "Split view",
+  "syncScroll": "Sync scroll"
+}
+;
+
+export default _default;

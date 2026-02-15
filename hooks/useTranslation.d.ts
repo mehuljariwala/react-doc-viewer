@@ -1,0 +1,3 @@
+export declare const useTranslation: () => {
+    t: (key: "documentNavInfo" | "noRendererMessage" | "downloadButtonLabel" | "brokenFile" | "msgPluginRecipients" | "msgPluginSender" | "pdfPluginLoading" | "pdfPluginPageNumber" | "printButtonLabel" | "fullscreenButtonLabel" | "exitFullscreenButtonLabel" | "passwordRequired" | "passwordPlaceholder" | "passwordSubmit" | "passwordError" | "searchPlaceholder" | "searchNoResults" | "searchMatchCount" | "bookmarksSidebar" | "showBookmarks" | "hideBookmarks" | "noBookmarks" | "splitView" | "syncScroll", variables?: Record<string, string | number>) => string;
+};

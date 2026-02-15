@@ -1,0 +1,29 @@
+declare const _default: {
+  "documentNavInfo": "Dokument {{ currentFileNo }} z {{ allFilesCount }}",
+  "noRendererMessage": "Brak funckji renderującej dla: {{{ fileType }}}",
+  "downloadButtonLabel": "Pobierz plik",
+  "brokenFile": "Twój plik jest uszkodzony. Sprawdź go na swoim komputerze.",
+  "msgPluginRecipients": "Odbiorcy",
+  "msgPluginSender": "Nadawca",
+  "pdfPluginLoading": "Wczytywanie...",
+  "pdfPluginPageNumber": "Strona {{ currentPage }}/{{ allPagesCount }}",
+  "printButtonLabel": "Print",
+  "fullscreenButtonLabel": "Enter fullscreen",
+  "exitFullscreenButtonLabel": "Exit fullscreen",
+  "passwordRequired": "This PDF is password protected",
+  "passwordPlaceholder": "Enter password",
+  "passwordSubmit": "Submit",
+  "passwordError": "Incorrect password. Please try again.",
+  "searchPlaceholder": "Search in document...",
+  "searchNoResults": "No results found",
+  "searchMatchCount": "{{ current }} of {{ total }}",
+  "bookmarksSidebar": "Bookmarks",
+  "showBookmarks": "Show bookmarks",
+  "hideBookmarks": "Hide bookmarks",
+  "noBookmarks": "No bookmarks available",
+  "splitView": "Split view",
+  "syncScroll": "Sync scroll"
+}
+;
+
+export default _default;
