@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from "react";
-import { renderAsync } from "docx-preview";
+import { renderSync } from "docx-preview-sync";
 import { DocRenderer } from "../..";
 import { arrayBufferFileLoader } from "../../utils/fileLoaders";
 
@@ -14,7 +14,7 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
     container.innerHTML = "";
     setError(false);
 
-    renderAsync(currentDocument.fileData as ArrayBuffer, container, undefined, {
+    renderSync(currentDocument.fileData as ArrayBuffer, container, undefined, {
       className: "rdv-docx",
       inWrapper: true,
       ignoreWidth: false,
