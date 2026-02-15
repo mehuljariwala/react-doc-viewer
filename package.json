@@ -1,7 +1,7 @@
 {
   "name": "@iamjariwala/react-doc-viewer",
   "version": "1.6.0",
-  "description": "React document viewer and PDF viewer component — render PDF, Word, Excel, PowerPoint, images, video, CSV and 20+ file types with drag-and-drop, annotations, thumbnails and i18n.",
+  "description": "React document viewer and PDF viewer component — render PDF, Word (DOCX inline), Excel, PowerPoint, Markdown, images, video, CSV and 20+ file types with annotations, text search, dark mode, drag-and-drop, thumbnails, zoom and i18n.",
   "author": "Mehul Jariwala",
   "type": "module",
   "keywords": [
@@ -91,7 +91,23 @@
     "responsive",
     "accessible",
     "ssr",
-    "server-side-rendering"
+    "server-side-rendering",
+    "dark-mode",
+    "text-search",
+    "search-highlight",
+    "pdf-search",
+    "markdown-viewer",
+    "markdown",
+    "rtf",
+    "docx-viewer",
+    "docx-preview",
+    "watermark",
+    "bookmarks",
+    "pdf-bookmarks",
+    "keyboard-shortcuts",
+    "split-view",
+    "fullscreen",
+    "password-protected-pdf"
   ],
   "license": "Apache-2.0",
   "homepage": "https://github.com/mehuljariwala/react-doc-viewer",

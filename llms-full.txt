@@ -1,6 +1,6 @@
 # @iamjariwala/react-doc-viewer — Complete Documentation
 
-> The most feature-complete open-source document viewer for React. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Now with dark mode, print, fullscreen, text search, bookmarks, watermarks, password-protected PDFs, keyboard shortcuts, and split/compare view.
+> The most feature-complete open-source document viewer for React. Render PDF, Word (DOCX inline), Excel, PowerPoint, Markdown, RTF, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Features dark mode, print, fullscreen, text search with highlighting, annotations, bookmarks/TOC, watermarks, password-protected PDFs, keyboard shortcuts, split/compare view, toolbar for all file types, and i18n (14 languages).
 
 Package: `@iamjariwala/react-doc-viewer`
 License: Apache-2.0
@@ -42,9 +42,22 @@ The CSS import is required for PDF pages, annotations, thumbnails, and all style
 
 ---
 
-## What's New in v1.3.0
+## What's New in v1.6.0
 
-v1.3.0 adds 11 new features, all opt-in via the `config` prop:
+v1.6.0 adds inline rendering for DOCX, Markdown, and RTF files, a shared toolbar for all file types, and improved text search:
+
+1. **DOCX Inline Rendering** — Word documents now render inline with full formatting and multi-page navigation (powered by docx-preview)
+2. **Markdown Renderer** — Native Markdown rendering with sanitized HTML output
+3. **RTF Renderer** — Rich Text Format files rendered with formatted text display
+4. **Toolbar for All File Types** — Download, print, zoom, and page navigation controls now appear for all renderers (not just PDF)
+5. **Multi-page Navigation** — Page prev/next, page input, and jump-to-page for multi-page documents (DOCX, PDF)
+6. **Text Search Highlighting** — Search matches are now highlighted with yellow background on the PDF page
+7. **Search Page Navigation** — Clicking next/prev match navigates to the page containing the match
+8. **PDF Search Fix** — Fixed text search that was returning no results due to missing PDFDocumentProxy state
+
+### Previous features (v1.3.0)
+
+All opt-in via the `config` prop:
 
 1. **Dark Mode** — `themeMode: "light" | "dark" | "auto"` with CSS variable theming and `prefers-color-scheme` auto-detection
 2. **Print** — `print: { enablePrint: true }` adds a print button to the toolbar and enables Ctrl+P shortcut
@@ -54,7 +67,7 @@ v1.3.0 adds 11 new features, all opt-in via the `config` prop:
 6. **Text Selection & Copy** — `textSelection: { enableTextSelection: true }` enables the react-pdf text layer for selecting and copying text
 7. **Keyboard Shortcuts** — `keyboard: { enableKeyboardShortcuts: true }` enables ArrowLeft/Right, Home/End, +/- zoom, 0 reset, Ctrl+F search, Ctrl+P print, F fullscreen, Escape
 8. **Password-Protected PDFs** — `password: { enablePasswordPrompt: true }` shows a modal password prompt for encrypted PDF files
-9. **Text Search** — `search: { enableSearch: true }` enables full-text search across all PDF pages with match count and prev/next navigation
+9. **Text Search** — `search: { enableSearch: true }` enables full-text search across all PDF pages with match highlighting and prev/next navigation
 10. **PDF Bookmarks / TOC** — `bookmarks: { enableBookmarks: true }` shows a sidebar with the auto-extracted PDF outline, nested items, and click-to-navigate
 11. **Split View / Compare** — New `<SplitDocViewer>` component for side-by-side document comparison with a draggable divider and optional synchronized scrolling
 
@@ -91,14 +104,16 @@ interface ISplitViewConfig { enableSplitView?: boolean; syncScroll?: boolean }
 | htm/html | text/htm, text/html | Sandboxed iframe with DOMPurify sanitization |
 | mp4 | video/mp4 | Native video player with controls |
 | doc | application/msword | Download card |
-| docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Download card |
+| docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Inline rendered with page navigation and formatting |
+| md | text/markdown | Rendered Markdown with sanitized HTML |
+| rtf | application/rtf | Formatted text display |
 | xls | application/vnd.ms-excel | Download card |
 | xlsx | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | Download card |
 | ppt | application/vnd.ms-powerpoint | Download card |
 | pptx | application/vnd.openxmlformats-officedocument.presentationml.presentation | Download card |
 | odt | application/vnd.oasis.opendocument.text | Download card |
 
-MS Office documents render as download cards showing file name, type, and a download link. No external service or public URL required.
+DOCX files are rendered inline with full formatting using docx-preview. Other MS Office documents render as download cards. No external service or public URL required.
 
 ---
 
@@ -278,7 +293,7 @@ import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-view
 <DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
 ```
 
-Available renderers: BMPRenderer, CSVRenderer, GIFRenderer, HTMLRenderer, JPGRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, TIFFRenderer, TXTRenderer, VideoRenderer, WebPRenderer
+Available renderers: BMPRenderer, CSVRenderer, DocxRenderer, GIFRenderer, HTMLRenderer, JPGRenderer, MarkdownRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, RTFRenderer, TIFFRenderer, TXTRenderer, VideoRenderer, WebPRenderer
 
 ### Custom Renderer
 
@@ -616,11 +631,12 @@ CSS classes: `.rdv-password-overlay`, `.rdv-password-modal`
 Enables full-text search across all pages of a PDF using pdfjs text extraction. Features:
 - Search bar with input field and match count display
 - Previous / Next match navigation buttons
-- Matches highlighted on the page
+- Matches highlighted with yellow background directly on the PDF page
+- Navigates to the page containing the current match automatically
 - Ctrl+F shortcut to open (when keyboard shortcuts are enabled)
 - Escape to close
 
-CSS classes: `.rdv-search-bar`, `.rdv-search-input`, `.rdv-search-count`
+CSS classes: `.rdv-search-bar`, `.rdv-search-input`, `.rdv-search-count`, `.rdv-search-highlight`
 
 ---
 
@@ -910,7 +926,7 @@ Q: How do I display a PDF in Next.js?
 A: Add "use client" directive, import DocViewer with CSS, pass your PDF document. Works with App Router and Pages Router.
 
 Q: Can I view Word, Excel, and PowerPoint files in React?
-A: Yes. The library recognizes .doc, .docx, .xls, .xlsx, .ppt, .pptx and renders them as download cards. For inline rendering, create a Custom Renderer.
+A: Yes. DOCX files are rendered inline with full formatting and page navigation (via docx-preview). Other Office formats (.doc, .xls, .xlsx, .ppt, .pptx) render as download cards.
 
 Q: Does it support annotations and highlighting?
 A: Yes. Enable annotations via config for text highlighting, freehand drawing, comments, and eraser tool. Export as JSON.

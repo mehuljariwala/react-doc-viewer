@@ -32,7 +32,11 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 ## Key Features
 
-- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, MP4, ODT
+- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, Markdown, RTF, MP4, ODT
+- DOCX inline rendering with page navigation (via docx-preview)
+- Markdown rendering with sanitized HTML output
+- RTF rendering with formatted text display
+- Toolbar for all file types: download, print, zoom, and page navigation controls
 - Annotations: highlight, freehand draw, comments, export as JSON
 - Drag & Drop file upload with type/size validation
 - Thumbnail sidebar with click-to-jump for PDFs
@@ -45,7 +49,7 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 - Text Selection & Copy: enable react-pdf text layer for selecting and copying text
 - Keyboard Shortcuts: page navigation, zoom, search, print, fullscreen — all via keyboard
 - Password-Protected PDFs: modal prompt for encrypted PDF files
-- Text Search: full-text search across all PDF pages with match count and prev/next navigation
+- Text Search: full-text search across all PDF pages with match highlighting, page navigation, and prev/next match controls
 - PDF Bookmarks / TOC: sidebar with auto-extracted PDF outline, nested items, click-to-navigate
 - Split View / Compare: side-by-side document comparison with draggable divider and sync scroll
 - 14 built-in languages (en, ar, de, es, fr, it, ja, pl, pt, ru, se, sr, sr_cyr, tr)
@@ -60,7 +64,7 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 ## Sections
 
-- What's New in v1.3.0
+- What's New in v1.6.0
 - Supported File Types
 - Installation & Quick Start
 - Framework Guides (Next.js, Vite, CRA, Remix)
