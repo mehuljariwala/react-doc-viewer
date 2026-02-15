@@ -41,7 +41,7 @@ type ContentsProps = {
   numPages: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  contentRef: React.RefObject<HTMLDivElement | null>;
+  contentRef: React.RefObject<HTMLDivElement>;
   t: (
     key:
       | "noRendererMessage"
