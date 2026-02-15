@@ -218,17 +218,18 @@ export const TogglePaginationPDFIcon = ({
     strokeWidth={STROKE_WIDTH}
     strokeLinecap="round"
     strokeLinejoin="round"
-    style={reverse ? { opacity: 0.9 } : undefined}
   >
     {reverse ? (
       <>
-        <rect x="3" y="3" width="18" height="8" rx="1" />
-        <rect x="3" y="13" width="18" height="8" rx="1" />
+        <rect x="4" y="1" width="16" height="10" rx="1.5" />
+        <rect x="4" y="13" width="16" height="10" rx="1.5" />
+        <path d="M12 11v2" />
+        <polyline points="9 12.5 12 14 15 12.5" />
       </>
     ) : (
       <>
-        <rect x="3" y="3" width="18" height="18" rx="1" />
-        <line x1="3" y1="12" x2="21" y2="12" />
+        <path d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" />
+        <polyline points="14 2 14 8 20 8" />
       </>
     )}
   </svg>

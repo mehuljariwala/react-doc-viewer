@@ -3,7 +3,7 @@ import React, { FC, useContext, useEffect, useState, useCallback } from "react";
 import { Document } from "react-pdf";
 import { useTranslation } from "../../../../hooks/useTranslation";
 import { PDFContext } from "../../state";
-import { setNumPages, setLoadingProgress, setPasswordRequired, setPasswordCallback } from "../../state/actions";
+import { setNumPages, setLoadingProgress, setPasswordRequired, setPasswordCallback, setPDFDocument } from "../../state/actions";
 import { initialPDFState } from "../../state/reducer";
 import { PDFAllPages } from "./PDFAllPages";
 import PDFSinglePage from "./PDFSinglePage";
@@ -40,11 +40,12 @@ const PDFPages: FC<{}> = () => {
   );
 
   const handleLoadSuccess = useCallback(
-    ({ numPages }: { numPages: number }) => {
-      dispatch(setNumPages(numPages));
+    (pdf: { numPages: number }) => {
+      dispatch(setNumPages(pdf.numPages));
       dispatch(setLoadingProgress(100));
       dispatch(setPasswordRequired(false));
       dispatch(setPasswordCallback(null));
+      dispatch(setPDFDocument(pdf));
     },
     [dispatch],
   );

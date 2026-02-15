@@ -93,6 +93,18 @@ export const setPasswordCallback = (
   value,
 });
 
+export const SET_PDF_DOCUMENT: string = "SET_PDF_DOCUMENT";
+
+export interface SetPDFDocument {
+  type: typeof SET_PDF_DOCUMENT;
+  value: unknown;
+}
+
+export const setPDFDocument = (value: unknown): SetPDFDocument => ({
+  type: SET_PDF_DOCUMENT,
+  value,
+});
+
 export type PDFActions =
   | SetZoomLevel
   | SetPDFPaginated
@@ -101,4 +113,5 @@ export type PDFActions =
   | SetCurrentMainState
   | SetLoadingProgress
   | SetPasswordRequired
-  | SetPasswordCallback;
+  | SetPasswordCallback
+  | SetPDFDocument;

@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useMemo, useState } from "react";
+import React, { useContext, useRef, useMemo, useEffect } from "react";
 import { DocRenderer } from "../..";
 import PDFPages from "./components/pages/PDFPages";
 import PDFControls from "./components/PDFControls";
@@ -43,9 +43,19 @@ const PDFRendererContent: React.FC = () => {
   const enablePrint = pdfState.mainState?.config?.print?.enablePrint ?? false;
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [pdfDocument] = useState<pdfjs.PDFDocumentProxy | null>(null);
+  const pdfDocument = pdfState.pdfDocument as pdfjs.PDFDocumentProxy | null;
 
   useBookmarks(pdfDocument);
+
+  useEffect(() => {
+    const { matches, currentMatchIndex } = searchCtx.state;
+    if (!matches.length) return;
+    const match = matches[currentMatchIndex];
+    if (!match) return;
+    if (match.pageIndex !== pdfState.currentPage) {
+      pdfDispatch(setCurrentPage(match.pageIndex));
+    }
+  }, [searchCtx.state.currentMatchIndex, searchCtx.state.matches]);
 
   const handlePageSelect = (pageNumber: number) => {
     pdfDispatch(setCurrentPage(pageNumber));

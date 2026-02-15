@@ -85,9 +85,11 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | Office docs (Word, Excel, PPT) | Yes | -- | Yes | Partial |
 | Images (PNG, JPG, GIF, WebP, TIFF, BMP) | Yes | -- | Yes | Partial |
 | Video (MP4) | Yes | -- | Yes | Yes |
+| Markdown / RTF | Yes | -- | -- | -- |
 | CSV / TXT / HTML | Yes | -- | Yes | Partial |
+| Toolbar for all file types | Yes | -- | -- | -- |
 | Dark Mode (light / dark / auto) | Yes | -- | -- | -- |
-| Text Search across pages | Yes | -- | -- | -- |
+| Text Search with highlighting | Yes | -- | -- | -- |
 | Annotations (highlight, draw, comment) | Yes | -- | -- | -- |
 | Keyboard Shortcuts | Yes | -- | -- | -- |
 | Watermark Overlay | Yes | -- | -- | -- |
@@ -108,7 +110,7 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | Tree-shakeable | Yes | Yes | -- | -- |
 | No external services | Yes | Yes | -- | -- |
 | Zero styled-components | Yes | Yes | -- | -- |
-| Actively maintained (2025) | Yes | Yes | -- | -- |
+| Actively maintained (2026) | Yes | Yes | -- | -- |
 | License | Apache-2.0 | MIT | MIT | MIT |
 
 > **TL;DR** -- If you only render PDFs, `react-pdf` is lighter. If you need multi-format support with a professional-grade feature set (search, annotations, dark mode, keyboard shortcuts, watermarks, bookmarks, split view, and more), this library covers all of it in a single package.
@@ -126,6 +128,19 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | **Drag & Drop** -- Drop files directly onto the viewer | **14 Languages** -- Built-in i18n with community translations | **Custom Renderers** -- Extend or replace any file type |
 
 ---
+
+### What's New in v1.6.0
+
+- **Common Toolbar for All File Types** -- Non-PDF renderers (DOCX, images, text, markdown, RTF, CSV) now have a toolbar with download, print, and zoom controls
+- **DOCX Inline Rendering** -- Word documents render inline with full formatting using `docx-preview` instead of download cards
+- **DOCX Page Navigation** -- Multi-page DOCX documents show page controls (prev/next, page input, jump-to-page) with automatic page detection
+- **Markdown Renderer** -- Native markdown rendering with headings, lists, links, code blocks, and formatting
+- **RTF Renderer** -- Rich Text Format file support
+- **Search Highlighting** -- Text search now highlights matched text with yellow background directly in the PDF
+- **Search Page Navigation** -- Clicking next/prev match automatically navigates to the page containing the match
+- **PDF Scroll Mode Navigation** -- Page prev/next buttons now scroll to the correct page in scroll (continuous) mode
+- **Sticky Header** -- Header bar stays fixed at the top when scrolling through documents
+- **Improved Storybook Organization** -- Stories reorganized into categorized navigation (Core, Features, File Types, Upload)
 
 ### What's New in v1.3.0
 
@@ -223,8 +238,10 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | txt | `text/plain` | Monospace text viewer |
 | htm / html | `text/htm`, `text/html` | Sandboxed iframe with DOMPurify sanitization |
 | mp4 | `video/mp4` | Native video player with controls |
+| md | `text/markdown` | Parsed markdown with headings, lists, code, links |
+| rtf | `application/rtf` | Rich text viewer |
 | doc | `application/msword` | Download card |
-| docx | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` | Download card |
+| docx | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` | Inline rendered with page navigation and formatting |
 | xls | `application/vnd.ms-excel` | Download card |
 | xlsx | `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Download card |
 | ppt | `application/vnd.ms-powerpoint` | Download card |
@@ -232,7 +249,7 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | odt | `application/vnd.oasis.opendocument.text` | Download card |
 
 > [!NOTE]
-> MS Office documents (doc, docx, xls, xlsx, ppt, pptx) render as download cards showing file name, type, and a download link. No external service or public URL is required. Need inline rendering? Create a [Custom Renderer](#custom-renderer) with your preferred conversion service.
+> DOCX files render inline with full formatting (headings, tables, lists, styles) using `docx-preview`. Multi-page DOCX documents include page navigation controls. Other MS Office formats (doc, xls, xlsx, ppt, pptx) render as download cards. No external service or public URL is required.
 
 ## Live Demo
 
@@ -440,7 +457,7 @@ import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-view
 <DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
 ```
 
-**Available renderers:** `BMPRenderer`, `CSVRenderer`, `GIFRenderer`, `HTMLRenderer`, `JPGRenderer`, `MSDocRenderer`, `PDFRenderer`, `PNGRenderer`, `TIFFRenderer`, `TXTRenderer`, `VideoRenderer`, `WebPRenderer`
+**Available renderers:** `BMPRenderer`, `CSVRenderer`, `DocxRenderer`, `GIFRenderer`, `HTMLRenderer`, `JPGRenderer`, `MarkdownRenderer`, `MSDocRenderer`, `PDFRenderer`, `PNGRenderer`, `RTFRenderer`, `TIFFRenderer`, `TXTRenderer`, `VideoRenderer`, `WebPRenderer`
 
 ### Custom Renderer
 
@@ -502,7 +519,7 @@ The `"auto"` mode listens for system theme changes in real-time. All dark mode s
 
 ### Text Search in PDF
 
-Full-text search across all pages using the pdfjs text extraction API. Displays match count with prev/next navigation.
+Full-text search across all pages using the pdfjs text extraction API. Matched text is highlighted with a yellow background directly in the PDF. Displays match count with prev/next navigation that automatically jumps to the page containing the match.
 
 ```tsx
 <DocViewer
@@ -519,7 +536,7 @@ Full-text search across all pages using the pdfjs text extraction API. Displays 
 | ------ | ---- | ------- | ----------- |
 | `enableSearch` | `boolean` | `false` | Show search icon in toolbar and enable Ctrl+F shortcut |
 
-When enabled, a search icon appears in the toolbar. Click it or press **Ctrl+F** to open the search bar. Press **Enter** to go to the next match, **Shift+Enter** for the previous match, and **Escape** to close.
+When enabled, a search icon appears in the toolbar. Click it or press **Ctrl+F** to open the search bar. Type to search -- matched text is highlighted in yellow directly on the PDF pages. Press **Enter** to go to the next match (auto-navigates to the correct page), **Shift+Enter** for the previous match, and **Escape** to close.
 
 ### Keyboard Shortcuts
 

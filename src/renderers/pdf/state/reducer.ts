@@ -17,6 +17,8 @@ import {
   SetPasswordRequired,
   SET_PASSWORD_CALLBACK,
   SetPasswordCallback,
+  SET_PDF_DOCUMENT,
+  SetPDFDocument,
 } from "./actions";
 
 export type IPDFState = {
@@ -30,6 +32,7 @@ export type IPDFState = {
   loadingProgress: number;
   passwordRequired: boolean;
   passwordCallback: ((password: string) => void) | null;
+  pdfDocument: unknown;
 };
 
 export const initialPDFState: IPDFState = {
@@ -42,6 +45,7 @@ export const initialPDFState: IPDFState = {
   loadingProgress: 0,
   passwordRequired: false,
   passwordCallback: null,
+  pdfDocument: null,
 };
 
 export type PDFStateReducer = (
@@ -93,6 +97,11 @@ export const reducer: PDFStateReducer = (
     case SET_PASSWORD_CALLBACK: {
       const { value } = action as SetPasswordCallback;
       return { ...state, passwordCallback: value };
+    }
+
+    case SET_PDF_DOCUMENT: {
+      const { value } = action as SetPDFDocument;
+      return { ...state, pdfDocument: value };
     }
 
     default:
