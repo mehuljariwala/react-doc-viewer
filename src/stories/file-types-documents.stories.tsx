@@ -9,6 +9,7 @@ import docxMultiplePages from "../exampleFiles/docx-multiple-pages.docx";
 import txtFile from "../exampleFiles/txt-file.txt?url";
 import mdFile from "../exampleFiles/md-file.md?url";
 import rtfFile from "../exampleFiles/rtf-file.rtf";
+import lostWageDocx from "../exampleFiles/lost-wage-verification.docx";
 
 export default {
   title: "DocViewer/File Types/Documents",
@@ -56,6 +57,15 @@ export const DOCXMultiPage = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
       documents={[{ uri: docxMultiplePages, fileName: "multi-page.docx", fileType: "docx" }]}
+      pluginRenderers={DocViewerRenderers}
+    />
+  </div>
+);
+
+export const DOCXLostWageVerification = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: lostWageDocx, fileName: "17_Lost_Wage_Verification.docx", fileType: "docx" }]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>

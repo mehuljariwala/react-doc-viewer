@@ -1,0 +1,13 @@
+diff --git a/node_modules/docx-preview-sync/dist/docx-preview.esm.js b/node_modules/docx-preview-sync/dist/docx-preview.esm.js
+index 2302606..7ce07a1 100644
+--- a/node_modules/docx-preview-sync/dist/docx-preview.esm.js
++++ b/node_modules/docx-preview-sync/dist/docx-preview.esm.js
+@@ -5842,6 +5842,8 @@ class HtmlRendererSync {
+     renderElements(children, parent) {
+         return __awaiter(this, void 0, void 0, function* () {
+             var _a, _b;
++            if (children == null)
++                return null;
+             let overflows = [];
+             let pages = this.document.documentPart.body.pages;
+             let { pageId, sectProps, children: current_page_children } = this.currentPage;

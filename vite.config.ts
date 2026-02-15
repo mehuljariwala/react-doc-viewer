@@ -1,10 +1,19 @@
 import { defineConfig } from "vitest/config";
+import { resolve } from "path";
 import dsv from "@rollup/plugin-dsv";
 import dts from "vite-plugin-dts";
 import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   assetsInclude: ["**/*.docx", "**/*.rtf"],
+  resolve: {
+    alias: {
+      "docx-preview-sync": resolve(
+        __dirname,
+        "node_modules/docx-preview-sync/dist/docx-preview.esm.js",
+      ),
+    },
+  },
   plugins: [
     dts({
       tsconfigPath: "./tsconfig.build.json",

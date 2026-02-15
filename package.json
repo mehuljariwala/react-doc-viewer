@@ -1,6 +1,6 @@
 {
   "name": "@iamjariwala/react-doc-viewer",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "React document viewer and PDF viewer component — render PDF, Word (DOCX inline), Excel, PowerPoint, Markdown, images, video, CSV and 20+ file types with annotations, text search, dark mode, drag-and-drop, thumbnails, zoom and i18n.",
   "author": "Mehul Jariwala",
   "type": "module",
@@ -147,6 +147,7 @@
     "prerelease": "git checkout main && git pull && npm run prettier:check && npm run lint && npm run test && npm run build && node ./scripts/copy-worker.mjs && cd use-cases/nextjs && npm i && npm run build",
     "release": "release-it && npm run deploy",
     "build-readme-toc": "npx doctoc README.md --title '## Table of Contents'",
+    "postinstall": "npx patch-package",
     "prepublish": "npm run build-readme-toc"
   },
   "dependencies": {

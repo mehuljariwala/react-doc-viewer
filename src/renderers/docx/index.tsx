@@ -14,7 +14,7 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
     container.innerHTML = "";
     setError(false);
 
-    renderSync(currentDocument.fileData as ArrayBuffer, container, undefined, {
+    const options = {
       className: "rdv-docx",
       inWrapper: true,
       ignoreWidth: false,
@@ -24,9 +24,12 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
       renderFooters: true,
       renderFootnotes: true,
       renderEndnotes: true,
-    }).catch(() => {
-      setError(true);
-    });
+    };
+
+    renderSync(currentDocument.fileData as ArrayBuffer, container, undefined, options)
+      .catch(() => {
+        setError(true);
+      });
   }, [currentDocument?.fileData]);
 
   if (!currentDocument) return null;
