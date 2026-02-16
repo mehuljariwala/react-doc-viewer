@@ -3,16 +3,43 @@ import { renderSync } from "docx-preview-sync";
 import { DocRenderer } from "../..";
 import { arrayBufferFileLoader } from "../../utils/fileLoaders";
 
-const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
+const OFFICE_VIEWER_BASE =
+  "https://view.officeapps.live.com/op/embed.aspx?src=";
+
+function isPublicUrl(uri: string): boolean {
+  try {
+    const url = new URL(uri);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+type RenderMode = "office-online" | "local" | "error";
+
+const DocxRenderer: DocRenderer = ({
+  mainState: { currentDocument, config },
+}) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [error, setError] = useState(false);
+  const [mode, setMode] = useState<RenderMode>("local");
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
+  const uri = currentDocument?.uri ?? "";
+  const officeOnlineEnabled = config?.docx?.useOfficeOnlineViewer === true;
+  const useOfficeViewer = officeOnlineEnabled && isPublicUrl(uri);
 
   useEffect(() => {
+    if (useOfficeViewer) {
+      setMode("office-online");
+      setIframeLoaded(false);
+      return;
+    }
+
     if (!currentDocument?.fileData || !containerRef.current) return;
 
     const container = containerRef.current;
     container.innerHTML = "";
-    setError(false);
+    setMode("local");
 
     const options = {
       className: "rdv-docx",
@@ -26,11 +53,15 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
       renderEndnotes: true,
     };
 
-    renderSync(currentDocument.fileData as ArrayBuffer, container, undefined, options)
-      .catch(() => {
-        setError(true);
-      });
-  }, [currentDocument?.fileData]);
+    renderSync(
+      currentDocument.fileData as ArrayBuffer,
+      container,
+      undefined,
+      options,
+    ).catch(() => {
+      setMode("error");
+    });
+  }, [currentDocument?.fileData, useOfficeViewer]);
 
   if (!currentDocument) return null;
 
@@ -39,7 +70,27 @@ const DocxRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
     currentDocument.uri.split("/").pop() ||
     "document";
 
-  if (error) {
+  if (mode === "office-online") {
+    const viewerUrl = `${OFFICE_VIEWER_BASE}${encodeURIComponent(uri)}`;
+
+    return (
+      <div id="docx-renderer" className="rdv-msdoc-iframe-container">
+        {!iframeLoaded && (
+          <div className="rdv-msdoc-iframe-loading">Loading document...</div>
+        )}
+        <iframe
+          className="rdv-msdoc-iframe"
+          src={viewerUrl}
+          title={fileName}
+          onLoad={() => setIframeLoaded(true)}
+          onError={() => setMode("error")}
+          sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        />
+      </div>
+    );
+  }
+
+  if (mode === "error") {
     return (
       <div id="docx-renderer" className="rdv-msdoc-container">
         <div className="rdv-msdoc-content">

@@ -119,6 +119,11 @@ export interface IConfig {
   search?: ISearchConfig;
   bookmarks?: IBookmarksConfig;
   splitView?: ISplitViewConfig;
+  docx?: IDocxConfig;
+}
+
+export interface IDocxConfig {
+  useOfficeOnlineViewer?: boolean;
 }
 
 export interface ILoadingRendererConfig {
