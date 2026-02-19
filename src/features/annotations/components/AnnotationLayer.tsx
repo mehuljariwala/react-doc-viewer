@@ -1,17 +1,21 @@
 import React, { FC, useContext, useEffect, useRef } from "react";
+import { ISelectionToolbarConfig } from "../../../models";
 import { AnnotationContext } from "../state";
 import { addAnnotation, setSelectedAnnotation } from "../state/actions";
 import { IAnnotation, ICommentData } from "../types";
 import { useDrawingCanvas } from "../hooks/useDrawingCanvas";
 import { useTextSelection } from "../hooks/useTextSelection";
+import { useSelectionToolbar } from "../hooks/useSelectionToolbar";
 import { TextHighlight } from "./TextHighlight";
 import { CommentMarker } from "./CommentMarker";
+import { SelectionToolbar } from "./SelectionToolbar";
 
 interface AnnotationLayerProps {
   pageNumber: number;
   documentUri: string;
   width: number;
   height: number;
+  selectionToolbarConfig?: ISelectionToolbarConfig;
 }
 
 export const AnnotationLayer: FC<AnnotationLayerProps> = ({
@@ -19,6 +23,7 @@ export const AnnotationLayer: FC<AnnotationLayerProps> = ({
   documentUri,
   width,
   height,
+  selectionToolbarConfig,
 }) => {
   const { state, dispatch } = useContext(AnnotationContext);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +40,22 @@ export const AnnotationLayer: FC<AnnotationLayerProps> = ({
     pageNumber,
     documentUri,
     containerRef,
+  });
+
+  const selectionToolbarEnabled =
+    selectionToolbarConfig && selectionToolbarConfig.enabled !== false;
+
+  const {
+    isVisible: toolbarVisible,
+    position: toolbarPosition,
+    selectedText,
+    dismiss: dismissToolbar,
+    highlightSelection,
+    copySelection,
+  } = useSelectionToolbar({
+    containerRef,
+    pageNumber,
+    documentUri,
   });
 
   const pageAnnotations = state.annotations.filter(
@@ -130,6 +151,18 @@ export const AnnotationLayer: FC<AnnotationLayerProps> = ({
         onMouseLeave={stopDrawing}
         {...(state.activeTool === "pen" ? { "data-pen-active": "" } : {})}
       />
+
+      {selectionToolbarEnabled && toolbarVisible && selectedText && (
+        <SelectionToolbar
+          position={toolbarPosition}
+          selectedText={selectedText}
+          pageNumber={pageNumber}
+          config={selectionToolbarConfig}
+          onHighlight={highlightSelection}
+          onCopy={copySelection}
+          onDismiss={dismissToolbar}
+        />
+      )}
     </div>
   );
 };

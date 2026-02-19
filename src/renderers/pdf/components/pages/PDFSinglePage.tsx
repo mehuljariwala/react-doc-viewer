@@ -27,7 +27,9 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
   const annotationConfig = mainState?.config?.annotations;
   const enableAnnotations = annotationConfig?.enableAnnotations ?? false;
   const watermarkConfig = mainState?.config?.watermark;
-  const enableTextSelection = mainState?.config?.textSelection?.enableTextSelection ?? false;
+  const selectionToolbarConfig = mainState?.config?.selectionToolbar;
+  const hasSelectionToolbar = selectionToolbarConfig && selectionToolbarConfig.enabled !== false;
+  const enableTextSelection = (mainState?.config?.textSelection?.enableTextSelection ?? false) || hasSelectionToolbar;
 
   const _pageNum = pageNum ?? currentPage;
 
@@ -109,12 +111,13 @@ const PDFSinglePage: FC<Props> = ({ pageNum }) => {
           renderTextLayer={enableTextSelection || enableSearch}
           customTextRenderer={enableSearch && searchQuery ? customTextRenderer : undefined}
         />
-        {enableAnnotations && pageSize.width > 0 && (
+        {(enableAnnotations || hasSelectionToolbar) && pageSize.width > 0 && (
           <AnnotationLayer
             pageNumber={_pageNum}
             documentUri={mainState?.currentDocument?.uri || ""}
             width={pageSize.width}
             height={pageSize.height}
+            selectionToolbarConfig={selectionToolbarConfig}
           />
         )}
         {watermarkConfig && <WatermarkOverlay config={watermarkConfig} />}

@@ -1042,6 +1042,133 @@
   opacity: 0.6;
 }
 
+/* ===================== Selection Toolbar ===================== */
+.rdv-selection-toolbar {
+  position: absolute;
+  background: #1a1a2e;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  pointer-events: auto;
+  user-select: none;
+  min-width: 140px;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+
+.rdv-selection-toolbar--arrow-down::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: #1a1a2e;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.rdv-selection-toolbar--arrow-up::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  width: 12px;
+  height: 12px;
+  background: #1a1a2e;
+  box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.rdv-selection-toolbar-actions {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  gap: 0;
+}
+
+.rdv-selection-toolbar-action-btn {
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  white-space: nowrap;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rdv-selection-toolbar-action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.rdv-selection-toolbar-action-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.rdv-selection-toolbar-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 0;
+}
+
+.rdv-selection-toolbar-tools {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.rdv-selection-toolbar-color {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+
+.rdv-selection-toolbar-color:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+}
+
+.rdv-selection-toolbar-tool-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.rdv-selection-toolbar-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: #b0b0c0;
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rdv-selection-toolbar-tool-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
 /* ===================== Loading Progress Bar ===================== */
 .rdv-pdf-progress-bar {
   height: 3px;
@@ -1386,7 +1513,8 @@
   .rdv-annotation-toolbar,
   .rdv-bookmarks-sidebar,
   .rdv-search-bar,
-  .rdv-dropzone-overlay {
+  .rdv-dropzone-overlay,
+  .rdv-selection-toolbar {
     display: none !important;
   }
 
@@ -1686,5 +1814,25 @@
   .rdv-color-btn {
     width: 20px;
     height: 20px;
+  }
+
+  .rdv-selection-toolbar-action-btn {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+
+  .rdv-selection-toolbar-color {
+    width: 18px;
+    height: 18px;
+  }
+
+  .rdv-selection-toolbar-tool-btn {
+    width: 26px;
+    height: 26px;
+  }
+
+  .rdv-selection-toolbar-tools {
+    gap: 6px;
+    padding: 6px 10px;
   }
 }
