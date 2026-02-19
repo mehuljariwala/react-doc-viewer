@@ -50,8 +50,8 @@ const _fileLoader: BaseFileLoaderFunction = ({
           break;
       }
     })
-    .catch((e) => {
-      return e;
+    .catch(() => {
+      fileLoaderComplete();
     });
 };
 
