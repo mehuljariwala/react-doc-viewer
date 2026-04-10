@@ -29,19 +29,21 @@ const IFRAME_SUPPORTED_TYPES = new Set([
 const isRemoteUrl = (uri: string): boolean =>
   uri.startsWith("http://") || uri.startsWith("https://");
 
-const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
+const MSDocRenderer: DocRenderer = ({
+  mainState: { currentDocument, config },
+}) => {
   const [iframeError, setIframeError] = useState(false);
 
   if (!currentDocument) return null;
 
+  const enableDownload = config?.download?.enableDownload !== false;
   const fileName =
     currentDocument.fileName ||
     currentDocument.uri.split("/").pop() ||
     "document";
   const fileType = currentDocument.fileType || "";
   const label =
-    FILE_TYPE_LABELS[fileType] ||
-    `Office Document (.${fileType || "unknown"})`;
+    FILE_TYPE_LABELS[fileType] || `Office Document (.${fileType || "unknown"})`;
 
   const canUseIframe =
     isRemoteUrl(currentDocument.uri) &&
@@ -87,33 +89,35 @@ const MSDocRenderer: DocRenderer = ({ mainState: { currentDocument } }) => {
         </div>
         <div className="rdv-msdoc-file-name">{fileName}</div>
         <div className="rdv-msdoc-file-type">{label}</div>
-        <a
-          className="rdv-msdoc-download-link"
-          href={currentDocument.uri}
-          download={fileName}
-          onClick={(e) => {
-            e.preventDefault();
-            const url = currentDocument.uri;
-            fetch(url)
-              .then((res) => res.blob())
-              .then((blob) => {
-                const blobUrl = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = blobUrl;
-                a.download = fileName;
-                a.click();
-                URL.revokeObjectURL(blobUrl);
-              })
-              .catch(() => {
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = fileName;
-                a.click();
-              });
-          }}
-        >
-          Download File
-        </a>
+        {enableDownload && (
+          <a
+            className="rdv-msdoc-download-link"
+            href={currentDocument.uri}
+            download={fileName}
+            onClick={(e) => {
+              e.preventDefault();
+              const url = currentDocument.uri;
+              fetch(url)
+                .then((res) => res.blob())
+                .then((blob) => {
+                  const blobUrl = URL.createObjectURL(blob);
+                  const a = document.createElement("a");
+                  a.href = blobUrl;
+                  a.download = fileName;
+                  a.click();
+                  URL.revokeObjectURL(blobUrl);
+                })
+                .catch(() => {
+                  const a = document.createElement("a");
+                  a.href = url;
+                  a.download = fileName;
+                  a.click();
+                });
+            }}
+          >
+            Download File
+          </a>
+        )}
       </div>
     </div>
   );

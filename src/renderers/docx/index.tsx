@@ -27,6 +27,7 @@ const DocxRenderer: DocRenderer = ({
   const uri = currentDocument?.uri ?? "";
   const officeOnlineEnabled = config?.docx?.useOfficeOnlineViewer === true;
   const useOfficeViewer = officeOnlineEnabled && isPublicUrl(uri);
+  const enableDownload = config?.download?.enableDownload !== false;
 
   useEffect(() => {
     if (useOfficeViewer) {
@@ -116,32 +117,34 @@ const DocxRenderer: DocRenderer = ({
           <div className="rdv-msdoc-file-type">
             Unable to preview this document
           </div>
-          <a
-            className="rdv-msdoc-download-link"
-            href={currentDocument.uri}
-            download={fileName}
-            onClick={(e) => {
-              e.preventDefault();
-              fetch(currentDocument.uri)
-                .then((res) => res.blob())
-                .then((blob) => {
-                  const blobUrl = URL.createObjectURL(blob);
-                  const a = document.createElement("a");
-                  a.href = blobUrl;
-                  a.download = fileName;
-                  a.click();
-                  URL.revokeObjectURL(blobUrl);
-                })
-                .catch(() => {
-                  const a = document.createElement("a");
-                  a.href = currentDocument.uri;
-                  a.download = fileName;
-                  a.click();
-                });
-            }}
-          >
-            Download File
-          </a>
+          {enableDownload && (
+            <a
+              className="rdv-msdoc-download-link"
+              href={currentDocument.uri}
+              download={fileName}
+              onClick={(e) => {
+                e.preventDefault();
+                fetch(currentDocument.uri)
+                  .then((res) => res.blob())
+                  .then((blob) => {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = blobUrl;
+                    a.download = fileName;
+                    a.click();
+                    URL.revokeObjectURL(blobUrl);
+                  })
+                  .catch(() => {
+                    const a = document.createElement("a");
+                    a.href = currentDocument.uri;
+                    a.download = fileName;
+                    a.click();
+                  });
+              }}
+            >
+              Download File
+            </a>
+          )}
         </div>
       </div>
     );

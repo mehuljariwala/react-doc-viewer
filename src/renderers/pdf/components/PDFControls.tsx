@@ -47,15 +47,41 @@ const PDFControls: FC<Props> = ({ containerRef }) => {
   const thumbnailConfig = mainState?.config?.thumbnail;
   const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
   const enablePrint = mainState?.config?.print?.enablePrint ?? false;
-  const enableFullscreen = mainState?.config?.fullscreen?.enableFullscreen ?? false;
+  const enableDownload = mainState?.config?.download?.enableDownload !== false;
+  const enableFullscreen =
+    mainState?.config?.fullscreen?.enableFullscreen ?? false;
   const enableSearch = mainState?.config?.search?.enableSearch ?? false;
-  const enableBookmarks = mainState?.config?.bookmarks?.enableBookmarks ?? false;
+  const enableBookmarks =
+    mainState?.config?.bookmarks?.enableBookmarks ?? false;
   const zoomPercent = Math.round(zoomLevel * 100);
 
   const handleDownload = useCallback(() => {
-    const url = currentDocument?.fileData as string;
-    const name = currentDocument?.fileName || currentDocument?.uri || "download";
+    if (!currentDocument) return;
+
+    const fileData = currentDocument.fileData;
+    const name =
+      currentDocument.fileName ||
+      currentDocument.uri?.split("/").pop() ||
+      "download";
+
+    // Handle ArrayBuffer fileData
+    if (fileData instanceof ArrayBuffer) {
+      const mimeType = currentDocument.fileType || "application/pdf";
+      const blob = new Blob([fileData], { type: mimeType });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(blobUrl);
+      return;
+    }
+
+    // Handle string (data URL or regular URL) or fall back to URI
+    const url =
+      (typeof fileData === "string" ? fileData : null) || currentDocument.uri;
     if (!url) return;
+
     fetch(url)
       .then((res) => res.blob())
       .then((blob) => {
@@ -128,17 +154,19 @@ const PDFControls: FC<Props> = ({ containerRef }) => {
           </>
         )}
 
-        {currentDocument?.fileData && (
+        {currentDocument?.fileData && (enableDownload || enablePrint) && (
           <>
             <div className="rdv-toolbar-group">
-              <button
-                id="pdf-download"
-                className="rdv-toolbar-btn"
-                title={t("downloadButtonLabel")}
-                onMouseDown={handleDownload}
-              >
-                <DownloadPDFIcon size="16" />
-              </button>
+              {enableDownload && (
+                <button
+                  id="pdf-download"
+                  className="rdv-toolbar-btn"
+                  title={t("downloadButtonLabel")}
+                  onMouseDown={handleDownload}
+                >
+                  <DownloadPDFIcon size="16" />
+                </button>
+              )}
 
               {enablePrint && (
                 <button
@@ -222,9 +250,7 @@ const PDFControls: FC<Props> = ({ containerRef }) => {
 
           {enableBookmarks && <BookmarksToggle />}
 
-          {enableThumbnails && (
-            <ThumbnailToggle title="Toggle thumbnails" />
-          )}
+          {enableThumbnails && <ThumbnailToggle title="Toggle thumbnails" />}
 
           {numPages > 1 && (
             <button

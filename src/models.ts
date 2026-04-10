@@ -8,7 +8,10 @@ export interface IDragDropConfig {
   maxFileSize?: number;
   dropBehavior?: "append" | "replace";
   onDrop?: (files: File[]) => void;
-  onDropRejected?: (files: File[], reason: "file-type" | "file-size" | "unknown") => void;
+  onDropRejected?: (
+    files: File[],
+    reason: "file-type" | "file-size" | "unknown",
+  ) => void;
 }
 
 export interface IThumbnailConfig {
@@ -55,6 +58,10 @@ export interface ICommentData {
 
 export interface IPrintConfig {
   enablePrint?: boolean;
+}
+
+export interface IDownloadConfig {
+  enableDownload?: boolean;
 }
 
 export interface IFullscreenConfig {
@@ -138,6 +145,7 @@ export interface IConfig {
   annotations?: IAnnotationConfig;
   themeMode?: "light" | "dark" | "auto";
   print?: IPrintConfig;
+  download?: IDownloadConfig;
   fullscreen?: IFullscreenConfig;
   loadingProgress?: ILoadingProgressConfig;
   watermark?: IWatermarkConfig;
@@ -199,7 +207,6 @@ export interface ITheme {
   textTertiary?: string;
   disableThemeScrollbar?: boolean;
 }
-
 
 export interface IDocument {
   uri: string;

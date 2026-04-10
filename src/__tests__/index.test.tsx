@@ -48,3 +48,37 @@ test("renders doc viewer with initialActiveDocument prop", () => {
   expect(proxyRenderer).toBeDefined();
   expect(proxyRenderer.querySelector("img")).toBeDefined();
 });
+
+test("hides download button when enableDownload is false", () => {
+  const docs = [{ uri: "", fileType: "application/postscript" }];
+  render(
+    <DocViewer
+      documents={docs}
+      config={{ download: { enableDownload: false } }}
+    />,
+  );
+
+  expect(screen.getByTestId("react-doc-viewer")).toBeDefined();
+  expect(screen.queryByText("Download file")).not.toBeInTheDocument();
+});
+
+test("shows download button by default when enableDownload is not set", () => {
+  const docs = [{ uri: "", fileType: "application/postscript" }];
+  render(<DocViewer documents={docs} />);
+
+  expect(screen.getByTestId("react-doc-viewer")).toBeDefined();
+  expect(screen.getByText("Download file")).toBeInTheDocument();
+});
+
+test("shows download button when enableDownload is true", () => {
+  const docs = [{ uri: "", fileType: "application/postscript" }];
+  render(
+    <DocViewer
+      documents={docs}
+      config={{ download: { enableDownload: true } }}
+    />,
+  );
+
+  expect(screen.getByTestId("react-doc-viewer")).toBeDefined();
+  expect(screen.getByText("Download file")).toBeInTheDocument();
+});

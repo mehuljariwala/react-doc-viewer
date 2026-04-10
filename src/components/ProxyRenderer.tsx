@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useCallback, useState, useRef, useEffect } from "react";
+import { FC, useCallback, useState, useRef, useEffect, RefObject } from "react";
 import { setRendererRect } from "../store/actions";
 import { DocRenderer, IConfig, IDocument } from "../models";
 import { getFileName } from "../utils/getFileName";
@@ -17,10 +17,7 @@ const ZOOM_STEP = 0.1;
 const MIN_ZOOM = 0.25;
 const MAX_ZOOM = 3;
 
-const PAGE_SELECTORS = [
-  "section.rdv-docx",
-  ".react-pdf__Page",
-].join(", ");
+const PAGE_SELECTORS = ["section.rdv-docx", ".react-pdf__Page"].join(", ");
 
 function detectPages(container: HTMLElement): HTMLElement[] {
   return Array.from(container.querySelectorAll<HTMLElement>(PAGE_SELECTORS));
@@ -41,7 +38,7 @@ type ContentsProps = {
   numPages: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  contentRef: React.RefObject<HTMLDivElement>;
+  contentRef: RefObject<HTMLDivElement>;
   t: (
     key:
       | "noRendererMessage"
@@ -88,7 +85,11 @@ const Contents: React.FC<ContentsProps> = ({
 
     return (
       <LoadingTimeout>
-        <div id="loading-renderer" data-testid="loading-renderer" className="rdv-loading-container">
+        <div
+          id="loading-renderer"
+          data-testid="loading-renderer"
+          className="rdv-loading-container"
+        >
           <div className="rdv-loading-icon">
             <LoadingIcon color="#444" size={40} />
           </div>
@@ -121,7 +122,8 @@ const Contents: React.FC<ContentsProps> = ({
             className="rdv-common-content-wrapper"
             style={{
               transformOrigin: "top center",
-              transform: zoomLevel === DEFAULT_ZOOM ? undefined : `scale(${zoomLevel})`,
+              transform:
+                zoomLevel === DEFAULT_ZOOM ? undefined : `scale(${zoomLevel})`,
             }}
           >
             <CurrentRenderer mainState={state} />
@@ -138,19 +140,22 @@ const Contents: React.FC<ContentsProps> = ({
         );
       }
 
+      const enableDownload = config?.download?.enableDownload !== false;
       return (
         <div id="no-renderer" data-testid="no-renderer">
           {t("noRendererMessage", {
             fileType: currentDocument?.fileType ?? "",
           })}
-          <LinkButton
-            id="no-renderer-download"
-            className="rdv-download-btn"
-            href={currentDocument?.uri}
-            download={currentDocument?.uri}
-          >
-            {t("downloadButtonLabel")}
-          </LinkButton>
+          {enableDownload && (
+            <LinkButton
+              id="no-renderer-download"
+              className="rdv-download-btn"
+              href={currentDocument?.uri}
+              download={currentDocument?.uri}
+            >
+              {t("downloadButtonLabel")}
+            </LinkButton>
+          )}
         </div>
       );
     }

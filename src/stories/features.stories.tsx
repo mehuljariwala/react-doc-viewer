@@ -28,7 +28,8 @@ export const DragAndDrop = () => {
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <div style={{ padding: "10px", background: "#f0f0f0" }}>
-        <strong>Drag & Drop Demo</strong> - Drag PDF or image files onto the viewer below
+        <strong>Drag & Drop Demo</strong> - Drag PDF or image files onto the
+        viewer below
         {droppedFiles.length > 0 && (
           <div style={{ marginTop: "5px", fontSize: "12px" }}>
             Dropped: {droppedFiles.join(", ")}
@@ -80,7 +81,8 @@ export const Annotations = () => {
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
       <div style={{ padding: "10px", background: "#f0f0f0" }}>
-        <strong>Annotations Demo</strong> - Use the toolbar to highlight, draw, or add comments
+        <strong>Annotations Demo</strong> - Use the toolbar to highlight, draw,
+        or add comments
         <div style={{ marginTop: "5px", fontSize: "12px" }}>
           Annotations count: {annotations.length}
         </div>
@@ -112,7 +114,15 @@ export const PageJump = () => {
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "10px", background: "#f0f0f0", display: "flex", gap: "10px", alignItems: "center" }}>
+      <div
+        style={{
+          padding: "10px",
+          background: "#f0f0f0",
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+        }}
+      >
         <strong>Page Jump Demo</strong>
         <input
           type="number"
@@ -132,10 +142,16 @@ export const PageJump = () => {
         >
           Go to Page
         </button>
-        <button onClick={() => docViewerRef.current?.prev()} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => docViewerRef.current?.prev()}
+          style={{ padding: "5px 15px" }}
+        >
           Prev Doc
         </button>
-        <button onClick={() => docViewerRef.current?.next()} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => docViewerRef.current?.next()}
+          style={{ padding: "5px 15px" }}
+        >
           Next Doc
         </button>
       </div>
@@ -157,19 +173,39 @@ export const JumpToPageProp = () => {
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "10px", background: "#f0f0f0", display: "flex", gap: "10px", alignItems: "center" }}>
+      <div
+        style={{
+          padding: "10px",
+          background: "#f0f0f0",
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+        }}
+      >
         <strong>Jump To Page Prop Demo</strong>
         <span>Current Page: {currentPage}</span>
-        <button onClick={() => setCurrentPage(1)} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => setCurrentPage(1)}
+          style={{ padding: "5px 15px" }}
+        >
           Page 1
         </button>
-        <button onClick={() => setCurrentPage(3)} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => setCurrentPage(3)}
+          style={{ padding: "5px 15px" }}
+        >
           Page 3
         </button>
-        <button onClick={() => setCurrentPage(5)} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => setCurrentPage(5)}
+          style={{ padding: "5px 15px" }}
+        >
           Page 5
         </button>
-        <button onClick={() => setCurrentPage(10)} style={{ padding: "5px 15px" }}>
+        <button
+          onClick={() => setCurrentPage(10)}
+          style={{ padding: "5px 15px" }}
+        >
           Page 10
         </button>
         <input
@@ -199,23 +235,40 @@ export const DarkMode = () => {
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
-      <div style={{ padding: "10px", background: "#f0f0f0", display: "flex", gap: "10px", alignItems: "center" }}>
+      <div
+        style={{
+          padding: "10px",
+          background: "#f0f0f0",
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+        }}
+      >
         <strong>Dark Mode Demo</strong>
         <button
           onClick={() => setMode("light")}
-          style={{ padding: "4px 12px", fontWeight: mode === "light" ? "bold" : "normal" }}
+          style={{
+            padding: "4px 12px",
+            fontWeight: mode === "light" ? "bold" : "normal",
+          }}
         >
           Light
         </button>
         <button
           onClick={() => setMode("dark")}
-          style={{ padding: "4px 12px", fontWeight: mode === "dark" ? "bold" : "normal" }}
+          style={{
+            padding: "4px 12px",
+            fontWeight: mode === "dark" ? "bold" : "normal",
+          }}
         >
           Dark
         </button>
         <button
           onClick={() => setMode("auto")}
-          style={{ padding: "4px 12px", fontWeight: mode === "auto" ? "bold" : "normal" }}
+          style={{
+            padding: "4px 12px",
+            fontWeight: mode === "auto" ? "bold" : "normal",
+          }}
         >
           Auto (System)
         </button>
@@ -240,6 +293,30 @@ export const PrintButton = () => (
       documents={[{ uri: pdfMultiplePagesFile }]}
       config={{
         print: { enablePrint: true },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+export const DownloadButton = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        download: { enableDownload: false },
+        pdfVerticalScrollByDefault: false,
+      }}
+    />
+  </div>
+);
+
+export const DownloadButtonDisabled = () => (
+  <div style={{ height: "100vh" }}>
+    <DocViewer
+      documents={[{ uri: pdfMultiplePagesFile }]}
+      config={{
+        download: { enableDownload: false },
         pdfVerticalScrollByDefault: false,
       }}
     />
@@ -312,7 +389,16 @@ export const KeyboardShortcuts = () => (
   <div style={{ height: "100vh", display: "flex", flexDirection: "column" }}>
     <div style={{ padding: "10px", background: "#f0f0f0" }}>
       <strong>Keyboard Shortcuts Demo</strong>
-      <div style={{ fontSize: "12px", color: "#666", marginTop: "4px", display: "flex", gap: "16px", flexWrap: "wrap" }}>
+      <div
+        style={{
+          fontSize: "12px",
+          color: "#666",
+          marginTop: "4px",
+          display: "flex",
+          gap: "16px",
+          flexWrap: "wrap",
+        }}
+      >
         <span>Arrow Left/Right: prev/next page</span>
         <span>Home/End: first/last page</span>
         <span>+/-: zoom in/out</span>
@@ -402,7 +488,8 @@ export const Bookmarks = () => (
     <div style={{ padding: "10px", background: "#f0f0f0" }}>
       <strong>Bookmarks / TOC Demo</strong>
       <span style={{ fontSize: "12px", color: "#666", marginLeft: "10px" }}>
-        Click the bookmark icon in the toolbar to show the table of contents sidebar
+        Click the bookmark icon in the toolbar to show the table of contents
+        sidebar
       </span>
     </div>
     <div style={{ flex: 1 }}>

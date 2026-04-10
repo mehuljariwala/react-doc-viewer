@@ -149,17 +149,36 @@ export const CommonToolbar: FC<CommonToolbarProps> = ({
   onPageChange,
 }) => {
   const { state } = useContext(DocViewerContext);
-  const { currentDocument } = state;
+  const { currentDocument, config } = state;
   const [pageInput, setPageInput] = useState(String(currentPage));
+  const enableDownload = config?.download?.enableDownload !== false;
+  const enablePrint = config?.print?.enablePrint !== false;
 
   const handleDownload = useCallback(() => {
     if (!currentDocument) return;
-    const url =
-      (currentDocument.fileData as string) || currentDocument.uri;
+
+    const fileData = currentDocument.fileData;
     const name =
       currentDocument.fileName ||
       currentDocument.uri?.split("/").pop() ||
       "download";
+
+    // Handle ArrayBuffer fileData
+    if (fileData instanceof ArrayBuffer) {
+      const mimeType = currentDocument.fileType || "application/octet-stream";
+      const blob = new Blob([fileData], { type: mimeType });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      a.download = name;
+      a.click();
+      URL.revokeObjectURL(blobUrl);
+      return;
+    }
+
+    // Handle string (data URL or regular URL) or fall back to URI
+    const url =
+      (typeof fileData === "string" ? fileData : null) || currentDocument.uri;
     if (!url) return;
 
     fetch(url)
@@ -211,7 +230,10 @@ export const CommonToolbar: FC<CommonToolbarProps> = ({
 
   const zoomPercent = Math.round(zoomLevel * 100);
 
-  if (currentPage !== parseInt(pageInput, 10) && document.activeElement?.className !== "rdv-toolbar-page-input") {
+  if (
+    currentPage !== parseInt(pageInput, 10) &&
+    document.activeElement?.className !== "rdv-toolbar-page-input"
+  ) {
     setPageInput(String(currentPage));
   }
 
@@ -253,24 +275,32 @@ export const CommonToolbar: FC<CommonToolbarProps> = ({
           </>
         )}
 
-        <div className="rdv-toolbar-group">
-          <button
-            className="rdv-toolbar-btn"
-            title="Download"
-            onMouseDown={handleDownload}
-          >
-            <DownloadIcon size="16" />
-          </button>
-          <button
-            className="rdv-toolbar-btn"
-            title="Print"
-            onMouseDown={handlePrint}
-          >
-            <PrintIcon size="16" />
-          </button>
-        </div>
+        {(enableDownload || enablePrint) && (
+          <>
+            <div className="rdv-toolbar-group">
+              {enableDownload && (
+                <button
+                  className="rdv-toolbar-btn"
+                  title="Download"
+                  onMouseDown={handleDownload}
+                >
+                  <DownloadIcon size="16" />
+                </button>
+              )}
+              {enablePrint && (
+                <button
+                  className="rdv-toolbar-btn"
+                  title="Print"
+                  onMouseDown={handlePrint}
+                >
+                  <PrintIcon size="16" />
+                </button>
+              )}
+            </div>
 
-        <div className="rdv-toolbar-divider" />
+            <div className="rdv-toolbar-divider" />
+          </>
+        )}
 
         <div className="rdv-toolbar-group">
           <button
