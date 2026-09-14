@@ -1,3 +1,4 @@
+import { default as XLSXRenderer } from './xlsx';
 import { default as BMPRenderer } from './bmp';
 import { default as DocxRenderer } from './docx';
 import { default as HTMLRenderer } from './html';
@@ -15,4 +16,4 @@ import { default as VideoRenderer } from './video';
 import { default as WebPRenderer } from './webp';
 
 export declare const DocViewerRenderers: import('..').DocRenderer[];
-export { BMPRenderer, DocxRenderer, HTMLRenderer, JPGRenderer, MarkdownRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, RTFRenderer, TIFFRenderer, TXTRenderer, CSVRenderer, GIFRenderer, VideoRenderer, WebPRenderer, };
+export { XLSXRenderer, BMPRenderer, DocxRenderer, HTMLRenderer, JPGRenderer, MarkdownRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, RTFRenderer, TIFFRenderer, TXTRenderer, CSVRenderer, GIFRenderer, VideoRenderer, WebPRenderer, };

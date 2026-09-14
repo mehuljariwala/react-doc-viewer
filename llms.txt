@@ -1,93 +1,26 @@
 # @iamjariwala/react-doc-viewer
 
-> The most feature-complete open-source document viewer for React.
+React document viewer with PDF tools, local DOCX and XLSX previews, and pluggable renderers. Main-branch docs can describe unreleased additions; check release status before using an API from npm.
 
-Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop file upload, thumbnail sidebar, zoom controls, page navigation, dark mode, print, fullscreen, text search, bookmarks/TOC, watermarks, password-protected PDFs, keyboard shortcuts, split/compare view, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support.
+## Documentation
 
-## Quick Links
+- [getting-started](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/getting-started.md)
+- [supported-file-types](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/supported-file-types.md)
+- [pdf](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/pdf.md)
+- [docx](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/docx.md)
+- [xlsx](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/xlsx.md)
+- [authenticated-files](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/authenticated-files.md)
+- [uploads](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/uploads.md)
+- [nextjs](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/frameworks/nextjs.md)
+- [api-reference](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/api-reference.md)
+- [custom-renderers](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/custom-renderers.md)
+- [theming](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/theming.md)
+- [security](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md)
+- [performance](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/performance.md)
+- [migration](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/migration.md)
+- [faq](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/faq.md)
+- [release](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/release.md)
 
-- Documentation: https://github.com/mehuljariwala/react-doc-viewer#readme
-- Full AI Documentation: https://raw.githubusercontent.com/mehuljariwala/react-doc-viewer/main/llms-full.txt
-- npm: https://www.npmjs.com/package/@iamjariwala/react-doc-viewer
-- Live Demo: https://mehuljariwala.github.io/react-doc-viewer
-- GitHub: https://github.com/mehuljariwala/react-doc-viewer
-
-## Install
-
-```bash
-npm install @iamjariwala/react-doc-viewer
-```
-
-## Basic Usage
-
-```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-<DocViewer
-  documents={[{ uri: "https://example.com/sample.pdf" }]}
-  pluginRenderers={DocViewerRenderers}
-/>;
-```
-
-## Key Features
-
-- 20+ file types: PDF, DOCX, XLSX, PPTX, PNG, JPG, GIF, TIFF, WebP, BMP, CSV, TXT, HTML, Markdown, RTF, MP4, ODT
-- DOCX inline rendering with page navigation (via docx-preview)
-- Markdown rendering with sanitized HTML output
-- RTF rendering with formatted text display
-- Toolbar for all file types: download, print, zoom, and page navigation controls
-- Annotations: highlight, freehand draw, comments, export as JSON
-- Drag & Drop file upload with type/size validation
-- Thumbnail sidebar with click-to-jump for PDFs
-- Programmatic page navigation via ref or jumpToPage prop
-- Dark Mode: light, dark, or auto (prefers-color-scheme) with CSS variable theming
-- Print: native print dialog via toolbar button or Ctrl+P shortcut
-- Fullscreen: toggle via toolbar button or F key shortcut
-- Loading Progress Bar: animated progress indicator during PDF loading
-- Watermark Overlay: repeated rotated text overlay (e.g., "CONFIDENTIAL") on PDF pages
-- Text Selection & Copy: enable react-pdf text layer for selecting and copying text
-- Keyboard Shortcuts: page navigation, zoom, search, print, fullscreen — all via keyboard
-- Password-Protected PDFs: modal prompt for encrypted PDF files
-- Text Search: full-text search across all PDF pages with match highlighting, page navigation, and prev/next match controls
-- PDF Bookmarks / TOC: sidebar with auto-extracted PDF outline, nested items, click-to-navigate
-- Split View / Compare: side-by-side document comparison with draggable divider and sync scroll
-- 14 built-in languages (en, ar, de, es, fr, it, ja, pl, pt, ru, se, sr, sr_cyr, tr)
-- Theming via CSS variables (--rdv-*) or theme prop
-- Custom renderers for any file type
-- Works with Next.js, Vite, CRA, Remix, Gatsby
-- React 17, 18, and 19 supported
-- No external services — all rendering is client-side
-- HTML sanitized with DOMPurify
-- Tree-shakeable — import only renderers you need
-- Apache-2.0 license
-
-## Sections
-
-- What's New in v1.6.0
-- Supported File Types
-- Installation & Quick Start
-- Framework Guides (Next.js, Vite, CRA, Remix)
-- Documents (remote, local, blob, controlled)
-- Renderers (built-in, custom, file loader)
-- Features (drag-drop, thumbnails, annotations, page navigation)
-- Dark Mode
-- Print
-- Fullscreen
-- Loading Progress Bar
-- Watermark Overlay
-- Text Selection & Copy
-- Keyboard Shortcuts
-- Password-Protected PDFs
-- Text Search
-- PDF Bookmarks / TOC
-- Split View / Compare (SplitDocViewer)
-- Configuration (header, loading, error overrides)
-- Theming & CSS Variables
-- Styling & CSS Customization
-- Internationalization (i18n)
-- Performance & Bundle Size
-- Security
-- Advanced (DocViewerRef API, S3/cloud, auth headers)
-- FAQ
-- Migration guides (from @cyntler, react-pdf, react-file-viewer)
+- [npm](https://www.npmjs.com/package/@iamjariwala/react-doc-viewer)
+- [Demo](https://mehuljariwala.github.io/react-doc-viewer/)
+- [Full documentation](https://mehuljariwala.github.io/react-doc-viewer/llms-full.txt)

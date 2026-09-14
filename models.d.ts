@@ -89,6 +89,31 @@ export interface ISplitViewConfig {
     enableSplitView?: boolean;
     syncScroll?: boolean;
 }
+export interface IServerConversionConfig {
+    serviceUrl: string;
+    enabled?: boolean;
+    timeout?: number;
+    fileFieldName?: string;
+    additionalFormFields?: Record<string, string>;
+    eligibleFileTypes?: string[];
+    headers?: Record<string, string>;
+    fallbackToClientRenderer?: boolean;
+    onConversionStart?: (document: IDocument) => void;
+    onConversionComplete?: (document: IDocument) => void;
+    onConversionError?: (document: IDocument, error: Error) => void;
+}
+export interface ISelectionAction {
+    label: string;
+    onClick: (selectedText: string, pageNumber: number) => void;
+}
+export interface ISelectionToolbarConfig {
+    enabled?: boolean;
+    actions?: ISelectionAction[];
+    showHighlightColors?: boolean;
+    showCopyButton?: boolean;
+    showCommentButton?: boolean;
+    colors?: string[];
+}
 export interface IConfig {
     header?: IHeaderConfig;
     loadingRenderer?: ILoadingRendererConfig;
@@ -110,6 +135,12 @@ export interface IConfig {
     search?: ISearchConfig;
     bookmarks?: IBookmarksConfig;
     splitView?: ISplitViewConfig;
+    docx?: IDocxConfig;
+    serverConversion?: IServerConversionConfig;
+    selectionToolbar?: ISelectionToolbarConfig;
+}
+export interface IDocxConfig {
+    useOfficeOnlineViewer?: boolean;
 }
 export interface ILoadingRendererConfig {
     overrideComponent?: ComponentType<{
