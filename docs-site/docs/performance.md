@@ -14,3 +14,9 @@ Selective renderer imports control accepted formats, but shared imports can keep
 For a meaningful comparison with another library, use the same bundler, production mode, React version, document types and feature requirements. Publish the fixture and measured output; avoid unsourced size or speed rankings.
 
 Spreadsheet parsing has documented [resource/display limits](guides/xlsx.md). Large PDFs and image-heavy DOCX files also need testing on representative devices. Build success does not establish runtime rendering speed or memory usage.
+
+## PDF worker packaging tradeoff
+
+The current default build embeds the PDF worker into each library format so the viewer works without application-specific worker URL setup. An ESM consumer uses the ESM build; a CommonJS consumer uses the CommonJS build. They do not normally download both. The separately exported `dist/pdf.worker.mjs` also increases the npm archive size, as recorded in the bundle report.
+
+This is a known size tradeoff, not a size optimization. Moving to an external worker requires a tested consumer URL configuration contract across supported bundlers. The worker export alone does not create a browser URL, and a bare relative URL can break deployed applications. That contract change is deferred from this update to preserve the existing drop-in setup.

@@ -64,10 +64,10 @@ React 17, 18 and 19 are supported peer majors. Packed consumer tests verify the 
 
 ## Next Steps
 
-- [Supported File Types](/docs/supported-file-types) — see all 20+ formats
-- [Framework Guides](/docs/frameworks/nextjs) — Next.js, Vite, CRA, Remix
-- [Features](/docs/features/annotations) — annotations, drag-drop, thumbnails
-- [API Reference](/docs/api-reference) — all props and config options
+- [Supported File Types](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/supported-file-types.md) — see all 20+ formats
+- [Framework Guides](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/frameworks/nextjs.md) — Next.js, Vite, CRA, Remix
+- [Features](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/features/annotations.md) — annotations, drag-drop, thumbnails
+- [API Reference](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/api-reference.md) — all props and config options
 
 ---
 
@@ -79,7 +79,7 @@ A recognized extension is not a promise of native inline rendering. The followin
 
 - **PDF:** local PDF viewer with pagination, search, zoom and optional annotations.
 - **DOCX:** local inline preview by default; optional Office Online mode for public HTTP(S) URLs. Complex Word layouts may differ from Word.
-- **XLSX:** local read-only table, sheet selector and bounded preview. See [XLSX](guides/xlsx.md).
+- **XLSX:** local read-only table, sheet selector and bounded preview. See [XLSX](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/xlsx.md).
 - **DOC, XLS, PPT, PPTX, ODT:** Microsoft Office Online for HTTP(S) URLs; download card for blob/local URLs. External viewer availability and public access are required.
 - **Apple Pages:** download card.
 - **PNG, JPG/JPEG, GIF, BMP, WebP:** image preview. TIFF uses a canvas renderer.
@@ -99,7 +99,7 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 Explicit `fileType` is useful for signed URLs and servers returning generic MIME types. File extensions and MIME types are renderer identifiers, not file-content validation. Do not label a legacy XLS file as XLSX.
 
-See [Security](security.md) before sending private Office URLs or enabling server conversion.
+See [Security](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md) before sending private Office URLs or enabling server conversion.
 
 ---
 
@@ -128,7 +128,7 @@ export default function PdfPreview() {
 }
 ```
 
-Use a client-only boundary in frameworks that render on the server. See the [Next.js example](../frameworks/nextjs.md). The distribution includes its PDF worker; the packed consumer tests check that asset. Cross-origin URLs need suitable CORS headers from the document server.
+Use a client-only boundary in frameworks that render on the server. See the [Next.js example](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/frameworks/nextjs.md). The distribution includes its PDF worker; the packed consumer tests check that asset. Cross-origin URLs need suitable CORS headers from the document server.
 
 ---
 
@@ -154,7 +154,7 @@ export default function WordPreview() {
 
 DOCX previews locally by default. This is an approximation of Word layout; test headers, footnotes, page breaks and fonts with your own files. Legacy `.doc` is a different format and uses `MSDocRenderer`.
 
-Office Online is an explicit DOCX option, requires a public HTTP(S) URL and sends that URL to Microsoft. It is unsuitable for URLs requiring your application's request headers. See [document privacy](../security.md).
+Office Online is an explicit DOCX option, requires a public HTTP(S) URL and sends that URL to Microsoft. It is unsuitable for URLs requiring your application's request headers. See [document privacy](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md).
 
 ---
 
@@ -191,7 +191,7 @@ The preview is for bounded workbooks: input size is capped at 5 MiB, expanded ZI
 
 Try **DocViewer / File Types / Data / XLSX** in Storybook for a bundled workbook with multiple sheets.
 
-![XLSX table preview with worksheet selection](/img/xlsx-preview.png)
+![XLSX table preview with worksheet selection](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/static/img/xlsx-preview.png)
 
 ---
 
@@ -212,13 +212,15 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 export default function PrivatePreview({
   token,
   uri,
+  fileType,
 }: {
   token: string;
   uri: string;
+  fileType: "pdf" | "docx" | "xlsx";
 }) {
   return (
     <DocViewer
-      documents={[{ uri, fileType: "pdf" }]}
+      documents={[{ uri, fileType }]}
       pluginRenderers={[PDFRenderer, DocxRenderer, XLSXRenderer]}
       requestHeaders={{ Authorization: `Bearer ${token}` }}
       style={{ height: 600 }}
@@ -571,7 +573,13 @@ Selective renderer imports control accepted formats, but shared imports can keep
 
 For a meaningful comparison with another library, use the same bundler, production mode, React version, document types and feature requirements. Publish the fixture and measured output; avoid unsourced size or speed rankings.
 
-Spreadsheet parsing has documented [resource/display limits](guides/xlsx.md). Large PDFs and image-heavy DOCX files also need testing on representative devices. Build success does not establish runtime rendering speed or memory usage.
+Spreadsheet parsing has documented [resource/display limits](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/xlsx.md). Large PDFs and image-heavy DOCX files also need testing on representative devices. Build success does not establish runtime rendering speed or memory usage.
+
+## PDF worker packaging tradeoff
+
+The current default build embeds the PDF worker into each library format so the viewer works without application-specific worker URL setup. An ESM consumer uses the ESM build; a CommonJS consumer uses the CommonJS build. They do not normally download both. The separately exported `dist/pdf.worker.mjs` also increases the npm archive size, as recorded in the bundle report.
+
+This is a known size tradeoff, not a size optimization. Moving to an external worker requires a tested consumer URL configuration contract across supported bundlers. The worker export alone does not create a browser URL, and a bare relative URL can break deployed applications. That contract change is deferred from this update to preserve the existing drop-in setup.
 
 ---
 
@@ -586,7 +594,7 @@ This package is a fork with a related API, but do not assume every configuration
 1. Replace the dependency with `@iamjariwala/react-doc-viewer`.
 2. Update imports and add `@iamjariwala/react-doc-viewer/dist/index.css` once.
 3. Pass `pluginRenderers` explicitly. Choose local renderers for private documents.
-4. Review Office Online and server-conversion behavior in [Security](security.md).
+4. Review Office Online and server-conversion behavior in [Security](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md).
 5. Test the file types, request headers, callbacks, annotations and CSS overrides your application uses.
 
 ## From react-pdf or react-file-viewer
@@ -613,11 +621,11 @@ Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/do
 
 ## Which formats render locally?
 
-PDF, DOCX (default), XLSX (next release), images, CSV, text, Markdown and supported media use local renderers. Other Office formats can use Microsoft Office Online. See [format support](supported-file-types.md).
+PDF, DOCX (default), XLSX (next release), images, CSV, text, Markdown and supported media use local renderers. Other Office formats can use Microsoft Office Online. See [format support](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/supported-file-types.md).
 
 ## Does this send documents to third parties?
 
-It depends on the renderer and configuration. Office Online receives public document URLs; optional server conversion uploads eligible documents to the configured service. Embedded resources can make network requests. See [Security](security.md).
+It depends on the renderer and configuration. Office Online receives public document URLs; optional server conversion uploads eligible documents to the configured service. Embedded resources can make network requests. See [Security](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md).
 
 ## Which React and framework versions work?
 
@@ -625,15 +633,15 @@ React 17, 18 and 19 are supported peer majors. The packed-package CI matrix reco
 
 ## Why does my private file fail?
 
-Check CORS, Content-Type/fileType and request headers. Office Online cannot fetch private endpoints that need your browser's authorization headers. See [authenticated files](guides/authenticated-files.md).
+Check CORS, Content-Type/fileType and request headers. Office Online cannot fetch private endpoints that need your browser's authorization headers. See [authenticated files](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/authenticated-files.md).
 
 ## Is it better or smaller than another viewer?
 
-Choose based on requirements and use the [measurement procedure](performance.md). We do not claim universal superiority or an LLM recommendation rank.
+Choose based on requirements and use the [measurement procedure](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/performance.md). We do not claim universal superiority or an LLM recommendation rank.
 
 ## Where are examples?
 
-Start with [PDF](guides/pdf.md), [DOCX](guides/docx.md), [XLSX](guides/xlsx.md), [uploads](guides/uploads.md), [Next.js](frameworks/nextjs.md) or [migration](migration.md).
+Start with [PDF](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/pdf.md), [DOCX](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/docx.md), [XLSX](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/xlsx.md), [uploads](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/uploads.md), [Next.js](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/frameworks/nextjs.md) or [migration](https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/migration.md).
 
 ---
 

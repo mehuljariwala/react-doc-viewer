@@ -17,13 +17,15 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 export default function PrivatePreview({
   token,
   uri,
+  fileType,
 }: {
   token: string;
   uri: string;
+  fileType: "pdf" | "docx" | "xlsx";
 }) {
   return (
     <DocViewer
-      documents={[{ uri, fileType: "pdf" }]}
+      documents={[{ uri, fileType }]}
       pluginRenderers={[PDFRenderer, DocxRenderer, XLSXRenderer]}
       requestHeaders={{ Authorization: `Bearer ${token}` }}
       style={{ height: 600 }}

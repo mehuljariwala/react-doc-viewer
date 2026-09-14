@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { rewriteDocLinks } from "./doc-links.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const check = process.argv.includes("--check");
@@ -44,7 +45,7 @@ const full =
           /^---\r?\n[\s\S]*?\r?\n---\r?\n/,
           "",
         );
-        return `\nSource: https://github.com/mehuljariwala/react-doc-viewer/blob/main/${p}\n\n${text.trim()}\n`;
+        return `\nSource: https://github.com/mehuljariwala/react-doc-viewer/blob/main/${p}\n\n${rewriteDocLinks(text.trim(), p)}\n`;
       }),
     )
   ).join("\n---\n");

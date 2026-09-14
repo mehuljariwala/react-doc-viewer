@@ -111,7 +111,7 @@ export default function ViewerPage() {
 - **Drag & Drop** — file upload with validation
 - **Thumbnail sidebar** — visual page navigation for PDFs
 - **14 languages** — built-in i18n
-- **Rendering modes** — DOCX and XLSX have local previews; other Office formats and optional conversion can use external services. See the security guide.
+- **Rendering modes** — DOCX and XLSX have local previews; other Office formats and optional conversion can use external services. See the [security guide](/docs/security).
 - **TypeScript** — full type definitions
 - **Apache-2.0** — free for commercial use
 
