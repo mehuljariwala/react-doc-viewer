@@ -1,29 +1,29 @@
 name: CI
-
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Read .nvmrc
-        run: echo NVMRC=`cat .nvmrc` >> $GITHUB_ENV
-      - name: Setup Node.js
-        uses: actions/setup-node@v2.4.1
+      - uses: actions/checkout@v4
         with:
-          node-version: ${{ env.NVMRC }}
-      - name: Install packages
-        run: npm i
-      - name: Check formatter
-        run: npm run prettier:check
-      - name: Check linter
-        run: npm run lint
-      - name: Check tests
-        run: npm run test
-      - name: Check build
-        run: npm run build
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run prettier:changed
+        env:
+          FORMAT_BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+      - run: npm run docs:check
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build
+      - run: npm run package:smoke
+      - run: npm run storybook:build
+      - run: npm ci && npm run build
+        working-directory: docs-site

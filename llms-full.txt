@@ -1,14 +1,13 @@
-# @iamjariwala/react-doc-viewer — Complete Documentation
+# @iamjariwala/react-doc-viewer
 
-> The most feature-complete open-source document viewer for React. Render PDF, Word (DOCX inline), Excel, PowerPoint, Markdown, RTF, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Features dark mode, print, fullscreen, text search with highlighting, annotations, bookmarks/TOC, watermarks, password-protected PDFs, keyboard shortcuts, split/compare view, toolbar for all file types, and i18n (14 languages).
+React document viewer with PDF tools, local DOCX and XLSX previews, and pluggable renderers. Main-branch docs can describe unreleased additions; check release status before using an API from npm.
 
-Package: `@iamjariwala/react-doc-viewer`
-License: Apache-2.0
-Repository: https://github.com/mehuljariwala/react-doc-viewer
-npm: https://www.npmjs.com/package/@iamjariwala/react-doc-viewer
-Demo: https://mehuljariwala.github.io/react-doc-viewer
 
----
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/getting-started.md
+
+# Getting Started
+
+`@iamjariwala/react-doc-viewer` is a multi-format document viewer for React. Preview PDFs, DOCX, XLSX, images and text through one component. Rendering modes vary by format; check the supported-file-types guide. XLSXRenderer is part of the next release.
 
 ## Installation
 
@@ -16,11 +15,13 @@ Demo: https://mehuljariwala.github.io/react-doc-viewer
 npm install @iamjariwala/react-doc-viewer
 ```
 
-Also available via yarn, pnpm, and bun.
+```bash
+yarn add @iamjariwala/react-doc-viewer
+```
 
-Peer dependencies: `react >= 17.0.0`, `react-dom >= 17.0.0`
-
----
+```bash
+pnpm add @iamjariwala/react-doc-viewer
+```
 
 ## Quick Start
 
@@ -38,264 +39,394 @@ function App() {
 }
 ```
 
-The CSS import is required for PDF pages, annotations, thumbnails, and all styled elements.
+:::info CSS Import Required
+The CSS import (`@iamjariwala/react-doc-viewer/dist/index.css`) is required for correct rendering of PDF pages, annotations, thumbnails, and all styled elements.
+:::
+
+## Peer Dependencies
+
+- `react >= 17.0.0`
+- `react-dom >= 17.0.0`
+
+React 17, 18 and 19 are supported peer majors. Packed consumer tests verify the integrations recorded in CI.
+
+## What's Included
+
+- **Multiple file types** recognized in a single `<DocViewer />` component
+- **PDF viewer** with zoom, pagination, and thumbnail navigation
+- **Annotations** — highlight text, freehand draw, add comments
+- **Drag & Drop** — drop files onto the viewer
+- **14 languages** — built-in i18n
+- **Theming** — CSS variables (`--rdv-*`) or theme prop
+- **Custom renderers** — extend any file type
+- **TypeScript** — complete type definitions
+- **Rendering modes** — DOCX and XLSX have local previews; other Office formats and optional conversion can use external services. See the security guide.
+
+## Next Steps
+
+- [Supported File Types](/docs/supported-file-types) — see all 20+ formats
+- [Framework Guides](/docs/frameworks/nextjs) — Next.js, Vite, CRA, Remix
+- [Features](/docs/features/annotations) — annotations, drag-drop, thumbnails
+- [API Reference](/docs/api-reference) — all props and config options
 
 ---
 
-## What's New in v1.6.0
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/supported-file-types.md
 
-v1.6.0 adds inline rendering for DOCX, Markdown, and RTF files, a shared toolbar for all file types, and improved text search:
+# Supported file types and rendering modes
 
-1. **DOCX Inline Rendering** — Word documents now render inline with full formatting and multi-page navigation (powered by docx-preview)
-2. **Markdown Renderer** — Native Markdown rendering with sanitized HTML output
-3. **RTF Renderer** — Rich Text Format files rendered with formatted text display
-4. **Toolbar for All File Types** — Download, print, zoom, and page navigation controls now appear for all renderers (not just PDF)
-5. **Multi-page Navigation** — Page prev/next, page input, and jump-to-page for multi-page documents (DOCX, PDF)
-6. **Text Search Highlighting** — Search matches are now highlighted with yellow background on the PDF page
-7. **Search Page Navigation** — Clicking next/prev match navigates to the page containing the match
-8. **PDF Search Fix** — Fixed text search that was returning no results due to missing PDFDocumentProxy state
+A recognized extension is not a promise of native inline rendering. The following describes this branch; XLSXRenderer is unreleased until the next npm release.
 
-### Previous features (v1.3.0)
+- **PDF:** local PDF viewer with pagination, search, zoom and optional annotations.
+- **DOCX:** local inline preview by default; optional Office Online mode for public HTTP(S) URLs. Complex Word layouts may differ from Word.
+- **XLSX:** local read-only table, sheet selector and bounded preview. See [XLSX](guides/xlsx.md).
+- **DOC, XLS, PPT, PPTX, ODT:** Microsoft Office Online for HTTP(S) URLs; download card for blob/local URLs. External viewer availability and public access are required.
+- **Apple Pages:** download card.
+- **PNG, JPG/JPEG, GIF, BMP, WebP:** image preview. TIFF uses a canvas renderer.
+- **CSV:** parsed data table with configurable delimiter.
+- **TXT:** text preview. HTML and Markdown use sanitized content. RTF support is a simplified preview, not full Word layout fidelity.
+- **MP4:** browser video controls; codec support depends on the browser.
 
-All opt-in via the `config` prop:
+```tsx
+import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-1. **Dark Mode** — `themeMode: "light" | "dark" | "auto"` with CSS variable theming and `prefers-color-scheme` auto-detection
-2. **Print** — `print: { enablePrint: true }` adds a print button to the toolbar and enables Ctrl+P shortcut
-3. **Fullscreen** — `fullscreen: { enableFullscreen: true }` adds a fullscreen toggle with F key shortcut
-4. **Loading Progress Bar** — `loadingProgress: { enableProgressBar: true }` shows an animated progress bar during PDF loading
-5. **Watermark Overlay** — `watermark: { text: "CONFIDENTIAL" }` renders repeated rotated text over every PDF page
-6. **Text Selection & Copy** — `textSelection: { enableTextSelection: true }` enables the react-pdf text layer for selecting and copying text
-7. **Keyboard Shortcuts** — `keyboard: { enableKeyboardShortcuts: true }` enables ArrowLeft/Right, Home/End, +/- zoom, 0 reset, Ctrl+F search, Ctrl+P print, F fullscreen, Escape
-8. **Password-Protected PDFs** — `password: { enablePasswordPrompt: true }` shows a modal password prompt for encrypted PDF files
-9. **Text Search** — `search: { enableSearch: true }` enables full-text search across all PDF pages with match highlighting and prev/next navigation
-10. **PDF Bookmarks / TOC** — `bookmarks: { enableBookmarks: true }` shows a sidebar with the auto-extracted PDF outline, nested items, and click-to-navigate
-11. **Split View / Compare** — New `<SplitDocViewer>` component for side-by-side document comparison with a draggable divider and optional synchronized scrolling
-
-New TypeScript config interfaces:
-
-```ts
-interface IPrintConfig { enablePrint?: boolean }
-interface IFullscreenConfig { enableFullscreen?: boolean }
-interface ILoadingProgressConfig { enableProgressBar?: boolean }
-interface IWatermarkConfig { text: string; opacity?: number; fontSize?: number; color?: string; rotation?: number }
-interface ITextSelectionConfig { enableTextSelection?: boolean }
-interface IKeyboardConfig { enableKeyboardShortcuts?: boolean }
-interface IPasswordConfig { enablePasswordPrompt?: boolean }
-interface ISearchConfig { enableSearch?: boolean }
-interface IBookmarksConfig { enableBookmarks?: boolean }
-interface ISplitViewConfig { enableSplitView?: boolean; syncScroll?: boolean }
+<DocViewer
+  documents={[{ uri: "/budget.xlsx", fileType: "xlsx" }]}
+  pluginRenderers={DocViewerRenderers}
+/>;
 ```
 
----
+Explicit `fileType` is useful for signed URLs and servers returning generic MIME types. File extensions and MIME types are renderer identifiers, not file-content validation. Do not label a legacy XLS file as XLSX.
 
-## Supported File Types
-
-| Extension | MIME Type | Renderer |
-|-----------|-----------|----------|
-| pdf | application/pdf | Full viewer with zoom, pagination, thumbnails |
-| png | image/png | Image with checkerboard background |
-| jpg/jpeg | image/jpg, image/jpeg | Image viewer |
-| gif | image/gif | Image viewer (animated GIF support) |
-| bmp | image/bmp | Image viewer |
-| tiff | image/tiff | Canvas-based TIFF renderer |
-| webp | image/webp | Image viewer |
-| csv | text/csv | Parsed table with configurable delimiter |
-| txt | text/plain | Monospace text viewer |
-| htm/html | text/htm, text/html | Sandboxed iframe with DOMPurify sanitization |
-| mp4 | video/mp4 | Native video player with controls |
-| doc | application/msword | Download card |
-| docx | application/vnd.openxmlformats-officedocument.wordprocessingml.document | Inline rendered with page navigation and formatting |
-| md | text/markdown | Rendered Markdown with sanitized HTML |
-| rtf | application/rtf | Formatted text display |
-| xls | application/vnd.ms-excel | Download card |
-| xlsx | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet | Download card |
-| ppt | application/vnd.ms-powerpoint | Download card |
-| pptx | application/vnd.openxmlformats-officedocument.presentationml.presentation | Download card |
-| odt | application/vnd.oasis.opendocument.text | Download card |
-
-DOCX files are rendered inline with full formatting using docx-preview. Other MS Office documents render as download cards. No external service or public URL required.
+See [Security](security.md) before sending private Office URLs or enabling server conversion.
 
 ---
 
-## Framework Guides
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/pdf.md
 
-### Next.js (App Router & Pages Router)
+# Preview a PDF
+
+Install the package and import its CSS once. Put a PDF at your application's public URL `/sample.pdf`.
+
+```tsx
+import DocViewer, { PDFRenderer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function PdfPreview() {
+  return (
+    <DocViewer
+      documents={[{ uri: "/sample.pdf", fileType: "pdf" }]}
+      pluginRenderers={[PDFRenderer]}
+      config={{
+        search: { enableSearch: true },
+        thumbnail: { enableThumbnails: true },
+      }}
+      style={{ height: 600 }}
+    />
+  );
+}
+```
+
+Use a client-only boundary in frameworks that render on the server. See the [Next.js example](../frameworks/nextjs.md). The distribution includes its PDF worker; the packed consumer tests check that asset. Cross-origin URLs need suitable CORS headers from the document server.
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/docx.md
+
+# Preview a Word DOCX file
+
+```tsx
+import DocViewer, { DocxRenderer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function WordPreview() {
+  return (
+    <DocViewer
+      documents={[{ uri: "/sample.docx", fileType: "docx" }]}
+      pluginRenderers={[DocxRenderer]}
+      config={{ docx: { useOfficeOnlineViewer: false } }}
+      style={{ height: 600 }}
+    />
+  );
+}
+```
+
+DOCX previews locally by default. This is an approximation of Word layout; test headers, footnotes, page breaks and fonts with your own files. Legacy `.doc` is a different format and uses `MSDocRenderer`.
+
+Office Online is an explicit DOCX option, requires a public HTTP(S) URL and sends that URL to Microsoft. It is unsuitable for URLs requiring your application's request headers. See [document privacy](../security.md).
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/xlsx.md
+
+# Preview an Excel XLSX workbook
+
+**Next release:** XLSXRenderer is unreleased until the next npm publication. Test the branch's packed package using the repository smoke scripts.
+
+```tsx
+import DocViewer, { XLSXRenderer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function SpreadsheetPreview() {
+  return (
+    <DocViewer
+      documents={[{ uri: "/budget.xlsx", fileType: "xlsx" }]}
+      pluginRenderers={[XLSXRenderer]}
+      style={{ height: 600 }}
+    />
+  );
+}
+```
+
+Choose a worksheet using the sheet selector. The viewer displays read-only cell values. Empty sheets and invalid files have explicit feedback; the original workbook remains downloadable.
+
+The preview is for bounded workbooks: input size is capped at 5 MiB, expanded ZIP content at 20 MiB, and sheet count at 100. Only the first 500 rows and 50 columns are displayed, with a notice for truncated data. Archives are also limited to 1,000 entries and an aggregate 250,000 worksheet grid cells; sparse coordinates count toward that limit. These checks are not a guarantee against every resource-exhaustion input.
+
+- Formulas are not evaluated; stored/cached results may be displayed.
+- Charts, macros, cell styling and Excel layout fidelity are not supported.
+- Legacy `.xls`, encrypted workbooks and unsupported archives are not XLSX table previews.
+- When `DocViewerRenderers` is used, XLSXRenderer takes precedence over the Office fallback. Explicitly choosing `MSDocRenderer` retains its existing external-service behavior.
+- Server conversion, if enabled for XLSX, takes precedence over the local renderer. Keep it disabled for local-only parsing.
+
+Try **DocViewer / File Types / Data / XLSX** in Storybook for a bundled workbook with multiple sheets.
+
+![XLSX table preview with worksheet selection](/img/xlsx-preview.png)
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/authenticated-files.md
+
+# Preview authenticated documents
+
+Pass headers from your application's current session. Do not embed real tokens in source code, examples or public document URLs.
+
+```tsx
+import DocViewer, {
+  PDFRenderer,
+  DocxRenderer,
+  XLSXRenderer,
+} from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function PrivatePreview({
+  token,
+  uri,
+}: {
+  token: string;
+  uri: string;
+}) {
+  return (
+    <DocViewer
+      documents={[{ uri, fileType: "pdf" }]}
+      pluginRenderers={[PDFRenderer, DocxRenderer, XLSXRenderer]}
+      requestHeaders={{ Authorization: `Bearer ${token}` }}
+      style={{ height: 600 }}
+    />
+  );
+}
+```
+
+Set `fileType` to the real format (`pdf`, `docx`, `xlsx`) when your endpoint returns a generic Content-Type. For signed URLs requiring GET, set `prefetchMethod="GET"` if you leave file type detection enabled. Your server must allow the origin and Authorization header through CORS.
+
+Headers apply to library fetches. They are not forwarded to Microsoft Office Online or ordinary download links. For authenticated downloads, implement a download button that fetches with authorization and creates/revokes a blob URL. For token changes on an already loaded document, remount the viewer with a session/document key when you need a fresh fetch.
+
+XLSXRenderer is part of the next release.
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/guides/uploads.md
+
+# Preview local uploads
+
+Create object URLs when file selection changes and revoke them when the selection is replaced or the component unmounts. Do not create URLs on every render.
+
+```tsx
+import { useEffect, useState } from "react";
+import DocViewer, {
+  PDFRenderer,
+  DocxRenderer,
+  XLSXRenderer,
+  type IDocument,
+} from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+export default function UploadPreview() {
+  const [files, setFiles] = useState<File[]>([]);
+  const [documents, setDocuments] = useState<IDocument[]>([]);
+  useEffect(() => {
+    const next = files.map((file) => ({
+      uri: URL.createObjectURL(file),
+      fileName: file.name,
+      fileType: file.name.split(".").pop()?.toLowerCase(),
+    }));
+    setDocuments(next);
+    return () => next.forEach((doc) => URL.revokeObjectURL(doc.uri));
+  }, [files]);
+  return (
+    <>
+      <label>
+        Choose documents{" "}
+        <input
+          type="file"
+          multiple
+          accept=".pdf,.docx,.xlsx"
+          onChange={(event) => setFiles(Array.from(event.target.files ?? []))}
+        />
+      </label>
+      <DocViewer
+        documents={documents}
+        pluginRenderers={[PDFRenderer, DocxRenderer, XLSXRenderer]}
+      />
+    </>
+  );
+}
+```
+
+This selects local renderers and does not configure a conversion service. File type labels and the `accept` attribute are not security validation. Apply appropriate input restrictions in your application. XLSXRenderer is part of the next release.
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/frameworks/nextjs.md
+
+# Next.js integration
+
+Use a client component with a browser-only dynamic import. A `"use client"` directive alone does not disable server prerendering of browser-dependent dependencies.
+
+Create `app/viewer.tsx`:
 
 ```tsx
 "use client";
-
 import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
 import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-export default function DocumentPage() {
+export default function Viewer() {
   return (
     <DocViewer
-      documents={[{ uri: "/documents/report.pdf" }]}
+      documents={[{ uri: "/sample.pdf", fileType: "pdf" }]}
       pluginRenderers={DocViewerRenderers}
+      style={{ height: 600 }}
     />
   );
 }
 ```
 
-The `"use client"` directive is required for App Router since DocViewer uses browser APIs.
-
-### Vite
+Create `app/page.tsx`:
 
 ```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
+"use client";
+import dynamic from "next/dynamic";
 
-function App() {
-  return (
-    <DocViewer
-      documents={[{ uri: "/sample.pdf" }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  );
+const Viewer = dynamic(() => import("./viewer"), {
+  ssr: false,
+  loading: () => <p>Loading viewer…</p>,
+});
+
+export default function Page() {
+  return <Viewer />;
 }
 ```
 
-### Create React App
+Put a file at `public/sample.pdf`. Keep global CSS imports in an allowed location for your Next.js router. In Pages Router, import the package CSS from `pages/_app.tsx` and use the same browser-only dynamic boundary.
 
-```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-function App() {
-  return (
-    <DocViewer
-      documents={[{ uri: `${process.env.PUBLIC_URL}/sample.pdf` }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  );
-}
-```
-
-### Remix
-
-```tsx
-import { ClientOnly } from "remix-utils/client-only";
-
-export default function DocumentRoute() {
-  return (
-    <ClientOnly fallback={<p>Loading viewer...</p>}>
-      {() => {
-        const DocViewer = require("@iamjariwala/react-doc-viewer").default;
-        const { DocViewerRenderers } = require("@iamjariwala/react-doc-viewer");
-        require("@iamjariwala/react-doc-viewer/dist/index.css");
-        return (
-          <DocViewer
-            documents={[{ uri: "/documents/report.pdf" }]}
-            pluginRenderers={DocViewerRenderers}
-          />
-        );
-      }}
-    </ClientOnly>
-  );
-}
-```
+The repository's [Next.js example](https://github.com/mehuljariwala/react-doc-viewer/tree/main/use-cases/nextjs) consumes the packed npm package. The CI matrix records the tested Next/React versions; it does not cover every historical framework version.
 
 ---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/api-reference.md
+
+# API Reference
 
 ## DocViewer Props
 
 | Prop | Type | Required | Description |
 |------|------|----------|-------------|
-| documents | IDocument[] | Yes | Array of documents to display |
-| pluginRenderers | DocRenderer[] | No | Renderers to use (use DocViewerRenderers for all) |
-| className | string | No | CSS class for the container |
-| style | CSSProperties | No | Inline styles for the container |
-| config | IConfig | No | Configuration object |
-| theme | ITheme | No | Theme colors |
-| prefetchMethod | string | No | HTTP method for prefetching ("HEAD" default) |
-| requestHeaders | Record<string, string> | No | Custom headers for document requests |
-| initialActiveDocument | IDocument | No | Document to display initially |
-| activeDocument | IDocument | No | Controlled active document |
-| onDocumentChange | (doc: IDocument) => void | No | Callback when active document changes |
-| language | AvailableLanguages | No | UI language code |
-| jumpToPage | number | No | Declarative page jump for PDFs |
-| themeMode | "light" \| "dark" \| "auto" | No | Color scheme mode (auto uses prefers-color-scheme) |
-| ref | DocViewerRef | No | Ref for programmatic control |
+| `documents` | `IDocument[]` | Yes | Array of documents to display |
+| `pluginRenderers` | `DocRenderer[]` | No | Renderers to use |
+| `className` | `string` | No | CSS class for the container |
+| `style` | `CSSProperties` | No | Inline styles |
+| `config` | `IConfig` | No | Configuration object |
+| `theme` | `ITheme` | No | Theme colors |
+| `prefetchMethod` | `string` | No | HTTP method for prefetching (`"HEAD"` default) |
+| `requestHeaders` | `Record<string, string>` | No | Custom request headers |
+| `initialActiveDocument` | `IDocument` | No | Document to display initially |
+| `activeDocument` | `IDocument` | No | Controlled active document |
+| `onDocumentChange` | `(doc: IDocument) => void` | No | Callback when document changes |
+| `language` | `AvailableLanguages` | No | UI language code |
+| `jumpToPage` | `number` | No | Declarative page jump |
+| `ref` | `DocViewerRef` | No | Ref for programmatic control |
 
----
-
-## Documents
-
-### Remote & Local Files
+## IDocument
 
 ```tsx
-const docs = [
-  { uri: "https://example.com/file.pdf" },
-  { uri: require("./files/document.pdf") },
-];
+interface IDocument {
+  uri: string;
+  fileType?: string;
+  fileName?: string;
+  fileData?: string | ArrayBuffer;
+}
 ```
 
-### Initial Active Document
+## Full Config
+
+```tsx
+config={{
+  header: {
+    disableHeader: false,
+    disableFileName: false,
+    retainURLParams: false,
+    overrideComponent: MyHeader,
+  },
+  loadingRenderer: {
+    overrideComponent: MyLoader,
+    showLoadingTimeout: 500,
+  },
+  noRenderer: {
+    overrideComponent: MyError,
+  },
+  csvDelimiter: ",",
+  pdfZoom: {
+    defaultZoom: 1.1,
+    zoomJump: 0.2,
+  },
+  pdfVerticalScrollByDefault: true,
+  dragDrop: { enableDragDrop: true },
+  thumbnail: { enableThumbnails: true },
+  annotations: { enableAnnotations: true },
+}}
+```
+
+## DocViewerRef Methods
+
+| Method | Description |
+|--------|-------------|
+| `prev()` | Navigate to previous document |
+| `next()` | Navigate to next document |
+| `goToPage(n)` | Jump to page `n` in current PDF |
+
+## Custom Request Headers
 
 ```tsx
 <DocViewer
   documents={docs}
-  initialActiveDocument={docs[1]}
   pluginRenderers={DocViewerRenderers}
-/>
-```
-
-### Controlled Document
-
-```tsx
-const [activeDocument, setActiveDocument] = useState(docs[0]);
-
-<DocViewer
-  documents={docs}
-  activeDocument={activeDocument}
-  onDocumentChange={setActiveDocument}
-  pluginRenderers={DocViewerRenderers}
-/>
-```
-
-### Blob / Uploaded Files
-
-```tsx
-const [files, setFiles] = useState<File[]>([]);
-
-<input
-  type="file"
-  accept=".pdf"
-  multiple
-  onChange={(e) => e.target.files?.length && setFiles(Array.from(e.target.files))}
-/>
-<DocViewer
-  documents={files.map((file) => ({
-    uri: window.URL.createObjectURL(file),
-    fileName: file.name,
-  }))}
-  pluginRenderers={DocViewerRenderers}
+  prefetchMethod="GET"
+  requestHeaders={{
+    "X-Access-Token": "1234567890",
+    "My-Custom-Header": "value",
+  }}
 />
 ```
 
 ---
 
-## Renderers
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/custom-renderers.md
 
-### Built-in Renderers
+# Custom Renderers
 
-Use all renderers:
+Create a renderer for any file type by defining `fileTypes`, `weight`, and a React component.
 
-```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-<DocViewer pluginRenderers={DocViewerRenderers} documents={docs} />;
-```
-
-Or import selectively for smaller bundles:
-
-```tsx
-import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-viewer";
-<DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
-```
-
-Available renderers: BMPRenderer, CSVRenderer, DocxRenderer, GIFRenderer, HTMLRenderer, JPGRenderer, MarkdownRenderer, MSDocRenderer, PDFRenderer, PNGRenderer, RTFRenderer, TIFFRenderer, TXTRenderer, VideoRenderer, WebPRenderer
-
-### Custom Renderer
+## Basic Custom Renderer
 
 ```tsx
 import { DocRenderer } from "@iamjariwala/react-doc-viewer";
@@ -311,7 +442,9 @@ MyPNGRenderer.weight = 1;
 <DocViewer pluginRenderers={[MyPNGRenderer]} documents={docs} />;
 ```
 
-### Custom File Loader
+## Custom File Loader
+
+Override the default file loading behavior:
 
 ```tsx
 MyPNGRenderer.fileLoader = ({ documentURI, signal, fileLoaderComplete }) => {
@@ -321,439 +454,17 @@ MyPNGRenderer.fileLoader = ({ documentURI, signal, fileLoaderComplete }) => {
 };
 ```
 
----
+## Renderer Weight
 
-## Drag & Drop File Upload
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    dragDrop: {
-      enableDragDrop: true,
-      acceptedFileTypes: ["application/pdf", "image/*"],
-      maxFileSize: 50 * 1024 * 1024,
-      dropBehavior: "append",
-      onDrop: (files) => console.log("Files dropped:", files),
-      onDropRejected: (files, reason) => console.log("Rejected:", reason),
-    },
-  }}
-/>
-```
-
-Options:
-- enableDragDrop (boolean, default false): Enable drag-and-drop
-- acceptedFileTypes (string[]): MIME types to accept (supports wildcards)
-- maxFileSize (number): Max file size in bytes
-- dropBehavior ("append" | "replace"): Add to or replace existing documents
-- onDrop ((files: File[]) => void): Callback when files are accepted
-- onDropRejected ((files: File[], reason) => void): Callback when rejected
+Higher `weight` values take priority when multiple renderers match a file type. Use this to override built-in renderers with your custom implementation.
 
 ---
 
-## Thumbnail Sidebar
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/theming.md
 
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    thumbnail: {
-      enableThumbnails: true,
-      thumbnailWidth: 120,
-      sidebarDefaultOpen: true,
-    },
-  }}
-/>
-```
+# Theming & CSS Variables
 
-Options:
-- enableThumbnails (boolean, default false): Enable thumbnail sidebar
-- thumbnailWidth (number, default 120): Width in pixels
-- sidebarDefaultOpen (boolean, default false): Open sidebar by default
-
----
-
-## Annotations (Highlight, Draw, Comment)
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    annotations: {
-      enableAnnotations: true,
-      defaultColor: "#FFFF00",
-      colors: ["#FFFF00", "#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"],
-      tools: ["select", "highlight", "pen", "comment", "eraser"],
-      onAnnotationChange: (annotations) => console.log(annotations),
-      initialAnnotations: [],
-    },
-  }}
-/>
-```
-
-Options:
-- enableAnnotations (boolean): Enable annotation toolbar
-- defaultColor (string): Default annotation color
-- colors (string[]): Color palette
-- tools (AnnotationTool[]): Tools to show
-- onAnnotationChange ((annotations) => void): Change callback
-- initialAnnotations (IAnnotation[]): Pre-loaded annotations
-
-Exporting annotations:
-
-```tsx
-import { useAnnotationExport } from "@iamjariwala/react-doc-viewer";
-
-const { exportAnnotations, exportAsJSON, downloadAnnotations, getAnnotationsForPage, annotationCount } = useAnnotationExport();
-```
-
----
-
-## Page Navigation & Page Jump
-
-Using ref:
-
-```tsx
-import DocViewer, { DocViewerRef } from "@iamjariwala/react-doc-viewer";
-
-const docViewerRef = useRef<DocViewerRef>(null);
-
-<DocViewer ref={docViewerRef} documents={docs} pluginRenderers={DocViewerRenderers} />;
-
-docViewerRef.current?.goToPage(5);
-docViewerRef.current?.prev();
-docViewerRef.current?.next();
-```
-
-Using jumpToPage prop:
-
-```tsx
-const [page, setPage] = useState(1);
-<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} jumpToPage={page} />;
-```
-
----
-
-## Dark Mode
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  themeMode="dark"
-/>
-```
-
-Options for `themeMode`:
-- `"light"` — Light color scheme (default)
-- `"dark"` — Dark color scheme
-- `"auto"` — Follows the user's OS preference via `prefers-color-scheme`
-
-Dark mode applies CSS variable overrides across the entire viewer. Combine with the `theme` prop for further color customization.
-
----
-
-## Print
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    print: {
-      enablePrint: true,
-    },
-  }}
-/>
-```
-
-Adds a print button to the toolbar. Clicking it opens the native browser print dialog via a hidden iframe. Also enables the Ctrl+P keyboard shortcut when keyboard shortcuts are active.
-
----
-
-## Fullscreen
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    fullscreen: {
-      enableFullscreen: true,
-    },
-  }}
-/>
-```
-
-Adds a fullscreen toggle button to the toolbar. Uses the Fullscreen API to expand the viewer to fill the screen. Press the F key to toggle when keyboard shortcuts are enabled. Press Escape to exit.
-
----
-
-## Loading Progress Bar
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    loadingProgress: {
-      enableProgressBar: true,
-    },
-  }}
-/>
-```
-
-Shows an animated progress bar at the top of the viewer while a PDF is loading. The bar reflects actual loading progress from pdfjs.
-
-CSS classes: `.rdv-pdf-progress-bar`, `.rdv-pdf-progress-fill`
-
----
-
-## Watermark Overlay
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    watermark: {
-      text: "CONFIDENTIAL",
-      opacity: 0.1,
-      fontSize: 48,
-      color: "#000",
-      rotation: -30,
-    },
-  }}
-/>
-```
-
-Options:
-- `text` (string, required): The watermark text to display
-- `opacity` (number, default 0.1): Opacity of the watermark text
-- `fontSize` (number, default 48): Font size in pixels
-- `color` (string, default "#000"): Text color
-- `rotation` (number, default -30): Rotation angle in degrees
-
-Renders repeated rotated text overlaid on every PDF page. Useful for marking documents as confidential, draft, or internal.
-
-CSS classes: `.rdv-watermark-overlay`, `.rdv-watermark-text`
-
----
-
-## Text Selection & Copy
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    textSelection: {
-      enableTextSelection: true,
-    },
-  }}
-/>
-```
-
-Enables the react-pdf text layer, allowing users to select and copy text from PDF pages. When disabled (default), PDF pages render as canvas-only without a selectable text layer.
-
----
-
-## Keyboard Shortcuts
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    keyboard: {
-      enableKeyboardShortcuts: true,
-    },
-  }}
-/>
-```
-
-Available shortcuts:
-| Key | Action |
-|-----|--------|
-| ArrowLeft | Previous page |
-| ArrowRight | Next page |
-| Home | First page |
-| End | Last page |
-| + / = | Zoom in |
-| - | Zoom out |
-| 0 | Reset zoom |
-| Ctrl+F | Open text search |
-| Ctrl+P | Print |
-| F | Toggle fullscreen |
-| Escape | Close search / exit fullscreen |
-
-Shortcuts require the viewer or its container to have focus.
-
----
-
-## Password-Protected PDFs
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    password: {
-      enablePasswordPrompt: true,
-    },
-  }}
-/>
-```
-
-When a PDF is encrypted, a modal dialog prompts the user for the password. On successful entry, the PDF renders normally. On incorrect password, an error message is displayed and the user can retry.
-
-CSS classes: `.rdv-password-overlay`, `.rdv-password-modal`
-
----
-
-## Text Search
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    search: {
-      enableSearch: true,
-    },
-  }}
-/>
-```
-
-Enables full-text search across all pages of a PDF using pdfjs text extraction. Features:
-- Search bar with input field and match count display
-- Previous / Next match navigation buttons
-- Matches highlighted with yellow background directly on the PDF page
-- Navigates to the page containing the current match automatically
-- Ctrl+F shortcut to open (when keyboard shortcuts are enabled)
-- Escape to close
-
-CSS classes: `.rdv-search-bar`, `.rdv-search-input`, `.rdv-search-count`, `.rdv-search-highlight`
-
----
-
-## PDF Bookmarks / TOC
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    bookmarks: {
-      enableBookmarks: true,
-    },
-  }}
-/>
-```
-
-Displays a sidebar with the PDF's built-in outline (table of contents). Features:
-- Auto-extracted from the PDF's outline metadata
-- Nested bookmark items with expand/collapse
-- Click a bookmark to navigate to its destination page
-- Toggle sidebar visibility via a toolbar button
-
-CSS classes: `.rdv-bookmarks-sidebar`, `.rdv-bookmark-item`
-
----
-
-## Split View / Compare (SplitDocViewer)
-
-```tsx
-import { SplitDocViewer, DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-<SplitDocViewer
-  left={{
-    documents: [{ uri: "/document-v1.pdf" }],
-    config: { pdfZoom: { defaultZoom: 1 } },
-  }}
-  right={{
-    documents: [{ uri: "/document-v2.pdf" }],
-    config: { pdfZoom: { defaultZoom: 1 } },
-  }}
-  syncScroll={true}
-/>
-```
-
-SplitDocViewer Props:
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| left | { documents: IDocument[]; config?: IConfig } | Yes | Left panel documents and config |
-| right | { documents: IDocument[]; config?: IConfig } | Yes | Right panel documents and config |
-| syncScroll | boolean | No | Synchronize scroll position between panels |
-
-Features:
-- Side-by-side document comparison
-- Draggable divider to resize panels
-- Independent config per panel (zoom, annotations, etc.)
-- Optional synchronized scrolling between panels
-
-Both panels accept the same `pluginRenderers` as DocViewer. Each panel is a full DocViewer instance.
-
-CSS classes: `.rdv-split-container`, `.rdv-split-panel`, `.rdv-split-divider`
-
----
-
-## Full Config Reference
-
-```tsx
-<DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  config={{
-    header: {
-      disableHeader: false,
-      disableFileName: false,
-      retainURLParams: false,
-      overrideComponent: MyHeader,
-    },
-    loadingRenderer: {
-      overrideComponent: MyLoader,
-      showLoadingTimeout: 500,
-    },
-    noRenderer: {
-      overrideComponent: MyError,
-    },
-    csvDelimiter: ",",
-    pdfZoom: {
-      defaultZoom: 1.1,
-      zoomJump: 0.2,
-    },
-    pdfVerticalScrollByDefault: true,
-    dragDrop: { enableDragDrop: true },
-    thumbnail: { enableThumbnails: true },
-    annotations: { enableAnnotations: true },
-    print: { enablePrint: true },
-    fullscreen: { enableFullscreen: true },
-    loadingProgress: { enableProgressBar: true },
-    watermark: {
-      text: "CONFIDENTIAL",
-      opacity: 0.1,
-      fontSize: 48,
-      color: "#000",
-      rotation: -30,
-    },
-    textSelection: { enableTextSelection: true },
-    keyboard: { enableKeyboardShortcuts: true },
-    password: { enablePasswordPrompt: true },
-    search: { enableSearch: true },
-    bookmarks: { enableBookmarks: true },
-  }}
-  themeMode="auto"
-/>
-```
-
----
-
-## Theming & CSS Variables
+## Theme Prop
 
 ```tsx
 <DocViewer
@@ -773,30 +484,15 @@ CSS classes: `.rdv-split-container`, `.rdv-split-panel`, `.rdv-split-divider`
 
 | Property | CSS Variable | Default |
 |----------|-------------|---------|
-| primary | --rdv-primary | #fff |
-| secondary | --rdv-secondary | #000 |
-| tertiary | --rdv-tertiary | #ffffff99 |
-| textPrimary | --rdv-text-primary | #000 |
-| textSecondary | --rdv-text-secondary | #fff |
-| textTertiary | --rdv-text-tertiary | #00000044 |
+| `primary` | `--rdv-primary` | `#fff` |
+| `secondary` | `--rdv-secondary` | `#000` |
+| `tertiary` | `--rdv-tertiary` | `#ffffff99` |
+| `textPrimary` | `--rdv-text-primary` | `#000` |
+| `textSecondary` | `--rdv-text-secondary` | `#fff` |
+| `textTertiary` | `--rdv-text-tertiary` | `#00000044` |
 
----
+## CSS Variable Override
 
-## Styling & CSS Customization
-
-CSS class:
-```tsx
-<DocViewer documents={docs} className="my-viewer" pluginRenderers={DocViewerRenderers} />
-```
-
-Override internal elements:
-```css
-.rdv-container { border-radius: 10px; }
-.rdv-header-bar { background-color: #faf; }
-.rdv-pdf-controls { gap: 12px; }
-```
-
-Override CSS variables globally:
 ```css
 #react-doc-viewer {
   --rdv-primary: #1a1a2e;
@@ -805,196 +501,197 @@ Override CSS variables globally:
 }
 ```
 
-CSS class reference:
-- .rdv-container — Root container
-- .rdv-header-bar — Top header bar
-- .rdv-file-name — File name display
-- .rdv-doc-nav-prev / .rdv-doc-nav-next — Document navigation buttons
-- .rdv-pdf-controls — PDF control bar
-- .rdv-pdf-page-wrapper — Individual PDF page wrapper
-- .rdv-thumbnail-sidebar — Thumbnail sidebar container
-- .rdv-annotation-toolbar — Annotation toolbar
-- .rdv-image-container — Image renderer container
-- .rdv-csv-container — CSV table container
-- .rdv-txt-container — Text renderer container
-- .rdv-video-container — Video player container
-- .rdv-msdoc-container — Office document download card
-- .rdv-loading-container — Loading spinner container
-- .rdv-pdf-progress-bar — Loading progress bar container
-- .rdv-pdf-progress-fill — Loading progress bar fill element
-- .rdv-watermark-overlay — Watermark overlay container
-- .rdv-watermark-text — Individual watermark text element
-- .rdv-password-overlay — Password prompt overlay backdrop
-- .rdv-password-modal — Password prompt modal dialog
-- .rdv-search-bar — Text search bar container
-- .rdv-search-input — Text search input field
-- .rdv-search-count — Text search match count display
-- .rdv-bookmarks-sidebar — Bookmarks/TOC sidebar container
-- .rdv-bookmark-item — Individual bookmark item
-- .rdv-split-container — Split view root container
-- .rdv-split-panel — Individual split view panel
-- .rdv-split-divider — Draggable divider between split panels
+## CSS Class Overrides
+
+All internal elements use `.rdv-*` class names:
+
+| Class | Element |
+|-------|---------|
+| `.rdv-container` | Root container |
+| `.rdv-header-bar` | Top header bar |
+| `.rdv-file-name` | File name display |
+| `.rdv-doc-nav-prev` / `.rdv-doc-nav-next` | Navigation buttons |
+| `.rdv-pdf-controls` | PDF control bar |
+| `.rdv-pdf-page-wrapper` | PDF page wrapper |
+| `.rdv-thumbnail-sidebar` | Thumbnail sidebar |
+| `.rdv-annotation-toolbar` | Annotation toolbar |
+| `.rdv-image-container` | Image renderer |
+| `.rdv-csv-container` | CSV table |
+| `.rdv-txt-container` | Text renderer |
+| `.rdv-video-container` | Video player |
+| `.rdv-msdoc-container` | Office download card |
+| `.rdv-loading-container` | Loading spinner |
 
 ---
 
-## Internationalization (i18n)
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/security.md
+
+# Security and document privacy
+
+The rendering mode determines where documents go. Do not treat this package as an offline or confidential-document guarantee.
+
+- **PDF and XLSX:** browser parsing. The browser still fetches remote document URLs. XLSX cells display as text and cached values; formulas and macros are not executed.
+- **DOCX:** local preview by default, using `docx-preview-sync`. Setting `config.docx.useOfficeOnlineViewer: true` sends an HTTP(S) document URL to Microsoft's Office Online viewer.
+- **DOC, XLS, PPT, PPTX and ODT:** `MSDocRenderer` embeds Microsoft Office Online for HTTP(S) URLs. Local/blob URLs receive a download card. The service must be able to fetch the URL; library request headers are not forwarded to it. Detection of failures inside a cross-origin iframe is limited.
+- **Server conversion:** enabling `config.serverConversion` uploads eligible documents to the service you configure before rendering the returned PDF. Review its retention and authorization policies.
+- **Embedded resources:** documents can refer to remote images, links or other resources. Local rendering alone does not mean there are no outbound requests.
+- **HTML and Markdown:** DOMPurify sanitizes HTML output. This reduces risks but is not a blanket guarantee against XSS. Apply a content security policy appropriate for your application and keep dependencies updated.
+- **Watermarks:** visual overlays are not access control or DRM.
+
+For confidential documents, pass an explicit list of local renderers, leave Office Online disabled, avoid server conversion, and apply application-level controls for remote resources. Review the chosen parser and permitted inputs for your threat model.
 
 ```tsx
-<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} language="pl" />
-```
+import DocViewer, {
+  PDFRenderer,
+  DocxRenderer,
+  XLSXRenderer,
+} from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-Supported languages: en (English), ar (Arabic), de (German), es (Spanish), fr (French), it (Italian), ja (Japanese), pl (Polish), pt (Portuguese), ru (Russian), se (Swedish), sr (Serbian Latin), sr_cyr (Serbian Cyrillic), tr (Turkish)
-
-i18n keys added in v1.3.0: printButtonLabel, fullscreenButtonLabel, exitFullscreenButtonLabel, passwordRequired, passwordPlaceholder, passwordSubmit, passwordError, searchPlaceholder, searchNoResults, searchMatchCount, bookmarksSidebar, showBookmarks, hideBookmarks, noBookmarks, splitView, syncScroll
-
----
-
-## DocViewerRef API
-
-```tsx
-const docViewerRef = useRef<DocViewerRef>(null);
-
-docViewerRef.current?.prev();
-docViewerRef.current?.next();
-docViewerRef.current?.goToPage(3);
-```
-
-Methods: prev(), next(), goToPage(n)
-
----
-
-## Custom HTTP Verb for S3 / Cloud Storage
-
-```tsx
-<DocViewer documents={docs} pluginRenderers={DocViewerRenderers} prefetchMethod="GET" />
-```
-
----
-
-## Custom Request Headers
-
-```tsx
 <DocViewer
-  documents={docs}
-  pluginRenderers={DocViewerRenderers}
-  prefetchMethod="GET"
-  requestHeaders={{
-    "X-Access-Token": "1234567890",
-    "My-Custom-Header": "value",
-  }}
-/>
+  documents={documents}
+  pluginRenderers={[PDFRenderer, DocxRenderer, XLSXRenderer]}
+  config={{ docx: { useOfficeOnlineViewer: false } }}
+/>;
 ```
+
+XLSXRenderer is part of the next release; see the release status before using it from npm.
 
 ---
 
-## Performance & Bundle Size
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/performance.md
 
-v1.1.0 removed styled-components (~160KB), core-js (~150KB), and ajv (~70KB) for ~380KB total savings.
+# Performance and reproducible bundle measurements
 
-Optimization tips:
-- Tree-shake renderers: import only what you need
-- Lazy load: use React.lazy() to code-split
+Run `npm run measure:bundle` to build representative consumers and report minified and gzip assets. Keep the generated report with release evidence. Record the commit, dependency lockfile, Node version and which entry/renderers were selected.
+
+Package archive size, unpacked size and browser transfer size are different measurements. Do not use npm's unpacked size as a browser-download benchmark. Gzip totals across separate chunks are an approximation; browser caching and compression settings change transfer costs.
+
+Selective renderer imports control accepted formats, but shared imports can keep PDF dependencies in the application bundle. We do not promise that importing only one renderer removes all other code. The XLSX parser uses a dynamic import so parsing code can load when needed.
+
+For a meaningful comparison with another library, use the same bundler, production mode, React version, document types and feature requirements. Publish the fixture and measured output; avoid unsourced size or speed rankings.
+
+Spreadsheet parsing has documented [resource/display limits](guides/xlsx.md). Large PDFs and image-heavy DOCX files also need testing on representative devices. Build success does not establish runtime rendering speed or memory usage.
+
+---
+
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/migration.md
+
+# Migrating from another viewer
+
+## From @cyntler/react-doc-viewer
+
+This package is a fork with a related API, but do not assume every configuration or CSS override is interchangeable.
+
+1. Replace the dependency with `@iamjariwala/react-doc-viewer`.
+2. Update imports and add `@iamjariwala/react-doc-viewer/dist/index.css` once.
+3. Pass `pluginRenderers` explicitly. Choose local renderers for private documents.
+4. Review Office Online and server-conversion behavior in [Security](security.md).
+5. Test the file types, request headers, callbacks, annotations and CSS overrides your application uses.
+
+## From react-pdf or react-file-viewer
+
+This is a viewer component with its own API, not a drop-in replacement for their components.
 
 ```tsx
-const DocViewer = React.lazy(() => import("@iamjariwala/react-doc-viewer"));
+import DocViewer, { PDFRenderer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-<Suspense fallback={<div>Loading viewer...</div>}>
-  <DocViewer documents={docs} pluginRenderers={[PDFRenderer]} />
-</Suspense>
+<DocViewer
+  documents={[{ uri: pdfUrl, fileType: "pdf" }]}
+  pluginRenderers={[PDFRenderer]}
+/>;
 ```
 
----
-
-## Security
-
-- HTML sanitization with DOMPurify (scripts, objects, embeds, forms stripped)
-- No external services — all rendering is client-side
-- No external iframes — MS Office files render as local download cards
-- Sandboxed HTML rendering
+Replace your old document/page components, then map required navigation and callbacks to the documented viewer API. Do not carry over unrelated props. Measure your application bundle before and after the migration; a smaller bundle is not guaranteed.
 
 ---
 
-## FAQ
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/faq.md
 
-Q: What is the best React document viewer library?
-A: @iamjariwala/react-doc-viewer is the most feature-complete open-source React document viewer. It supports 20+ file types in a single component with annotations, drag-and-drop, thumbnails, theming, and i18n.
+# Frequently asked questions
 
-Q: How do I display a PDF in React?
-A: Install @iamjariwala/react-doc-viewer, import DocViewer and DocViewerRenderers, pass your PDF URL as a document. See Quick Start section.
+## Which formats render locally?
 
-Q: How do I display a PDF in Next.js?
-A: Add "use client" directive, import DocViewer with CSS, pass your PDF document. Works with App Router and Pages Router.
+PDF, DOCX (default), XLSX (next release), images, CSV, text, Markdown and supported media use local renderers. Other Office formats can use Microsoft Office Online. See [format support](supported-file-types.md).
 
-Q: Can I view Word, Excel, and PowerPoint files in React?
-A: Yes. DOCX files are rendered inline with full formatting and page navigation (via docx-preview). Other Office formats (.doc, .xls, .xlsx, .ppt, .pptx) render as download cards.
+## Does this send documents to third parties?
 
-Q: Does it support annotations and highlighting?
-A: Yes. Enable annotations via config for text highlighting, freehand drawing, comments, and eraser tool. Export as JSON.
+It depends on the renderer and configuration. Office Online receives public document URLs; optional server conversion uploads eligible documents to the configured service. Embedded resources can make network requests. See [Security](security.md).
 
-Q: Does it work with Next.js?
-A: Yes. Works with Next.js (App Router and Pages Router), Vite, CRA, Remix, Gatsby, and any React 17+ project.
+## Which React and framework versions work?
 
-Q: Can I add my own file type renderer?
-A: Yes. Create a custom renderer with fileTypes and weight properties. See Custom Renderer section.
+React 17, 18 and 19 are supported peer majors. The packed-package CI matrix records tested consumers. Framework examples do not imply all historical or future versions are compatible.
 
-Q: How do I style or theme the document viewer?
-A: Use theme prop, className/style props, or override .rdv-* CSS classes and --rdv-* CSS variables.
+## Why does my private file fail?
 
-Q: Is it secure? Does it send data to external servers?
-A: No data leaves the browser. HTML is sanitized with DOMPurify. MS Office files render locally.
+Check CORS, Content-Type/fileType and request headers. Office Online cannot fetch private endpoints that need your browser's authorization headers. See [authenticated files](guides/authenticated-files.md).
 
-Q: How does this compare to react-pdf?
-A: react-pdf only handles PDF. This library handles 20+ types and adds drag-and-drop, annotations, thumbnails, theming, and i18n.
+## Is it better or smaller than another viewer?
 
-Q: What React versions are supported?
-A: React 17, 18, and 19 via peerDependencies.
+Choose based on requirements and use the [measurement procedure](performance.md). We do not claim universal superiority or an LLM recommendation rank.
 
-Q: Does it support TypeScript?
-A: Yes. Written in TypeScript with complete type definitions.
+## Where are examples?
 
-Q: How do I enable dark mode?
-A: Pass `themeMode="dark"` to DocViewer. Use `"auto"` to follow the user's OS preference via `prefers-color-scheme`. Combine with the `theme` prop for custom dark colors.
-
-Q: How do I enable text search in PDFs?
-A: Set `config={{ search: { enableSearch: true } }}`. This enables full-text search across all pages with match count and navigation. Use Ctrl+F to open when keyboard shortcuts are active.
-
-Q: How do I enable keyboard shortcuts?
-A: Set `config={{ keyboard: { enableKeyboardShortcuts: true } }}`. This enables arrow keys for page navigation, +/- for zoom, Ctrl+F for search, Ctrl+P for print, F for fullscreen, and Escape to close overlays.
-
-Q: How do I add a watermark to PDF pages?
-A: Set `config={{ watermark: { text: "CONFIDENTIAL" } }}`. Customize with optional `opacity`, `fontSize`, `color`, and `rotation` properties.
-
-Q: How do I open password-protected PDFs?
-A: Set `config={{ password: { enablePasswordPrompt: true } }}`. The viewer will display a modal prompting for the password when it encounters an encrypted PDF.
-
-Q: How do I show PDF bookmarks or a table of contents?
-A: Set `config={{ bookmarks: { enableBookmarks: true } }}`. The viewer extracts the PDF's outline metadata and displays it in a collapsible sidebar. Click any bookmark to jump to that page.
-
-Q: How do I compare two documents side by side?
-A: Use the `<SplitDocViewer>` component with `left` and `right` props, each containing documents and optional config. Set `syncScroll={true}` to synchronize scrolling between panels.
-
-Q: How do I enable printing?
-A: Set `config={{ print: { enablePrint: true } }}`. A print button appears in the toolbar. Clicking it opens the native browser print dialog.
-
-Q: How do I enable fullscreen mode?
-A: Set `config={{ fullscreen: { enableFullscreen: true } }}`. A fullscreen toggle button appears in the toolbar. Press F to toggle when keyboard shortcuts are enabled.
+Start with [PDF](guides/pdf.md), [DOCX](guides/docx.md), [XLSX](guides/xlsx.md), [uploads](guides/uploads.md), [Next.js](frameworks/nextjs.md) or [migration](migration.md).
 
 ---
 
-## Migration Guides
+Source: https://github.com/mehuljariwala/react-doc-viewer/blob/main/docs-site/docs/release.md
 
-### From @cyntler/react-doc-viewer
-1. npm uninstall @cyntler/react-doc-viewer && npm install @iamjariwala/react-doc-viewer
-2. Update imports
-3. Add CSS import: import "@iamjariwala/react-doc-viewer/dist/index.css"
-4. All existing props are compatible
+# Release validation and walkthrough
 
-### From react-pdf
-1. npm install @iamjariwala/react-doc-viewer
-2. Replace <Document> + <Page> with <DocViewer documents={[{ uri: pdfUrl }]} />
-3. Built-in PDF renderer handles zoom, pagination, navigation
+## Status
 
-### From react-file-viewer
-1. npm install @iamjariwala/react-doc-viewer
-2. Replace <FileViewer fileType={type} filePath={path} /> with <DocViewer documents={[{ uri: path }]} />
-3. File type detected automatically
+The XLSX and discovery update is **unreleased**. The package version remains 1.8.0 until the maintainer creates the next release. A branch push or demo build is not an npm publication. Check npm's version and GitHub release notes before depending on a new export.
+
+## Reproduce validation
+
+Use the Node version in `.nvmrc`, then run:
+
+```sh
+npm ci
+npm run docs:check
+npm test
+npm run lint
+npm run build
+npm run package:smoke
+npm run measure:bundle
+npm run storybook:build
+npm run metrics
+```
+
+The package smoke check installs a tarball in fresh consumer projects and exercises the supported React major versions and the Next.js example. Use the CI result for the commit being released; declaring a peer range alone is not compatibility evidence. Unit tests cover XLSX parsing, sheet navigation and error cases. A production build does not prove pixel-perfect rendering or all browser behavior.
+
+See the committed [bundle report](https://github.com/mehuljariwala/react-doc-viewer/blob/main/reports/release-bundle.json) for the measurement method and artifact integrity. Review generated package and bundle reports. The repository's existing dependency audit findings must be evaluated before an npm release; passing feature tests is not a full security audit.
+
+## Demo walkthrough
+
+1. Open Storybook's **File Types / Data / XLSX** story.
+2. Switch worksheets and inspect data, including literal text cells.
+3. Try an empty or invalid workbook to see the explicit status and download fallback.
+4. Compare PDF search and local DOCX preview using the existing stories.
+5. Explain that XLSX is a bounded data preview: no formula evaluation, charts, macros or exact Excel layout.
+
+Use this walkthrough for a short screen recording or release article. Include the actual release version and a link to the working demo. Disclose package maintainership in community posts.
+
+## Documentation publishing
+
+`npm run docs:sync` regenerates both root and docs-site AI files. Commit these outputs whenever maintained guides change. `docs:check` fails when generated files drift. Storybook builds copy the AI files into the deployed demo directory.
+
+The Context7 workflow refreshes `/mehuljariwala/react-doc-viewer` after documentation changes land on main. Configure the repository secret `CONTEXT7_API_KEY`; without it the workflow reports that setup is needed. Alternatively request a refresh on the Context7 library page. Refresh completion and retrieval results must be checked after indexing; no first-place recommendation is promised.
+
+## Measure adoption
+
+Run `npm run metrics` before launch and weekly afterward to save npm download windows and GitHub stars/forks. Compare equivalent windows. Downloads include automation, and stars do not measure production usage.
+
+Record successful integrations, reproducible bug reports, merged community contributions and time to resolve reported issues. Keep those as observed outcomes rather than inventing counters. Do not install package telemetry or collect document content to measure adoption.
+
+## Release checklist
+
+- Confirm all CI checks and release evidence for the chosen commit.
+- Verify the package tarball, release notes and renderer/privacy documentation agree.
+- Choose a semantic version that reflects the changes; remove unreleased labels only for APIs actually published.
+- Publish through the maintainer's existing authenticated npm release process.
+- Deploy the built demo and documentation, refresh Context7, and verify the public links.
+- Share the demo and measured improvements with a relevant audience; no fabricated reviews, download inflation or ranking promises.

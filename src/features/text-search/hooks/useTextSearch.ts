@@ -36,7 +36,7 @@ export function useTextSearch() {
           let matchIdx = 0;
           const lowerPageText = pageText.toLowerCase();
 
-          while (true) {
+          for (;;) {
             const foundIndex = lowerPageText.indexOf(lowerQuery, startIndex);
             if (foundIndex === -1) break;
             matches.push({

@@ -1,33 +1,11 @@
 ---
 id: remix
-title: Using react-doc-viewer with Remix
+title: Client-only integration in Remix
 sidebar_label: Remix
-description: How to display PDF and documents in Remix using @iamjariwala/react-doc-viewer with ClientOnly wrapper.
-keywords: [remix pdf viewer, remix document viewer, react pdf remix]
 ---
 
-# Remix Integration
+# Client-only integration in Remix
 
-Use `ClientOnly` from `remix-utils` since DocViewer requires browser APIs.
+This viewer uses browser APIs. Use a client-only boundary and load the viewer module after mounting; a static import can still evaluate a browser dependency during server rendering. Import the stylesheet through your application's supported stylesheet entry.
 
-```tsx
-import { ClientOnly } from "remix-utils/client-only";
-
-export default function DocumentRoute() {
-  return (
-    <ClientOnly fallback={<p>Loading viewer...</p>}>
-      {() => {
-        const DocViewer = require("@iamjariwala/react-doc-viewer").default;
-        const { DocViewerRenderers } = require("@iamjariwala/react-doc-viewer");
-        require("@iamjariwala/react-doc-viewer/dist/index.css");
-        return (
-          <DocViewer
-            documents={[{ uri: "/documents/report.pdf" }]}
-            pluginRenderers={DocViewerRenderers}
-          />
-        );
-      }}
-    </ClientOnly>
-  );
-}
-```
+The current package smoke tests cover Vite and Next.js. Remix is not included in that matrix. Verify client loading, the PDF worker and document fetches against the framework version used by your application before deployment. The maintained [PDF recipe](../guides/pdf.md) shows the viewer API once running in the browser.

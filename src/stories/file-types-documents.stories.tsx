@@ -10,8 +10,6 @@ import txtFile from "../exampleFiles/txt-file.txt?url";
 import mdFile from "../exampleFiles/md-file.md?url";
 import rtfFile from "../exampleFiles/rtf-file.rtf";
 import lostWageDocx from "../exampleFiles/lost-wage-verification.docx";
-import pfWithdrawalForm from "../exampleFiles/pf-withdrawal-form19.docx";
-import emsAmbulanceReport from "../exampleFiles/ems-ambulance-run-report.docx";
 
 export default {
   title: "DocViewer/File Types/Documents",
@@ -49,7 +47,9 @@ export const DOCX = () => (
 export const DOCXSinglePage = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: docxSinglePage, fileName: "single-page.docx", fileType: "docx" }]}
+      documents={[
+        { uri: docxSinglePage, fileName: "single-page.docx", fileType: "docx" },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>
@@ -58,7 +58,13 @@ export const DOCXSinglePage = () => (
 export const DOCXMultiPage = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: docxMultiplePages, fileName: "multi-page.docx", fileType: "docx" }]}
+      documents={[
+        {
+          uri: docxMultiplePages,
+          fileName: "multi-page.docx",
+          fileType: "docx",
+        },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>
@@ -67,7 +73,13 @@ export const DOCXMultiPage = () => (
 export const DOCXLostWageVerification = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: lostWageDocx, fileName: "17_Lost_Wage_Verification.docx", fileType: "docx" }]}
+      documents={[
+        {
+          uri: lostWageDocx,
+          fileName: "17_Lost_Wage_Verification.docx",
+          fileType: "docx",
+        },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>
@@ -76,7 +88,9 @@ export const DOCXLostWageVerification = () => (
 export const TXT = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: txtFile, fileName: "sample.txt", fileType: "text/plain" }]}
+      documents={[
+        { uri: txtFile, fileName: "sample.txt", fileType: "text/plain" },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>
@@ -85,25 +99,9 @@ export const TXT = () => (
 export const Markdown = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: mdFile, fileName: "README.md", fileType: "text/markdown" }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  </div>
-);
-
-export const DOCXPFWithdrawalForm = () => (
-  <div style={{ height: "100vh" }}>
-    <DocViewer
-      documents={[{ uri: pfWithdrawalForm, fileName: "Form 19 - PF withdrawal Application.docx", fileType: "docx" }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  </div>
-);
-
-export const DOCXEMSAmbulanceReport = () => (
-  <div style={{ height: "100vh" }}>
-    <DocViewer
-      documents={[{ uri: emsAmbulanceReport, fileName: "03_EMS_Ambulance_Run_Report.docx", fileType: "docx" }]}
+      documents={[
+        { uri: mdFile, fileName: "README.md", fileType: "text/markdown" },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>
@@ -128,7 +126,9 @@ export const DOCXMicrosoftViewer = () => (
 export const RTF = () => (
   <div style={{ height: "100vh" }}>
     <DocViewer
-      documents={[{ uri: rtfFile, fileName: "sample.rtf", fileType: "application/rtf" }]}
+      documents={[
+        { uri: rtfFile, fileName: "sample.rtf", fileType: "application/rtf" },
+      ]}
       pluginRenderers={DocViewerRenderers}
     />
   </div>

@@ -1,0 +1,28 @@
+name: Refresh Context7 documentation
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs-site/docs/**"
+      - "context7.json"
+      - "llms*.txt"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refresh the existing library index
+        env:
+          CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
+        run: |
+          if [ -z "$CONTEXT7_API_KEY" ]; then
+            echo '::notice::Set CONTEXT7_API_KEY to enable automatic documentation refresh, or refresh the library through context7.com.'
+            exit 0
+          fi
+          curl --fail-with-body --silent --show-error --max-time 60 \
+            -X POST https://context7.com/api/v1/refresh \
+            -H 'Content-Type: application/json' \
+            -H "Authorization: Bearer $CONTEXT7_API_KEY" \
+            -d '{"libraryName":"/mehuljariwala/react-doc-viewer"}'

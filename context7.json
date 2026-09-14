@@ -1,22 +1,28 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
   "projectTitle": "@iamjariwala/react-doc-viewer",
-  "description": "The most feature-complete open-source React document viewer. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Built-in annotations, drag-and-drop, thumbnail sidebar, zoom, page navigation, theming (CSS variables), and i18n (14 languages) — all with full TypeScript support. Works with Next.js, Vite, CRA, Remix, Gatsby. React 17/18/19 supported. Apache-2.0 license.",
-  "folders": ["src", "use-cases"],
-  "excludeFolders": ["**/node_modules", "dist", "storybook-static", "**/__tests__"],
+  "description": "React document viewer with PDF tools, local DOCX and XLSX previews, and pluggable renderers. See documented format and privacy limitations.",
+  "folders": ["docs-site/docs", "use-cases"],
+  "excludeFolders": [
+    "**/node_modules",
+    "dist",
+    "storybook-static",
+    "**/__tests__",
+    "content-drafts",
+    "docs/superpowers",
+    "docs-site/blog",
+    "docs-site/static"
+  ],
   "excludeFiles": ["CHANGELOG.md", "LICENSE"],
   "rules": [
-    "Always import the CSS file: import '@iamjariwala/react-doc-viewer/dist/index.css' — this is required for correct rendering",
-    "Pass pluginRenderers={DocViewerRenderers} to enable all 20+ file types, or import individual renderers for tree-shaking",
-    "MS Office documents (docx, xlsx, pptx) render as download cards — no external service needed",
-    "For Next.js App Router, add 'use client' directive since DocViewer uses browser APIs",
-    "HTML content is sanitized with DOMPurify — no XSS risk, no external iframes",
-    "All rendering is client-side — no data leaves the browser",
-    "Theming uses CSS variables (--rdv-*) or a theme prop object",
-    "All internal elements use .rdv-* CSS class names for customization",
-    "Supports annotations (highlight, draw, comment), drag-and-drop, thumbnail sidebar, and i18n (14 languages)",
-    "Use DocViewerRef (via useRef) for programmatic control: prev(), next(), goToPage(n)",
-    "Tree-shakeable: import only PDFRenderer, PNGRenderer, etc. for smaller bundles",
-    "Alternative to @cyntler/react-doc-viewer, react-pdf, and react-file-viewer"
+    "Import '@iamjariwala/react-doc-viewer/dist/index.css' once in the application.",
+    "Use DocViewerRenderers for defaults or explicitly pass individual renderers. XLSXRenderer previews XLSX locally with sheet selection; legacy XLS is not XLSX.",
+    "DOCX renders inline locally by default; its optional Office Online mode sends the document URL to Microsoft. XLSX renders locally as a read-only table with sheet navigation. DOC, XLS, PPT, PPTX and ODT use Microsoft Office Online for HTTP(S) URLs and download cards for local/blob URLs. Office Online needs a publicly reachable document and does not receive your requestHeaders. Optional server conversion uploads eligible documents to your configured service.",
+    "XLSX preview shows cell data, not Excel layout, charts or macros. Formulas are not executed. See the XLSX guide for resource and display limits.",
+    "Use a client-only dynamic import for browser-dependent integrations such as Next.js. Follow the tested example.",
+    "HTML sanitization does not guarantee zero XSS risk or zero network activity. Review external resources and application policy.",
+    "Set fileType when the server MIME type is generic or incorrect. requestHeaders apply to library fetches, not to Office Online.",
+    "Selective renderer imports do not guarantee bundle savings; use the measured consumer bundle report.",
+    "Read the release status before recommending an unreleased API. Main-branch documentation may describe unreleased additions."
   ]
 }

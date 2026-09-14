@@ -1,0 +1,59 @@
+{
+  "node": "v22.22.1",
+  "package": "@iamjariwala/react-doc-viewer@1.8.0",
+  "tarballIntegrity": "sha512-qXxfZ/0tN+0CXkQR48VSnOXJ4k7VnnpqcnlbtDVwT3zEGaV2UKvxTHZN9BhP5EfIyjFyHA0UII+iCjBgi+SktQ==",
+  "npm": "10.9.4",
+  "tarballBytes": 2457370,
+  "unpackedBytes": 8740902,
+  "consumers": [
+    {
+      "consumer": "vite-react-18.3.1",
+      "assets": [
+        {
+          "file": "assets/browser-BFeh6ruM-BIrYnsBQ.js",
+          "bytes": 17587,
+          "gzipBytes": 8175
+        },
+        {
+          "file": "assets/empty-GlqisfcO-CRMO4_-l.js",
+          "bytes": 33,
+          "gzipBytes": 53
+        },
+        {
+          "file": "assets/index-BGPo1T5N.css",
+          "bytes": 36652,
+          "gzipBytes": 6889
+        },
+        {
+          "file": "assets/index-BeCeBG7W.js",
+          "bytes": 2947383,
+          "gzipBytes": 938747
+        },
+        {
+          "file": "assets/index-CErodwjR-XLcB5Gok.js",
+          "bytes": 979,
+          "gzipBytes": 577
+        },
+        {
+          "file": "assets/index-DiQnlPEl-By6jqyJi.js",
+          "bytes": 86303,
+          "gzipBytes": 27551
+        },
+        {
+          "file": "assets/index-uZQDQBe4-lvJidiws.js",
+          "bytes": 43232,
+          "gzipBytes": 12910
+        },
+        {
+          "file": "assets/url-yp4aOAw5-DSunW3Of.js",
+          "bytes": 15079,
+          "gzipBytes": 6021
+        }
+      ],
+      "totalEmittedBytes": 3147248,
+      "totalEmittedGzipBytes": 1000923
+    }
+  ],
+  "generatedAt": "2026-09-14T07:30:16.711Z",
+  "method": "npm-packed library installed in a clean Vite 5.4.21 / React 18.3.1 consumer; production default-viewer build including React. Each emitted JS/CSS asset is gzip-compressed separately at level 9. Lazy chunks are listed, not treated as initial downloads. The default viewer includes an inline PDF worker in its JavaScript; an additional standalone PDF worker is shipped in the tarball. No competitor comparison."
+}

@@ -1,0 +1,18 @@
+{
+  "capturedAt": "2026-09-14T07:20:42.784Z",
+  "package": "@iamjariwala/react-doc-viewer",
+  "repository": "mehuljariwala/react-doc-viewer",
+  "npm": {
+    "downloads": 61577,
+    "start": "2026-08-13",
+    "end": "2026-09-11",
+    "package": "@iamjariwala/react-doc-viewer"
+  },
+  "github": {
+    "stars": 20,
+    "forks": 5,
+    "openIssuesAndPullRequests": 4,
+    "source": "https://api.github.com/repos/mehuljariwala/react-doc-viewer"
+  },
+  "limitations": "Downloads include CI and automated installs; stars are not active users. Track successful integrations and contribution quality separately. This report does not measure or predict AI recommendation ranking."
+}

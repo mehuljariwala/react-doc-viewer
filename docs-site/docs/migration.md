@@ -1,28 +1,32 @@
 ---
 id: migration
-title: Migrating from Other Libraries
-sidebar_label: Migration
-description: Migrate to @iamjariwala/react-doc-viewer from @cyntler/react-doc-viewer, react-pdf, or react-file-viewer with step-by-step guides.
-keywords: [migrate react-doc-viewer, replace react-pdf, replace react-file-viewer, cyntler migration, switch document viewer]
+title: Migrating from another viewer
 ---
 
-# Migrating from Other Libraries
+# Migrating from another viewer
 
 ## From @cyntler/react-doc-viewer
 
-1. Replace the package: `npm uninstall @cyntler/react-doc-viewer && npm install @iamjariwala/react-doc-viewer`
-2. Update imports: replace `@cyntler/react-doc-viewer` with `@iamjariwala/react-doc-viewer`
-3. Add the CSS import: `import "@iamjariwala/react-doc-viewer/dist/index.css"`
-4. All existing props and config options are compatible
+This package is a fork with a related API, but do not assume every configuration or CSS override is interchangeable.
 
-## From react-pdf
+1. Replace the dependency with `@iamjariwala/react-doc-viewer`.
+2. Update imports and add `@iamjariwala/react-doc-viewer/dist/index.css` once.
+3. Pass `pluginRenderers` explicitly. Choose local renderers for private documents.
+4. Review Office Online and server-conversion behavior in [Security](security.md).
+5. Test the file types, request headers, callbacks, annotations and CSS overrides your application uses.
 
-1. Install: `npm install @iamjariwala/react-doc-viewer`
-2. Replace `<Document>` + `<Page>` with `<DocViewer documents={[{ uri: pdfUrl }]} />`
-3. The built-in PDF renderer handles zoom, pagination, and page navigation automatically
+## From react-pdf or react-file-viewer
 
-## From react-file-viewer
+This is a viewer component with its own API, not a drop-in replacement for their components.
 
-1. Install: `npm install @iamjariwala/react-doc-viewer`
-2. Replace `<FileViewer fileType={type} filePath={path} />` with `<DocViewer documents={[{ uri: path }]} />`
-3. File type is detected automatically from the URL
+```tsx
+import DocViewer, { PDFRenderer } from "@iamjariwala/react-doc-viewer";
+import "@iamjariwala/react-doc-viewer/dist/index.css";
+
+<DocViewer
+  documents={[{ uri: pdfUrl, fileType: "pdf" }]}
+  pluginRenderers={[PDFRenderer]}
+/>;
+```
+
+Replace your old document/page components, then map required navigation and callbacks to the documented viewer API. Do not carry over unrelated props. Measure your application bundle before and after the migration; a smaller bundle is not guaranteed.
