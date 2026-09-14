@@ -1,32 +1,49 @@
-import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
+import type { SidebarsConfig } from "@docusaurus/plugin-content-docs";
 
 const sidebars: SidebarsConfig = {
   docsSidebar: [
-    'getting-started',
-    'supported-file-types',
+    "getting-started",
+    "supported-file-types",
     {
-      type: 'category',
-      label: 'Framework Guides',
-      items: ['frameworks/nextjs', 'frameworks/vite', 'frameworks/cra', 'frameworks/remix'],
-    },
-    {
-      type: 'category',
-      label: 'Features',
+      type: "category",
+      label: "Recipes",
       items: [
-        'features/annotations',
-        'features/drag-and-drop',
-        'features/thumbnails',
-        'features/page-navigation',
+        "guides/pdf",
+        "guides/docx",
+        "guides/xlsx",
+        "guides/authenticated-files",
+        "guides/uploads",
       ],
     },
-    'custom-renderers',
-    'theming',
-    'i18n',
-    'api-reference',
-    'security',
-    'performance',
-    'migration',
-    'faq',
+    "release",
+    {
+      type: "category",
+      label: "Framework Guides",
+      items: [
+        "frameworks/nextjs",
+        "frameworks/vite",
+        "frameworks/cra",
+        "frameworks/remix",
+      ],
+    },
+    {
+      type: "category",
+      label: "Features",
+      items: [
+        "features/annotations",
+        "features/drag-and-drop",
+        "features/thumbnails",
+        "features/page-navigation",
+      ],
+    },
+    "custom-renderers",
+    "theming",
+    "i18n",
+    "api-reference",
+    "security",
+    "performance",
+    "migration",
+    "faq",
   ],
 };
 

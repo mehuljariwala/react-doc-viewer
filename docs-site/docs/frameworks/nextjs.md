@@ -1,53 +1,47 @@
 ---
 id: nextjs
-title: Using react-doc-viewer with Next.js
+title: Using the viewer with Next.js
 sidebar_label: Next.js
-description: How to display PDF and documents in Next.js using @iamjariwala/react-doc-viewer. Works with App Router and Pages Router.
-keywords: [nextjs pdf viewer, next.js document viewer, react pdf nextjs, display pdf next.js, app router pdf]
 ---
 
-# Next.js Integration
+# Next.js integration
 
-`@iamjariwala/react-doc-viewer` works with both the **App Router** and **Pages Router** in Next.js.
+Use a client component with a browser-only dynamic import. A `"use client"` directive alone does not disable server prerendering of browser-dependent dependencies.
 
-## App Router
+Create `app/viewer.tsx`:
 
 ```tsx
 "use client";
-
 import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
 import "@iamjariwala/react-doc-viewer/dist/index.css";
 
-export default function DocumentPage() {
+export default function Viewer() {
   return (
     <DocViewer
-      documents={[{ uri: "/documents/report.pdf" }]}
+      documents={[{ uri: "/sample.pdf", fileType: "pdf" }]}
       pluginRenderers={DocViewerRenderers}
+      style={{ height: 600 }}
     />
   );
 }
 ```
 
-:::info
-The `"use client"` directive is required in App Router since DocViewer uses browser APIs (Canvas, FileReader, etc.).
-:::
-
-## Pages Router
+Create `app/page.tsx`:
 
 ```tsx
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
+"use client";
+import dynamic from "next/dynamic";
 
-export default function DocumentPage() {
-  return (
-    <DocViewer
-      documents={[{ uri: "/documents/report.pdf" }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  );
+const Viewer = dynamic(() => import("./viewer"), {
+  ssr: false,
+  loading: () => <p>Loading viewer…</p>,
+});
+
+export default function Page() {
+  return <Viewer />;
 }
 ```
 
-## Working Example
+Put a file at `public/sample.pdf`. Keep global CSS imports in an allowed location for your Next.js router. In Pages Router, import the package CSS from `pages/_app.tsx` and use the same browser-only dynamic boundary.
 
-A complete Next.js example is included in the repository at [`use-cases/nextjs/`](https://github.com/mehuljariwala/react-doc-viewer/tree/main/use-cases/nextjs).
+The repository's [Next.js example](https://github.com/mehuljariwala/react-doc-viewer/tree/main/use-cases/nextjs) consumes the packed npm package. The CI matrix records the tested Next/React versions; it does not cover every historical framework version.

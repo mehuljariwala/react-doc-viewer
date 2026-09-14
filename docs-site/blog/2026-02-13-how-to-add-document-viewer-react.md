@@ -6,7 +6,13 @@ authors:
     url: https://github.com/mehuljariwala
 tags: [react, pdf-viewer, document-viewer, tutorial]
 description: Step-by-step guide to adding a document viewer to your React app that supports PDF, Word, Excel, PowerPoint, images, video, CSV, and 20+ file types.
-keywords: [react document viewer tutorial, add pdf viewer react, react file preview, document viewer setup]
+keywords:
+  [
+    react document viewer tutorial,
+    add pdf viewer react,
+    react file preview,
+    document viewer setup,
+  ]
 ---
 
 # How to Add a Document Viewer to Your React App in 5 Minutes
@@ -34,7 +40,9 @@ function DocumentPreview() {
     { uri: "https://example.com/data.csv" },
   ];
 
-  return <DocViewer documents={documents} pluginRenderers={DocViewerRenderers} />;
+  return (
+    <DocViewer documents={documents} pluginRenderers={DocViewerRenderers} />
+  );
 }
 ```
 
@@ -103,7 +111,7 @@ export default function ViewerPage() {
 - **Drag & Drop** — file upload with validation
 - **Thumbnail sidebar** — visual page navigation for PDFs
 - **14 languages** — built-in i18n
-- **No external services** — all rendering is client-side, no data leaves the browser
+- **Rendering modes** — DOCX and XLSX have local previews; other Office formats and optional conversion can use external services. See the [security guide](/docs/security).
 - **TypeScript** — full type definitions
 - **Apache-2.0** — free for commercial use
 

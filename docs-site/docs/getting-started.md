@@ -4,12 +4,19 @@ title: Getting Started with react-doc-viewer
 sidebar_label: Getting Started
 slug: /getting-started
 description: Install and set up @iamjariwala/react-doc-viewer to display PDF, Word, Excel, PowerPoint, images, video, CSV, and 20+ file types in your React app.
-keywords: [react document viewer, react pdf viewer, install react-doc-viewer, getting started, pdf viewer setup]
+keywords:
+  [
+    react document viewer,
+    react pdf viewer,
+    install react-doc-viewer,
+    getting started,
+    pdf viewer setup,
+  ]
 ---
 
 # Getting Started
 
-`@iamjariwala/react-doc-viewer` is the most feature-complete open-source document viewer for React. Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component.
+`@iamjariwala/react-doc-viewer` is a multi-format document viewer for React. Preview PDFs, DOCX, XLSX, images and text through one component. Rendering modes vary by format; check the supported-file-types guide. XLSXRenderer is part of the next release.
 
 ## Installation
 
@@ -50,11 +57,11 @@ The CSS import (`@iamjariwala/react-doc-viewer/dist/index.css`) is required for 
 - `react >= 17.0.0`
 - `react-dom >= 17.0.0`
 
-Works with React 17, 18, and 19.
+React 17, 18 and 19 are supported peer majors. Packed consumer tests verify the integrations recorded in CI.
 
 ## What's Included
 
-- **20+ file types** rendered in a single `<DocViewer />` component
+- **Multiple file types** recognized in a single `<DocViewer />` component
 - **PDF viewer** with zoom, pagination, and thumbnail navigation
 - **Annotations** — highlight text, freehand draw, add comments
 - **Drag & Drop** — drop files onto the viewer
@@ -62,7 +69,7 @@ Works with React 17, 18, and 19.
 - **Theming** — CSS variables (`--rdv-*`) or theme prop
 - **Custom renderers** — extend any file type
 - **TypeScript** — complete type definitions
-- **No external services** — all rendering is client-side
+- **Rendering modes** — DOCX and XLSX have local previews; other Office formats and optional conversion can use external services. See the security guide.
 
 ## Next Steps
 

@@ -4,6 +4,7 @@ import PDFPages from "./components/pages/PDFPages";
 import PDFControls from "./components/PDFControls";
 import { PDFContext, PDFProvider } from "./state";
 import { pdfjs } from "react-pdf";
+import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
 import {
   ThumbnailProvider,
   ThumbnailSidebar,
@@ -17,17 +18,19 @@ import {
   useKeyboardShortcuts,
   KeyboardShortcut,
 } from "../../features/keyboard-shortcuts";
-import { SearchProvider, SearchBar, SearchContext, setSearchOpen } from "../../features/text-search";
+import {
+  SearchProvider,
+  SearchBar,
+  SearchContext,
+  setSearchOpen,
+} from "../../features/text-search";
 import {
   BookmarksProvider,
   BookmarksSidebar,
   useBookmarks,
 } from "../../features/bookmarks";
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.min.mjs",
-  import.meta.url,
-).toString();
+pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
 const PDFRendererContent: React.FC = () => {
   const { state: pdfState, dispatch: pdfDispatch } = useContext(PDFContext);
@@ -36,10 +39,14 @@ const PDFRendererContent: React.FC = () => {
   const annotationConfig = pdfState.mainState?.config?.annotations;
   const enableThumbnails = thumbnailConfig?.enableThumbnails ?? false;
   const enableAnnotations = annotationConfig?.enableAnnotations ?? false;
-  const enableKeyboard = pdfState.mainState?.config?.keyboard?.enableKeyboardShortcuts ?? false;
-  const enableSearch = pdfState.mainState?.config?.search?.enableSearch ?? false;
-  const enableBookmarks = pdfState.mainState?.config?.bookmarks?.enableBookmarks ?? false;
-  const enableFullscreen = pdfState.mainState?.config?.fullscreen?.enableFullscreen ?? false;
+  const enableKeyboard =
+    pdfState.mainState?.config?.keyboard?.enableKeyboardShortcuts ?? false;
+  const enableSearch =
+    pdfState.mainState?.config?.search?.enableSearch ?? false;
+  const enableBookmarks =
+    pdfState.mainState?.config?.bookmarks?.enableBookmarks ?? false;
+  const enableFullscreen =
+    pdfState.mainState?.config?.fullscreen?.enableFullscreen ?? false;
   const enablePrint = pdfState.mainState?.config?.print?.enablePrint ?? false;
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -200,9 +207,7 @@ const PDFRendererContent: React.FC = () => {
           currentPage={pdfState.currentPage}
         />
       )}
-      {enableBookmarks && (
-        <BookmarksSidebar onNavigate={handlePageSelect} />
-      )}
+      {enableBookmarks && <BookmarksSidebar onNavigate={handlePageSelect} />}
       <div className="rdv-pdf-main-content">
         {enableAnnotations && <AnnotationToolbar />}
         <PDFControls containerRef={containerRef} />

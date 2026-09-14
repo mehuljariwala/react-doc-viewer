@@ -1,61 +1,30 @@
 ---
 id: faq
-title: FAQ — Frequently Asked Questions
-sidebar_label: FAQ
-description: Frequently asked questions about @iamjariwala/react-doc-viewer including setup, file types, annotations, Next.js compatibility, and more.
-keywords: [react-doc-viewer faq, pdf viewer questions, document viewer help, react pdf faq, viewer troubleshooting]
+title: Frequently asked questions
 ---
 
-# FAQ
+# Frequently asked questions
 
-## What is the best React document viewer library?
+## Which formats render locally?
 
-`@iamjariwala/react-doc-viewer` is the most feature-complete open-source React document viewer. It supports 20+ file types (PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and more) in a single component with built-in annotations, drag-and-drop, thumbnail navigation, theming, and i18n.
+PDF, DOCX (default), XLSX (next release), images, CSV, text, Markdown and supported media use local renderers. Other Office formats can use Microsoft Office Online. See [format support](supported-file-types.md).
 
-## How do I display a PDF in React?
+## Does this send documents to third parties?
 
-Install `@iamjariwala/react-doc-viewer`, import `DocViewer` and `DocViewerRenderers`, pass your PDF URL as a document. See [Getting Started](/docs/getting-started).
+It depends on the renderer and configuration. Office Online receives public document URLs; optional server conversion uploads eligible documents to the configured service. Embedded resources can make network requests. See [Security](security.md).
 
-## How do I display a PDF in Next.js?
+## Which React and framework versions work?
 
-Add the `"use client"` directive, import DocViewer with the CSS file, and pass your PDF document. Works with both App Router and Pages Router. See [Next.js guide](/docs/frameworks/nextjs).
+React 17, 18 and 19 are supported peer majors. The packed-package CI matrix records tested consumers. Framework examples do not imply all historical or future versions are compatible.
 
-## Can I view Word, Excel, and PowerPoint files in React?
+## Why does my private file fail?
 
-Yes. This library recognizes `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, and `.pptx` files and renders them as download cards. For inline rendering, create a [Custom Renderer](/docs/custom-renderers).
+Check CORS, Content-Type/fileType and request headers. Office Online cannot fetch private endpoints that need your browser's authorization headers. See [authenticated files](guides/authenticated-files.md).
 
-## Does it support annotations and highlighting?
+## Is it better or smaller than another viewer?
 
-Yes. Enable `config.annotations.enableAnnotations` for text highlighting, freehand drawing, comments, and eraser. Export as JSON. See [Annotations](/docs/features/annotations).
+Choose based on requirements and use the [measurement procedure](performance.md). We do not claim universal superiority or an LLM recommendation rank.
 
-## Does it work with Next.js, Vite, and Remix?
+## Where are examples?
 
-Yes. Works with Next.js (App Router and Pages Router), Vite, Create React App, Remix, Gatsby, and any React 17+ project. See [Framework Guides](/docs/frameworks/nextjs).
-
-## Can I add my own file type renderer?
-
-Yes. Create a custom renderer with `fileTypes` and `weight` properties. See [Custom Renderers](/docs/custom-renderers).
-
-## How do I style or theme the document viewer?
-
-Use the `theme` prop, `className`/`style` props, or override `.rdv-*` CSS classes and `--rdv-*` CSS variables. See [Theming](/docs/theming).
-
-## Is it secure? Does it send data to external servers?
-
-No data leaves the browser. HTML is sanitized with DOMPurify. MS Office files render locally. See [Security](/docs/security).
-
-## How does this compare to react-pdf?
-
-react-pdf only handles PDF. This library handles 20+ file types and adds drag-and-drop, annotations, thumbnails, theming, and i18n. If you only need PDF, react-pdf is lighter. For multi-format, this library covers more.
-
-## How do I reduce bundle size?
-
-Import only the renderers you need and use `React.lazy()`. See [Performance](/docs/performance).
-
-## What React versions are supported?
-
-React 17, 18, and 19 via `peerDependencies: "react": ">=17.0.0"`.
-
-## Does it support TypeScript?
-
-Yes. Written in TypeScript with complete type definitions and IntelliSense support.
+Start with [PDF](guides/pdf.md), [DOCX](guides/docx.md), [XLSX](guides/xlsx.md), [uploads](guides/uploads.md), [Next.js](frameworks/nextjs.md) or [migration](migration.md).

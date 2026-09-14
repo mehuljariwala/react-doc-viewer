@@ -1,3 +1,4 @@
+import XLSXRenderer from "./xlsx";
 import BMPRenderer from "./bmp";
 import DocxRenderer from "./docx";
 import HTMLRenderer from "./html";
@@ -15,6 +16,7 @@ import VideoRenderer from "./video";
 import WebPRenderer from "./webp";
 
 export const DocViewerRenderers = [
+  XLSXRenderer,
   BMPRenderer,
   DocxRenderer,
   HTMLRenderer,
@@ -33,6 +35,7 @@ export const DocViewerRenderers = [
 ];
 
 export {
+  XLSXRenderer,
   BMPRenderer,
   DocxRenderer,
   HTMLRenderer,

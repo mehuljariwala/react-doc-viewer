@@ -10,9 +10,9 @@
 
 # @iamjariwala/react-doc-viewer
 
-**The most feature-complete open-source document viewer for React.** Render PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and 20+ file types in a single drop-in component. Dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks/TOC, password-protected PDFs, fullscreen, print, split view, drag-and-drop, thumbnails, zoom, i18n (14 languages) -- all with full TypeScript support.
+**A React document viewer with PDF tools, local DOCX and XLSX previews, and pluggable renderers.** View PDF, images, CSV, text, Markdown and video; add PDF search, annotations, thumbnails and dark mode. Office preview behavior varies by format—see [Supported File Types](#supported-file-types).
 
-> **One component. 20+ file types. Zero hassle.**
+> One component, explicit format support, TypeScript APIs.
 
 ```bash
 npm install @iamjariwala/react-doc-viewer
@@ -34,7 +34,7 @@ import "@iamjariwala/react-doc-viewer/dist/index.css";
 
 ## Why @iamjariwala/react-doc-viewer?
 
-Most React document viewers only handle PDFs or require expensive commercial licenses. This library gives you **everything in one package**:
+Use one viewer API for multiple document formats, with these built-in tools:
 
 - **20+ file types** in a single `<DocViewer />` component -- no need to install separate libraries for PDF, images, CSV, video, etc.
 - **Dark Mode** -- built-in light/dark/auto theme switching with full CSS variable support
@@ -56,9 +56,9 @@ Most React document viewers only handle PDFs or require expensive commercial lic
 - **Theming & CSS Variables** -- full color control via theme object or `--rdv-*` CSS custom properties
 - **Custom Renderers** -- extend or replace any file type renderer with your own React component
 - **TypeScript First** -- complete type definitions, generics, and IntelliSense support
-- **Tree-Shakeable** -- import only the renderers you need to minimize bundle size
-- **No External Services** -- all rendering happens client-side, no data leaves the browser
-- **Works Everywhere** -- Next.js, Vite, Create React App, Remix, Gatsby, and any React 17+ project
+- **Selectable renderers** -- choose allowed formats; measure actual bundle output with the included tooling
+- **Local DOCX and XLSX previews** -- see [Security](#security) for formats and options that use external services
+- **Framework examples** -- packed-package checks for Vite and Next.js; see the compatibility notes below
 
 ### Best for
 
@@ -77,43 +77,11 @@ Most React document viewers only handle PDFs or require expensive commercial lic
 
 ## How It Compares
 
-Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-viewer` stacks up against popular alternatives:
+Choose based on the formats and controls your application needs. This package combines document navigation and PDF tools with local DOCX and XLSX previews. It is a fork of `@cyntler/react-doc-viewer` and uses `react-pdf` internally.
 
-| Feature | @iamjariwala/react-doc-viewer | react-pdf | @cyntler/react-doc-viewer | react-file-viewer |
-| ------- | :--: | :--: | :--: | :--: |
-| PDF rendering | Yes | Yes | Yes | Yes |
-| Office docs (Word, Excel, PPT) | Yes | -- | Yes | Partial |
-| Images (PNG, JPG, GIF, WebP, TIFF, BMP) | Yes | -- | Yes | Partial |
-| Video (MP4) | Yes | -- | Yes | Yes |
-| Markdown / RTF | Yes | -- | -- | -- |
-| CSV / TXT / HTML | Yes | -- | Yes | Partial |
-| Toolbar for all file types | Yes | -- | -- | -- |
-| Dark Mode (light / dark / auto) | Yes | -- | -- | -- |
-| Text Search with highlighting | Yes | -- | -- | -- |
-| Annotations (highlight, draw, comment) | Yes | -- | -- | -- |
-| Keyboard Shortcuts | Yes | -- | -- | -- |
-| Watermark Overlay | Yes | -- | -- | -- |
-| PDF Bookmarks / TOC sidebar | Yes | -- | -- | -- |
-| Password-Protected PDFs | Yes | Yes | -- | -- |
-| Fullscreen Mode | Yes | -- | -- | -- |
-| Print from toolbar | Yes | -- | -- | -- |
-| Split View / Compare | Yes | -- | -- | -- |
-| Loading Progress Bar | Yes | -- | -- | -- |
-| Text Selection & Copy | Yes | Yes | -- | -- |
-| Drag & Drop file upload | Yes | -- | -- | -- |
-| Thumbnail sidebar navigation | Yes | -- | -- | -- |
-| Programmatic page jump | Yes | Yes | -- | -- |
-| i18n (14 languages) | Yes | -- | -- | -- |
-| Custom renderers | Yes | -- | Yes | -- |
-| Theming (CSS variables) | Yes | -- | Yes | -- |
-| TypeScript | Yes | Yes | Yes | -- |
-| Tree-shakeable | Yes | Yes | -- | -- |
-| No external services | Yes | Yes | -- | -- |
-| Zero styled-components | Yes | Yes | -- | -- |
-| Actively maintained (2026) | Yes | Yes | -- | -- |
-| License | Apache-2.0 | MIT | MIT | MIT |
+For PDF-only applications, compare the APIs of [react-pdf](https://github.com/wojtekmaj/react-pdf) with this package's built-in viewer controls. For other viewers, verify the exact version, required formats, external-service behavior, license and measured consumer bundle before choosing. We do not claim unmeasured size advantages or missing features in competing projects.
 
-> **TL;DR** -- If you only render PDFs, `react-pdf` is lighter. If you need multi-format support with a professional-grade feature set (search, annotations, dark mode, keyboard shortcuts, watermarks, bookmarks, split view, and more), this library covers all of it in a single package.
+See [Migration](docs-site/docs/migration.md) and [Performance](docs-site/docs/performance.md) for reproducible checks.
 
 ---
 
@@ -129,10 +97,19 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 
 ---
 
+### Next release (unreleased)
+
+- Local XLSX table preview with sheet selection, load/error states and documented limits.
+- Clean consumer installation without an install-time `npx` command.
+- Packed-package validation, runnable examples and reproducible bundle measurements.
+- Synchronized AI documentation with accurate Office rendering and privacy descriptions.
+
+See [Release validation and walkthrough](docs-site/docs/release.md), [focused guides](docs-site/docs/guides/pdf.md), and [CHANGELOG](CHANGELOG.md).
+
 ### What's New in v1.6.0
 
 - **Common Toolbar for All File Types** -- Non-PDF renderers (DOCX, images, text, markdown, RTF, CSV) now have a toolbar with download, print, and zoom controls
-- **DOCX Inline Rendering** -- Word documents render inline with full formatting using `docx-preview` instead of download cards
+- **DOCX Inline Rendering** -- Word documents render inline with full formatting using `docx-preview-sync` instead of download cards
 - **DOCX Page Navigation** -- Multi-page DOCX documents show page controls (prev/next, page input, jump-to-page) with automatic page detection
 - **Markdown Renderer** -- Native markdown rendering with headings, lists, links, code blocks, and formatting
 - **RTF Renderer** -- Rich Text Format file support
@@ -240,16 +217,16 @@ Looking for the best React document viewer? Here's how `@iamjariwala/react-doc-v
 | mp4 | `video/mp4` | Native video player with controls |
 | md | `text/markdown` | Parsed markdown with headings, lists, code, links |
 | rtf | `application/rtf` | Rich text viewer |
-| doc | `application/msword` | Download card |
+| doc | `application/msword` | Office Online for HTTP(S); download card for local/blob files |
 | docx | `application/vnd.openxmlformats-officedocument.wordprocessingml.document` | Inline rendered with page navigation and formatting |
-| xls | `application/vnd.ms-excel` | Download card |
-| xlsx | `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Download card |
-| ppt | `application/vnd.ms-powerpoint` | Download card |
-| pptx | `application/vnd.openxmlformats-officedocument.presentationml.presentation` | Download card |
-| odt | `application/vnd.oasis.opendocument.text` | Download card |
+| xls | `application/vnd.ms-excel` | Office Online for HTTP(S); download card for local/blob files |
+| xlsx | `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet` | Local read-only table with sheet navigation |
+| ppt | `application/vnd.ms-powerpoint` | Office Online for HTTP(S); download card for local/blob files |
+| pptx | `application/vnd.openxmlformats-officedocument.presentationml.presentation` | Office Online for HTTP(S); download card for local/blob files |
+| odt | `application/vnd.oasis.opendocument.text` | Office Online for HTTP(S); download card for local/blob files |
 
 > [!NOTE]
-> DOCX files render inline with full formatting (headings, tables, lists, styles) using `docx-preview`. Multi-page DOCX documents include page navigation controls. Other MS Office formats (doc, xls, xlsx, ppt, pptx) render as download cards. No external service or public URL is required.
+> DOCX renders inline locally by default; its optional Office Online mode sends the document URL to Microsoft. XLSX renders locally as a read-only table with sheet navigation. DOC, XLS, PPT, PPTX and ODT use Microsoft Office Online for HTTP(S) URLs and download cards for local/blob URLs. Office Online needs a publicly reachable document and does not receive your requestHeaders. Optional server conversion uploads eligible documents to your configured service.
 
 ## Live Demo
 
@@ -297,23 +274,8 @@ function App() {
 
 ### Next.js (App Router & Pages Router)
 
-```tsx
-"use client";
+Use a client component and `next/dynamic` with `ssr: false` to load the viewer in the browser. `"use client"` alone does not disable prerendering. See the [complete Next.js guide](docs-site/docs/frameworks/nextjs.md) and the runnable [packed-package example](use-cases/nextjs/).
 
-import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
-import "@iamjariwala/react-doc-viewer/dist/index.css";
-
-export default function DocumentPage() {
-  return (
-    <DocViewer
-      documents={[{ uri: "/documents/report.pdf" }]}
-      pluginRenderers={DocViewerRenderers}
-    />
-  );
-}
-```
-
-> The `"use client"` directive is required when using the App Router since DocViewer uses browser APIs. A working Next.js example is included at `use-cases/nextjs/`.
 
 ### Vite
 
@@ -349,27 +311,8 @@ function App() {
 
 ### Remix
 
-```tsx
-import { ClientOnly } from "remix-utils/client-only";
+Load browser-dependent viewer code inside a client-only boundary. Keep CSS imports in your framework's supported stylesheet entry. The current package smoke matrix covers Vite and Next.js; verify Remix integration against the version used by your application. See the [framework note](docs-site/docs/frameworks/remix.md).
 
-export default function DocumentRoute() {
-  return (
-    <ClientOnly fallback={<p>Loading viewer...</p>}>
-      {() => {
-        const DocViewer = require("@iamjariwala/react-doc-viewer").default;
-        const { DocViewerRenderers } = require("@iamjariwala/react-doc-viewer");
-        require("@iamjariwala/react-doc-viewer/dist/index.css");
-        return (
-          <DocViewer
-            documents={[{ uri: "/documents/report.pdf" }]}
-            pluginRenderers={DocViewerRenderers}
-          />
-        );
-      }}
-    </ClientOnly>
-  );
-}
-```
 
 ## Documents
 
@@ -413,29 +356,8 @@ const [activeDocument, setActiveDocument] = useState(docs[0]);
 
 ### Blob / Uploaded Files
 
-Display user-uploaded files using blob URLs:
+Create object URLs when selection changes, and revoke them when replacing files or unmounting. Set the real `fileType` for uploads with a missing/generic MIME type. See the [complete upload example](docs-site/docs/guides/uploads.md) and [authenticated-file guide](docs-site/docs/guides/authenticated-files.md).
 
-```tsx
-const [files, setFiles] = useState<File[]>([]);
-
-<>
-  <input
-    type="file"
-    accept=".pdf"
-    multiple
-    onChange={(e) =>
-      e.target.files?.length && setFiles(Array.from(e.target.files))
-    }
-  />
-  <DocViewer
-    documents={files.map((file) => ({
-      uri: window.URL.createObjectURL(file),
-      fileName: file.name,
-    }))}
-    pluginRenderers={DocViewerRenderers}
-  />
-</>
-```
 
 ## Renderers
 
@@ -449,7 +371,7 @@ import DocViewer, { DocViewerRenderers } from "@iamjariwala/react-doc-viewer";
 <DocViewer pluginRenderers={DocViewerRenderers} documents={docs} />;
 ```
 
-Or import only what you need for smaller bundles:
+Or select the renderers your application needs:
 
 ```tsx
 import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-viewer";
@@ -457,7 +379,7 @@ import DocViewer, { PDFRenderer, PNGRenderer } from "@iamjariwala/react-doc-view
 <DocViewer pluginRenderers={[PDFRenderer, PNGRenderer]} documents={docs} />;
 ```
 
-**Available renderers:** `BMPRenderer`, `CSVRenderer`, `DocxRenderer`, `GIFRenderer`, `HTMLRenderer`, `JPGRenderer`, `MarkdownRenderer`, `MSDocRenderer`, `PDFRenderer`, `PNGRenderer`, `RTFRenderer`, `TIFFRenderer`, `TXTRenderer`, `VideoRenderer`, `WebPRenderer`
+**Available renderers:** `BMPRenderer`, `CSVRenderer`, `DocxRenderer`, `XLSXRenderer`, `GIFRenderer`, `HTMLRenderer`, `JPGRenderer`, `MarkdownRenderer`, `MSDocRenderer`, `PDFRenderer`, `PNGRenderer`, `RTFRenderer`, `TIFFRenderer`, `TXTRenderer`, `VideoRenderer`, `WebPRenderer`
 
 ### Custom Renderer
 
@@ -1156,36 +1078,20 @@ Translation files are in `src/locales/`. PRs for new languages are welcome.
 
 ## Performance & Bundle Size
 
-v1.1.0 significantly reduced bundle size by removing heavy dependencies:
+Run `npm run measure:bundle` after building to measure minified and gzip assets for real consumer bundles. See [Performance](docs-site/docs/performance.md) for the exact methodology and limitations. Selective renderer imports control accepted formats; they do not guarantee that all shared PDF dependencies disappear from a bundle.
 
-| Dependency removed | Size saved |
-| ------------------ | ---------- |
-| `styled-components` | ~160KB minified |
-| `core-js` | ~150KB minified |
-| `ajv` | ~70KB minified |
-| **Total savings** | **~380KB** |
+The XLSX parser loads on demand. Spreadsheet preview has explicit input and display limits; see [XLSX guide](docs-site/docs/guides/xlsx.md).
 
-**Optimization tips:**
-
-- **Tree-shake renderers** -- Import only the renderers you need instead of `DocViewerRenderers`
-- **Lazy load the viewer** -- Use `React.lazy()` to code-split the viewer into its own chunk
-- **Set dimensions** -- Always give the viewer explicit `width` and `height` via `style` prop to prevent layout shifts
-
-```tsx
-const DocViewer = React.lazy(() => import("@iamjariwala/react-doc-viewer"));
-
-<Suspense fallback={<div>Loading viewer...</div>}>
-  <DocViewer documents={docs} pluginRenderers={[PDFRenderer]} />
-</Suspense>
-```
 
 ## Security
 
-- **HTML sanitization** -- All HTML content is sanitized with [DOMPurify](https://github.com/cure53/DOMPurify) before rendering. Script tags, object embeds, and form elements are stripped.
-- **No external services** -- All document rendering happens client-side. No file data is sent to third-party servers.
-- **No external iframes** -- MS Office documents render as local download cards instead of being sent to Microsoft's viewing service.
-- **Sandboxed HTML** -- HTML documents render inside an iframe with sanitized content.
-- **Watermark protection** -- Add visible watermarks to discourage unauthorized distribution of confidential documents.
+PDF and XLSX parsing run in the browser. DOCX uses local rendering by default. Other Office formats may use Microsoft Office Online, and optional server conversion uploads documents to your configured service. Remote documents and embedded resources can still make network requests. See [Security](#security).
+
+- HTML and Markdown output use DOMPurify; sanitization is not a guarantee against every attack or network request. Apply your application's content policy and keep dependencies updated.
+- For confidential Office files, pass only local renderers (`DocxRenderer`, `XLSXRenderer`, `PDFRenderer`, etc.), leave `docx.useOfficeOnlineViewer` disabled and do not enable `serverConversion`.
+- XLSX is a data preview, not an Excel execution environment. Formula expressions are not executed; cached values may be displayed. Charts, macros and exact formatting are not supported.
+- Visible watermarks are a visual cue, not access control or DRM.
+
 
 ## Advanced
 
@@ -1238,16 +1144,16 @@ Provide custom headers for authenticated requests (JWT, API keys, etc.):
 ## FAQ
 
 **What is the best React document viewer library?**
-`@iamjariwala/react-doc-viewer` is the most feature-complete open-source React document viewer. It supports 20+ file types (PDF, Word, Excel, PowerPoint, images, video, CSV, HTML, and more) in a single component with dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks, password-protected PDF support, fullscreen, print, split view, drag-and-drop, thumbnails, theming, and i18n -- features that most alternatives require paid licenses or multiple libraries to achieve.
+Choose based on formats, privacy requirements, accessibility, integrations and measured performance. This package is suitable when you want multiple renderers and built-in PDF tools behind one API; no package is the best fit for every application.
 
 **How do I display a PDF in React?**
 Install `@iamjariwala/react-doc-viewer`, import `DocViewer` and `DocViewerRenderers`, pass your PDF URL as a document, and the component handles rendering, zoom, pagination, and page navigation automatically. See [Quick Start](#quick-start).
 
 **How do I display a PDF in Next.js?**
-Add the `"use client"` directive to your component, import `DocViewer` with the CSS file, and pass your PDF document. Works with both App Router and Pages Router. See [Next.js guide](#nextjs-app-router--pages-router).
+Load the viewer through a browser-only dynamic import from a client component, import the CSS file, and pass your PDF document. See [Next.js guide](#nextjs-app-router--pages-router).
 
 **Can I view Word, Excel, and PowerPoint files in React?**
-Yes. This library recognizes `.doc`, `.docx`, `.xls`, `.xlsx`, `.ppt`, and `.pptx` files and renders them as download cards showing file name, type, and a download link. No external service or public URL is required. For inline rendering, you can create a [Custom Renderer](#custom-renderer).
+DOCX renders inline locally by default; its optional Office Online mode sends the document URL to Microsoft. XLSX renders locally as a read-only table with sheet navigation. DOC, XLS, PPT, PPTX and ODT use Microsoft Office Online for HTTP(S) URLs and download cards for local/blob URLs. Office Online needs a publicly reachable document and does not receive your requestHeaders. Optional server conversion uploads eligible documents to your configured service.
 
 **Does it support dark mode?**
 Yes. Set `config.themeMode` to `"dark"` for dark mode, `"light"` for light mode, or `"auto"` to follow the system's `prefers-color-scheme` preference. Dark mode applies to the toolbar, header, sidebars, modals, and all UI elements.
@@ -1277,7 +1183,7 @@ Yes. Enable annotations via config to get text highlighting, freehand drawing, c
 Yes. Enable `config.annotations.enableAnnotations` to get a full annotation toolbar with highlighting, freehand drawing, comments, color picker, and eraser. Annotations are per-page and can be exported/imported as JSON.
 
 **Does it work with Next.js?**
-Yes. The library works with Next.js (App Router and Pages Router), Vite, Create React App, Remix, Gatsby, and any React 17+ project. See [Framework Guides](#framework-guides).
+The repository validates packed-package Vite consumers and a Next.js example. Use a browser-only boundary for server-rendered applications. Other frameworks need application-level verification. See [Framework Guides](#framework-guides).
 
 **Does it work with Vite?**
 Yes. Import the component and CSS file -- no additional configuration needed. See [Vite guide](#vite).
@@ -1289,10 +1195,10 @@ Yes. Create a custom renderer component with `fileTypes` and `weight` properties
 Use the `theme` prop for color customization, the `className` or `style` props for container styling, or override `.rdv-*` CSS classes and `--rdv-*` CSS custom properties for fine-grained control. See [Theming](#theming--css-variables) and [Styling](#styling--css-customization).
 
 **Is it secure? Does it send data to external servers?**
-No data leaves the browser. All rendering is client-side. HTML content is sanitized with DOMPurify to prevent XSS. MS Office files render locally as download cards -- no Microsoft iframe. See [Security](#security).
+PDF and XLSX parsing run in the browser. DOCX uses local rendering by default. Other Office formats may use Microsoft Office Online, and optional server conversion uploads documents to your configured service. Remote documents and embedded resources can still make network requests. See [Security](#security).
 
 **How does this compare to react-pdf?**
-react-pdf only handles PDF files. `@iamjariwala/react-doc-viewer` handles 20+ file types including PDF, and adds dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks, password support, fullscreen, print, split view, drag-and-drop, thumbnails, theming, and i18n on top. If you only need PDF rendering, react-pdf is lighter. If you need multi-format support or advanced features, this library covers more ground.
+react-pdf only handles PDF files. `@iamjariwala/react-doc-viewer` handles 20+ file types including PDF, and adds dark mode, text search, annotations, keyboard shortcuts, watermarks, bookmarks, password support, fullscreen, print, split view, drag-and-drop, thumbnails, theming, and i18n on top. Compare application bundle measurements and required controls before choosing.
 
 **How do I reduce bundle size?**
 Import only the renderers you need (`PDFRenderer`, `PNGRenderer`, etc.) instead of `DocViewerRenderers`. Use `React.lazy()` to code-split the viewer. See [Performance](#performance--bundle-size).
@@ -1316,7 +1222,7 @@ Yes. Enable `config.fullscreen.enableFullscreen` to add a fullscreen button. Pre
 Yes. The library is written in TypeScript and ships with complete type definitions. All props, config options, and hooks are fully typed with IntelliSense support.
 
 **What React versions are supported?**
-React 17, 18, and 19 are supported via `peerDependencies: "react": ">=17.0.0"`.
+React 17, 18 and 19 are the supported peer major versions. CI checks packed-package consumer builds; this is not a claim that every browser or framework version is tested. See [Release validation](docs-site/docs/release.md).
 
 **Is it accessible?**
 The viewer uses semantic HTML, keyboard-navigable controls, and appropriate ARIA attributes where applicable.
@@ -1330,7 +1236,7 @@ The viewer uses semantic HTML, keyboard-navigable controls, and appropriate ARIA
 1. Replace the package: `npm uninstall @cyntler/react-doc-viewer && npm install @iamjariwala/react-doc-viewer`
 2. Update imports: replace `@cyntler/react-doc-viewer` with `@iamjariwala/react-doc-viewer`
 3. Add the CSS import: `import "@iamjariwala/react-doc-viewer/dist/index.css"`
-4. All existing props and config options are compatible
+4. Review changed configuration, CSS, Office privacy behavior and renderer exports before migrating
 
 ### From react-pdf
 

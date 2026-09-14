@@ -35,7 +35,7 @@ interface AnnotationProviderProps {
 
 export const AnnotationProvider: FC<
   PropsWithChildren<AnnotationProviderProps>
-> = ({ children, config, documentUri }) => {
+> = ({ children, config }) => {
   const [state, dispatch] = useReducer<AnnotationStateReducer>(
     annotationReducer,
     {
@@ -45,7 +45,7 @@ export const AnnotationProvider: FC<
       availableTools: config?.tools || DEFAULT_TOOLS,
       activeTool: config?.tools?.[0] || "select",
       annotations: config?.initialAnnotations || [],
-    }
+    },
   );
 
   useEffect(() => {

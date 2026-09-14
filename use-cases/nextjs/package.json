@@ -1,27 +1,22 @@
 {
-  "name": "nextjs",
+  "name": "react-doc-viewer-nextjs-example",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start"
   },
   "dependencies": {
-    "@cyntler/react-doc-viewer": "^1.16.1",
-    "next": "14.2.3",
-    "react": "^18",
-    "react-dom": "^18"
+    "@iamjariwala/react-doc-viewer": "1.8.0",
+    "next": "16.3.5",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "@types/node": "^22",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "typescript": "^5.9.0"
   }
 }

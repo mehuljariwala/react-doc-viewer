@@ -1,0 +1,57 @@
+.rdv-xlsx {
+  width: 100%;
+  min-width: 0;
+  padding: 16px;
+  box-sizing: border-box;
+  color: var(--rdv-text-primary, #222);
+}
+.rdv-xlsx-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.rdv-xlsx-toolbar select,
+.rdv-xlsx-toolbar button {
+  font: inherit;
+  color: inherit;
+  background: var(--rdv-primary, #fff);
+  border: 1px solid #888;
+  padding: 6px 10px;
+  border-radius: 4px;
+}
+.rdv-xlsx-note {
+  font-size: 0.875rem;
+}
+.rdv-xlsx-scroll {
+  overflow: auto;
+  max-height: 70vh;
+}
+.rdv-xlsx table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+.rdv-xlsx caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 8px;
+}
+.rdv-xlsx td,
+.rdv-xlsx th {
+  border: 1px solid #888;
+  padding: 6px 10px;
+  text-align: left;
+  min-width: 60px;
+  max-width: 400px;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.rdv-xlsx th {
+  background: var(--rdv-secondary, #f3f4f6);
+  color: var(--rdv-text-secondary, #222);
+}
+.rdv-xlsx thead th {
+  position: sticky;
+  top: 0;
+}

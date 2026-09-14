@@ -1,7 +1,7 @@
 {
   "name": "@iamjariwala/react-doc-viewer",
   "version": "1.8.0",
-  "description": "React document viewer and PDF viewer component — render PDF, Word (DOCX inline), Excel, PowerPoint, Markdown, images, video, CSV and 20+ file types with annotations, text search, dark mode, drag-and-drop, thumbnails, zoom and i18n.",
+  "description": "React document viewer with PDF tools, local DOCX and XLSX previews, images, text and pluggable renderers. Other Office formats can use Microsoft Office Online.",
   "author": "Mehul Jariwala",
   "type": "module",
   "keywords": [
@@ -87,11 +87,8 @@
     "css-variables",
     "themeable",
     "customizable",
-    "lightweight",
     "responsive",
     "accessible",
-    "ssr",
-    "server-side-rendering",
     "dark-mode",
     "text-search",
     "search-highlight",
@@ -126,36 +123,44 @@
   "module": "./dist/react-doc-viewer.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/react-doc-viewer.js",
-      "require": "./dist/react-doc-viewer.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/react-doc-viewer.cjs"
     },
     "./dist/index.css": {
       "import": "./dist/index.css",
       "require": "./dist/index.css"
-    }
+    },
+    "./dist/pdf.worker.mjs": "./dist/pdf.worker.mjs"
   },
   "scripts": {
     "start": "storybook dev -p 6006",
-    "build": "rm -rf dist && tsc && vite build",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && vite build && node scripts/copy-worker.mjs",
     "test": "vitest run",
     "lint": "eslint ./src --ext .ts,.tsx",
     "prettier:check": "prettier --check .",
     "prettier:fix": "prettier --write .",
-    "storybook:build": "rm -rf storybook-static && storybook build",
+    "storybook:build": "rm -rf storybook-static && storybook build && node scripts/prepare-demo.mjs",
     "deploy": "npm run storybook:build && gh-pages --nojekyll -d storybook-static --message 'feat: storybook deploy'",
-    "prerelease": "git checkout main && git pull && npm run prettier:check && npm run lint && npm run test && npm run build && node ./scripts/copy-worker.mjs && cd use-cases/nextjs && npm i && npm run build",
+    "prerelease": "npm run docs:check && npm run lint && npm test && npm run build && npm run package:smoke",
     "release": "release-it && npm run deploy",
     "build-readme-toc": "npx doctoc README.md --title '## Table of Contents'",
-    "postinstall": "npx patch-package",
-    "prepublish": "npm run build-readme-toc"
+    "prebuild": "node scripts/apply-docx-patch.mjs",
+    "package:smoke": "node scripts/package-smoke.mjs",
+    "measure:bundle": "node scripts/measure-bundle.mjs",
+    "docs:sync": "node scripts/sync-docs.mjs",
+    "docs:check": "node scripts/sync-docs.mjs --check",
+    "metrics": "node scripts/collect-metrics.mjs",
+    "prettier:changed": "node scripts/check-changed-format.mjs"
   },
   "dependencies": {
     "docx-preview-sync": "^0.4.20",
     "dompurify": "^3.3.1",
+    "fflate": "^0.8.3",
     "mustache": "^4.2.0",
     "papaparse": "^5.4.1",
-    "react-pdf": "^9.0.0"
+    "react-pdf": "^9.0.0",
+    "read-excel-file": "^9.3.10"
   },
   "devDependencies": {
     "@rollup/plugin-dsv": "^3.0.4",
@@ -186,6 +191,7 @@
     "file-loader": "^6.2.0",
     "gh-pages": "^6.1.1",
     "happy-dom": "^14.12.0",
+    "jsdom": "^24.1.3",
     "prettier": "^3.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -200,8 +206,8 @@
     "webpack": "^5.91.0"
   },
   "peerDependencies": {
-    "react": ">=17.0.0",
-    "react-dom": ">=17.0.0"
+    "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
   },
   "browserslist": {
     "production": [
