@@ -4,7 +4,7 @@ title: Preview an Excel XLSX workbook
 
 # Preview an Excel XLSX workbook
 
-**Next release:** XLSXRenderer is unreleased until the next npm publication. Test the branch's packed package using the repository smoke scripts.
+**Available in 1.9.0:** Import `XLSXRenderer` for a local read-only workbook preview. Install `@iamjariwala/react-doc-viewer@1.9.0` or newer.
 
 ```tsx
 import DocViewer, { XLSXRenderer } from "@iamjariwala/react-doc-viewer";

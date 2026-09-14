@@ -5,7 +5,7 @@ title: Supported file types and rendering modes
 
 # Supported file types and rendering modes
 
-A recognized extension is not a promise of native inline rendering. The following describes this branch; XLSXRenderer is unreleased until the next npm release.
+A recognized extension is not a promise of native inline rendering. The following describes version 1.9.0, including the local XLSXRenderer.
 
 - **PDF:** local PDF viewer with pagination, search, zoom and optional annotations.
 - **DOCX:** local inline preview by default; optional Office Online mode for public HTTP(S) URLs. Complex Word layouts may differ from Word.

@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.9.0 — 2026-09-14
 
 ### Added
 
@@ -18,4 +18,4 @@
 - Rendering/privacy descriptions distinguish local previews, Microsoft Office Online and optional server conversion.
 - Removed unverified blanket security, competitor and bundle-size claims from discovery materials.
 
-This entry is not a statement that an npm release has been published.
+Package: `@iamjariwala/react-doc-viewer@1.9.0`.

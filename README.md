@@ -97,7 +97,7 @@ See [Migration](docs-site/docs/migration.md) and [Performance](docs-site/docs/pe
 
 ---
 
-### Next release (unreleased)
+### What's New in v1.9.0
 
 - Local XLSX table preview with sheet selection, load/error states and documented limits.
 - Clean consumer installation without an install-time `npx` command.

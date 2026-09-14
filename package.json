@@ -1,6 +1,6 @@
 {
   "name": "@iamjariwala/react-doc-viewer",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "React document viewer with PDF tools, local DOCX and XLSX previews, images, text and pluggable renderers. Other Office formats can use Microsoft Office Online.",
   "author": "Mehul Jariwala",
   "type": "module",

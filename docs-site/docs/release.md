@@ -7,7 +7,7 @@ title: Release validation and walkthrough
 
 ## Status
 
-The XLSX and discovery update is **unreleased**. The package version remains 1.8.0 until the maintainer creates the next release. A branch push or demo build is not an npm publication. Check npm's version and GitHub release notes before depending on a new export.
+The XLSX and discovery update is included in **1.9.0**. Install `@iamjariwala/react-doc-viewer@1.9.0` or newer for `XLSXRenderer`. A branch push or demo build is not an npm publication; the npm package version and GitHub release notes identify the released artifact.
 
 ## Reproduce validation
 
